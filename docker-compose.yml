@@ -1,0 +1,14 @@
+name: "auth"
+
+services:
+  cli:
+    image: "patrikjak/php83-cli"
+    container_name: "auth-cli"
+    networks:
+      - shared
+    volumes:
+      - ".:/var/www"
+
+networks:
+  shared:
+    driver: bridge
