@@ -30,20 +30,34 @@ After that you need to publish the package assets (if you configured `patrikjak/
 php artisan vendor:publish --tag="assets" --force
 ```
 
-You can publish the config file:
+You should publish the config file:
 
 ```bash
 php artisan vendor:publish --tag="config" --force
 ```
 
-or views:
+or if you want to publish views:
 
 ```bash
 php artisan vendor:publish --tag="views" --force
 ```
 
-## Routes
+If you don't publish config file, you will miss all features of this package. I recommend add this script to your `composer.json` file:
 
+```json
+"scripts": {
+    "post-update-cmd": [
+        "@php artisan vendor:publish --tag=config --force"
+    ]
+}
+```
+
+It will publish config file every time you update your composer packages.
+
+Laravel cannot merge multidimensional arrays in config files.
+
+
+## Routes
 In routes, we use default laravel middleware group `web` and `guest` middleware.
 
 ```php

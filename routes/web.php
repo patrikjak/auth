@@ -1,17 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Patrikjak\Auth\Http\Controllers\AuthenticatedSessionController;
 use Patrikjak\Auth\Http\Controllers\RegisterController;
 
 Route::middleware(['web', 'guest'])->group(static function(): void {
 
     $registerEnabled = config('pjauth.features.register');
+    $loginEnabled = config('pjauth.features.login');
 
     if ($registerEnabled) {
         Route::get('/register', [RegisterController::class, 'index'])
             ->name('register');
+    }
 
-        Route::get('/login');
+    if ($loginEnabled) {
+        Route::get('/login', [AuthenticatedSessionController::class, 'index'])
+            ->name('login');
     }
 
 });

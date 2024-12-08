@@ -48,6 +48,7 @@ return [
      */
     'features' => [
         'register' => true,
+        'login' => true,
     ],
 
 ];
