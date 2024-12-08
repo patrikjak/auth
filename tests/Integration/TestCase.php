@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Tests\Integration;
 
+use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
 use Patrikjak\Auth\Tests\Traits\ConfigSetter;
@@ -16,14 +17,6 @@ abstract class TestCase extends OrchestraTestCase
         assertMatchesHtmlSnapshot as baseAssertMatchesHtmlSnapshot;
     }
     use ConfigSetter;
-
-    protected function getPackageProviders($app): array
-    {
-        return [
-            AuthServiceProvider::class,
-            UtilsServiceProvider::class,
-        ];
-    }
 
     public function assertMatchesHtmlSnapshot(string $actual): void
     {
@@ -42,5 +35,18 @@ abstract class TestCase extends OrchestraTestCase
         );
 
         $this->baseAssertMatchesHtmlSnapshot($actual);
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Application $app
+     * @return array<class-string>
+     */
+    protected function getPackageProviders($app): array
+    {
+        return [
+            AuthServiceProvider::class,
+            UtilsServiceProvider::class,
+        ];
     }
 }

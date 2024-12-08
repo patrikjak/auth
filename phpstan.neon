@@ -8,6 +8,3 @@ parameters:
         - tests/
 
     level: 6
-
-    ignoreErrors:
-        - identifier: missingType.generics
