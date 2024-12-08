@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{CSRF-TOKEN}">
-    <title>Register - App</title>
+    <title>Log in - App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;500;700&amp;display=swap" rel="stylesheet">
@@ -25,32 +25,26 @@
         </div>
 
                     <div class="links">
-                <p>Already have an account? <a href="http://localhost/login" class="primary-color">Log in</a></p>
+                <p>Don't have an account? <a href="http://localhost/register" class="primary-color">Register</a></p>
             </div>
             </div>
 
     <div class="pj-auth">
         <div class="image">
-            <img src="http://localhost/vendor/pjauth/assets/images/illustrations/welcome.svg" alt="welcome">
+            <img src="http://localhost/vendor/pjauth/assets/images/illustrations/hello.svg" alt="welcome">
         </div>
         <div class="form">
             <div class="wrapper">
-                <h1>Register</h1>
-                <p>Create an account and connect with us.</p>
+                <h1>Log in</h1>
+                <p>Log in to your account. <a class="forgotten-password" href="#">Zabudli ste heslo?</a></p>
 
     <form action="#" method="POST">
     <input type="hidden" name="_token" value="{TOKEN}" autocomplete="off">
     
     <div class="pj-classic">
-            <label for="name">Name</label>
-    
-            <input id="name" name="name" type="text" autocomplete="name" placeholder="eg. John" autofocus="autofocus">
-    
-    </div>
-        <div class="pj-classic">
             <label for="email">Email</label>
     
-            <input id="email" name="email" type="email" autocomplete="email" placeholder="eg. john@example.com">
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="eg. john@example.com" autofocus="autofocus">
     
     </div>
         <div class="pj-classic iconic">
@@ -67,9 +61,15 @@
     </div>
 
             <button class="pj-btn info">
-        Register
+        Log in
             </button>
     </form>
+            <p class="center" id="or">or log in using</p>
+
+        <div class="socials">
+            <a href="#" class="google-button">
+    <img src="http://localhost/vendor/pjauth/assets/images/icons/google-logo.svg" alt="Google logo">
+</a>        </div>
             </div>
         </div>
     </div>

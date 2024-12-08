@@ -46,7 +46,7 @@ class RegisterControllerTest extends TestCase
     }
 
     #[DefineEnvironment('disableRegisterFeature')]
-    public function testIndexCanBeRenderedWithoutRegisterFeature(): void
+    public function testIndexPageWithoutRegisterFeature(): void
     {
         $this->expectException(RouteNotFoundException::class);
 
