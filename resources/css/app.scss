@@ -1,0 +1,97 @@
+@use "variables" as *;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: $background;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.primary-color {
+    color: $primary;
+}
+
+.center {
+    text-align: center;
+}
+
+.navigation {
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3%;
+
+    .logo svg, .logo img {
+        height: 2.5rem;
+    }
+}
+
+.pj-auth {
+    display: flex;
+    height: calc(100vh - 5rem);
+    overflow: hidden;
+    scale: inherit;
+
+    .image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+
+        img {
+            width: 50%;
+        }
+    }
+
+    .form {
+        width: 40%;
+        padding: 5%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .wrapper {
+            width: 100%;
+        }
+
+        form button {
+            width: 100%;
+        }
+    }
+
+    #or {
+        margin: 1.5rem 0;
+        color: $font-light;
+    }
+
+    .socials {
+        display: flex;
+        justify-content: center;
+
+        .google-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 3rem;
+            height: 3rem;
+            background-color: #ffffff;
+            border-radius: 50%;
+            border: solid 1px #747775;
+            transition-duration: .3s;
+
+            &:hover {
+                background-color: #F2F2F2;
+            }
+        }
+    }
+}
