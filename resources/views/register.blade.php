@@ -3,7 +3,7 @@
 <x-pjauth::layouts.app :title="__('pjauth::pages.titles.register')">
 
     <x-slot:links>
-        <p>@lang('pjauth::pages.register.existing_account') <a href="{{ '#' }}" class="primary-color">@lang('pjauth::pages.register.login')</a></p>
+        <p>@lang('pjauth::pages.register.existing_account') <a href="{{ route('login') }}" class="primary-color">@lang('pjauth::pages.register.login')</a></p>
     </x-slot:links>
 
     <x-slot:image>
@@ -37,7 +37,7 @@
         <p class="center" id="or">@lang('pjauth::pages.register.or_use_social')</p>
 
         <div class="socials">
-            <x-pjauth::google-login-button :label="__('pjauth::pages.register.google')" />
+            <x-pjauth::google-login-button />
         </div>
     @endif
 

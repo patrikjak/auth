@@ -37,4 +37,9 @@ trait ConfigSetter
     {
         $app['config']->set('pjauth.features.register', false);
     }
+
+    protected function disableLoginFeature(Application $app): void
+    {
+        $app['config']->set('pjauth.features.login', false);
+    }
 }
