@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tests - update snapshots" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="tests" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" coverage_engine="PCov" directory="$PROJECT_DIR$/../../laravel-boot/tests/Integration" scope="XML" options="-d --update-snapshots" use_alternative_configuration_file="true" />
+    <method v="2" />
+  </configuration>
+</component>

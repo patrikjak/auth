@@ -3,7 +3,7 @@
 <x-pjauth::layouts.app :title="__('pjauth::pages.titles.register')">
 
     <x-slot:links>
-        <p>@lang('pjauth::pages.register.existing_account') <a href="{{ route('login') }}" class="primary-color">@lang('pjauth::pages.register.login')</a></p>
+        <p>@lang('pjauth::pages.register.existing_account') <a href="{{ '#' }}" class="primary-color">@lang('pjauth::pages.register.login')</a></p>
     </x-slot:links>
 
     <x-slot:image>

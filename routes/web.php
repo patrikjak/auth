@@ -10,6 +10,8 @@ Route::middleware(['web', 'guest'])->group(static function(): void {
     if ($registerEnabled) {
         Route::get('/register', [RegisterController::class, 'index'])
             ->name('register');
+
+        Route::get('/login');
     }
 
 });

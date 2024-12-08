@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\View\Components;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Illuminate\View\View;
 
 class GoogleLoginButton extends Component
 {

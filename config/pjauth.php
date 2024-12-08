@@ -14,6 +14,15 @@ return [
     'logo_path' => 'images/logo/logo.svg',
 
     /**
+     * Path to the icon - relative to the public directory
+     * Set to null to disable the icon
+     */
+    'icon' => [
+        'path' => 'images/logo/favicon.svg',
+        'type' => 'image/svg+xml',
+    ],
+
+    /**
      * Recaptcha configuration
      */
     'recaptcha' => [

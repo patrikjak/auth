@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Integration">
+            <directory suffix="Test.php">./tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_KEY" value="base64:OW9/RAX/ZrbdiOP5cl4KVs3qb453eXr9Z+MLQfbf8Pg=" />
+        <env name="APP_ENV" value="testing" />
+        <env name="BCRYPT_ROUNDS" value="10" />
+        <env name="RECAPTCHA_SITE_KEY" value="RECAPTCHA_SITE_KEY" />
+        <ini name="date.timezone" value="Europe/Bratislava" />
+    </php>
+</phpunit>
