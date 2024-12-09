@@ -10,7 +10,12 @@
         <img src="{{ asset('vendor/pjauth/assets/images/illustrations/hello.svg') }}" alt="welcome">
     </x-slot:image>
 
-    <p>@lang('pjauth::pages.login.intro') <a class="forgotten-password" href="{{ route('password.request') }}">Zabudli ste heslo?</a></p>
+    <p>
+        @lang('pjauth::pages.login.intro')
+        @if(config('pjauth.features.password_reset'))
+            <a class="forgotten-password" href="{{ route('password.request') }}">Zabudli ste heslo?</a>
+        @endif
+    </p>
 
     <x-pjutils::form :action="'#'" :action-label="__('pjauth::pages.login.action')">
         <x-pjutils::form.email name="email"
