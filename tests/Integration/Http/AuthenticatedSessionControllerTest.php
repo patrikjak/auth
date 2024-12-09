@@ -25,4 +25,13 @@ class AuthenticatedSessionControllerTest extends TestCase
 
         $this->get(route('login'));
     }
+
+    #[DefineEnvironment('disablePasswordResetFeature')]
+    public function testLoginPageWithoutResetPasswordFeature(): void
+    {
+        $response = $this->get(route('login'));
+
+        $response->assertOk();
+        $this->assertMatchesHtmlSnapshot($response->getContent());
+    }
 }

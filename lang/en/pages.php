@@ -5,6 +5,7 @@ return [
     'titles' => [
         'register' => 'Register',
         'login' => 'Log in',
+        'reset_password' => 'Reset password',
     ],
 
     'general' => [
@@ -26,6 +27,18 @@ return [
         'no_account' => 'Don\'t have an account?',
         'register' => 'Register',
         'or_use_social' => 'or log in using',
+    ],
+
+    'password' => [
+        'forgot' => [
+            'action' => 'Send link',
+            'intro' => 'Forgot your password? No problem. Just enter your email address and we\'ll send you a link to reset your password.',
+        ],
+        'reset' => [
+            'action' => 'Reset password',
+            'intro' => 'Enter your new password.',
+        ],
+        'login' => 'Log in',
     ],
 
 ];

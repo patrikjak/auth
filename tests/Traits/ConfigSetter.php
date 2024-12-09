@@ -42,4 +42,9 @@ trait ConfigSetter
     {
         $app['config']->set('pjauth.features.login', false);
     }
+
+    protected function disablePasswordResetFeature(Application $application): void
+    {
+        $application['config']->set('pjauth.features.password_reset', false);
+    }
 }
