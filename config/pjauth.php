@@ -49,6 +49,7 @@ return [
     'features' => [
         'register' => true,
         'login' => true,
+        'password_reset' => true,
     ],
 
 ];
