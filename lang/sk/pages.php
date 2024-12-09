@@ -34,6 +34,10 @@ return [
             'action' => 'Zaslať odkaz',
             'intro' => 'Zabudli ste heslo? Nevadí. Stačí zadať svoju e-mailovú adresu a my vám pošleme odkaz na obnovenie hesla.',
         ],
+        'reset' => [
+            'action' => 'Obnoviť heslo',
+            'intro' => 'Zadajte nové heslo.',
+        ],
         'login' => 'Prihlásiť sa',
     ],
 

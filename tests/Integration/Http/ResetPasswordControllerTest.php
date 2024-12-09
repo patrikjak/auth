@@ -25,4 +25,20 @@ class ResetPasswordControllerTest extends TestCase
 
         $this->get(route('password.request'));
     }
+
+    public function testResetPasswordScreenCanBeRendered(): void
+    {
+        $response = $this->get(route('password.reset', ['token' => 'test-token']));
+
+        $response->assertOk();
+        $this->assertMatchesHtmlSnapshot($response->getContent());
+    }
+
+    #[DefineEnvironment('disablePasswordResetFeature')]
+    public function testResetPasswordScreenWithDisabledPasswordResetFeature(): void
+    {
+        $this->expectException(RouteNotFoundException::class);
+
+        $this->get(route('password.reset', ['token' => 'test-token']));
+    }
 }

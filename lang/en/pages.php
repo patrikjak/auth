@@ -34,6 +34,10 @@ return [
             'action' => 'Send link',
             'intro' => 'Forgot your password? No problem. Just enter your email address and we\'ll send you a link to reset your password.',
         ],
+        'reset' => [
+            'action' => 'Reset password',
+            'intro' => 'Enter your new password.',
+        ],
         'login' => 'Log in',
     ],
 

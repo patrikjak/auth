@@ -27,6 +27,9 @@ Route::middleware(['web', 'guest'])->group(static function(): void {
             ->group(static function () {
                 Route::get('/forgot', [ResetPasswordController::class, 'forgot'])
                     ->name('request');
+
+                Route::get('/reset/{token}', [ResetPasswordController::class, 'reset'])
+                    ->name('reset');
             });
     }
 

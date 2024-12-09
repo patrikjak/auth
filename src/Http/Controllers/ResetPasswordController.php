@@ -12,4 +12,9 @@ class ResetPasswordController
     {
         return view('pjauth::forgot');
     }
+
+    public function reset(): View
+    {
+        return view('pjauth::reset');
+    }
 }
