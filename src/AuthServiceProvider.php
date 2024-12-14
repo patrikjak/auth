@@ -4,8 +4,14 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth;
 
+use Illuminate\Config\Repository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Patrikjak\Auth\Console\Commands\SeedUserRoles;
+use Patrikjak\Auth\Repositories\Interfaces\RoleRepository as RoleRepositoryInterface;
+use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
+use Patrikjak\Auth\Repositories\RoleRepository;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,15 +22,19 @@ class AuthServiceProvider extends ServiceProvider
         $this->loadRoutes();
         $this->loadTranslations();
         $this->loadViews();
+        $this->loadCommands();
 
         $this->publishAssets();
         $this->publishConfig();
         $this->publishViews();
+        $this->publishMigrations();
     }
 
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/pjauth.php', 'pjauth');
+
+        $this->registerServices();
     }
 
     private function publishAssets(): void
@@ -53,6 +63,13 @@ class AuthServiceProvider extends ServiceProvider
         ], 'views');
     }
 
+    private function publishMigrations(): void
+    {
+        $this->publishes([
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
+        ], 'migrations');
+    }
+
     private function registerComponents(): void
     {
         Blade::componentNamespace('Patrikjak\\Auth\\View', 'pjauth');
@@ -66,10 +83,29 @@ class AuthServiceProvider extends ServiceProvider
     private function loadRoutes(): void
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
     }
 
     private function loadTranslations(): void
     {
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'pjauth');
+    }
+
+    private function loadCommands(): void
+    {
+        $this->commands([
+            SeedUserRoles::class,
+        ]);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    private function registerServices(): void
+    {
+        $config = $this->app->make(Repository::class);
+        
+        $this->app->bind(UserRepositoryInterface::class, $config->get('pjauth.repositories.user'));
+        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
     }
 }
