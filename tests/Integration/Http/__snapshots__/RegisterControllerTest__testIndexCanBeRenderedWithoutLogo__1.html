@@ -11,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;500;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="http://localhost/vendor/pjutils/assets/main.css">
     <link rel="stylesheet" href="http://localhost/vendor/pjauth/assets/app.css">
-    <link rel="stylesheet" href="http://localhost/vendor/pjauth/assets/main.js">
             <script src="https://www.google.com/recaptcha/api.js?render=RECAPTCHA_SITE_KEY"></script>
-                <link rel="icon" type="image/svg+xml" href="http://localhost/images/logo/favicon.svg">
+        <script src="http://localhost/vendor/pjauth/assets/main.js" type="module"></script>
+            <link rel="icon" type="image/svg+xml" href="http://localhost/images/logo/favicon.svg">
     </head>
 <body>
 
@@ -37,7 +37,7 @@
                 <h1>Register</h1>
                 <p>Create an account and connect with us.</p>
 
-    <form action="#" method="POST">
+    <form action="http://localhost/api/register" method="POST" data-redirect="/dashboard" data-recaptcha-action="register">
     <input type="hidden" name="_token" value="{TOKEN}" autocomplete="off">
     
     <div class="pj-classic">

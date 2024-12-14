@@ -10,5 +10,8 @@
         "laravel-vite-plugin": "^1.1.0",
         "sass": "^1.69.5",
         "typescript": "^5.2.2"
+    },
+    "dependencies": {
+        "i18n-js": "^4.5.0"
     }
 }

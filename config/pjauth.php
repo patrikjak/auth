@@ -52,4 +52,23 @@ return [
         'password_reset' => true,
     ],
 
+    /**
+     * Models to use
+     */
+    'models' => [
+        'user' => env('AUTH_MODEL', \Patrikjak\Auth\Models\User::class),
+    ],
+
+    /**
+     * Repositories implementation to use
+     */
+    'repositories' => [
+        'user' => \Patrikjak\Auth\Repositories\UserRepository::class,
+    ],
+
+    /**
+     * Redirect to this path after login or register
+     */
+    'redirect_after_login' => env('REDIRECT_AFTER_LOGIN', '/dashboard'),
+
 ];
