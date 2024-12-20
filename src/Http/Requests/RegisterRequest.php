@@ -5,13 +5,16 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Patrikjak\Auth\Dto\CreateUser;
-use Patrikjak\Auth\Dto\CreateUserInterface;
+use Patrikjak\Auth\Models\User;
+use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Utils\Common\Helpers\GrammaticalGender;
+use Patrikjak\Utils\Common\Http\Requests\Traits\ValidationException;
 use Patrikjak\Utils\Common\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
+    use ValidationException;
+
     /**
      * @return array<string, array<string|Password>>
      */
@@ -52,12 +55,8 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    public function getNewUser(): CreateUserInterface
+    public function getNewUser(): User
     {
-        return new CreateUser(
-            $this->input('name'),
-            $this->input('email'),
-            $this->input('password'),
-        );
+        return UserFactory::createFromRequest($this);
     }
 }

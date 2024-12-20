@@ -1,0 +1,7 @@
+{
+    "errors": {
+        "email": [
+            "The Email has already been taken"
+        ]
+    }
+}

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
 use Patrikjak\Auth\Tests\Traits\ConfigSetter;
+use Patrikjak\Auth\Tests\Traits\TestingData;
 use Patrikjak\Utils\UtilsServiceProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -17,6 +18,7 @@ abstract class TestCase extends OrchestraTestCase
         assertMatchesHtmlSnapshot as baseAssertMatchesHtmlSnapshot;
     }
     use ConfigSetter;
+    use TestingData;
 
     public function assertMatchesHtmlSnapshot(string $actual): void
     {
@@ -48,5 +50,10 @@ abstract class TestCase extends OrchestraTestCase
             AuthServiceProvider::class,
             UtilsServiceProvider::class,
         ];
+    }
+
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
     }
 }

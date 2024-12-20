@@ -6,7 +6,7 @@ namespace Patrikjak\Auth\Services;
 
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Registered;
-use Patrikjak\Auth\Dto\CreateUserInterface;
+use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 
 final readonly class UserService
@@ -15,7 +15,7 @@ final readonly class UserService
     {
     }
 
-    public function createUserAndLogin(CreateUserInterface $newUser): void
+    public function createUserAndLogin(User $newUser): void
     {
         $user = $this->userRepository->createAndReturnUser($newUser);
 

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Patrikjak\Auth\Http\Controllers\AuthenticatedSessionController;
+use Patrikjak\Auth\Http\Controllers\LoginController;
 use Patrikjak\Auth\Http\Controllers\RegisterController;
 use Patrikjak\Auth\Http\Controllers\ResetPasswordController;
 
@@ -17,7 +17,7 @@ Route::middleware(['web', 'guest'])->group(static function(): void {
     }
 
     if ($loginEnabled) {
-        Route::get('/login', [AuthenticatedSessionController::class, 'index'])
+        Route::get('/login', [LoginController::class, 'index'])
             ->name('login');
     }
 

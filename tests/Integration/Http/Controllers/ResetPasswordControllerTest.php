@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Http;
+namespace Integration\Http\Controllers;
 
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Tests\Integration\TestCase;

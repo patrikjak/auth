@@ -13,3 +13,4 @@ parameters:
     ignoreErrors:
         - '#Parameter \#1 \$view of function view expects view-string\|null, string given.#'
         - identifier: missingType.generics
+        - identifier: generator.valueType

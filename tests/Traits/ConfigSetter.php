@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Tests\Traits;
 
 use Illuminate\Foundation\Application;
+use Patrikjak\Auth\Models\User;
 
 trait ConfigSetter
 {
@@ -46,5 +47,19 @@ trait ConfigSetter
     protected function disablePasswordResetFeature(Application $application): void
     {
         $application['config']->set('pjauth.features.password_reset', false);
+    }
+
+    protected function useCustomUserModel(Application $application): void
+    {
+        $customUserModel = new class extends User {};
+
+        $application['config']->set('pjauth.models.user', $customUserModel::class);
+    }
+
+    protected function useCustomInvalidUserModel(Application $application): void
+    {
+        $customUserModel = new class {};
+
+        $application['config']->set('pjauth.models.user', $customUserModel::class);
     }
 }

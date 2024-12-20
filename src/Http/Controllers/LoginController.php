@@ -6,7 +6,7 @@ namespace Patrikjak\Auth\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 
-class AuthenticatedSessionController
+class LoginController
 {
     public function index(): View
     {
