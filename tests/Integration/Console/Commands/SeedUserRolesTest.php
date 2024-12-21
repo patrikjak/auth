@@ -43,10 +43,10 @@ class SeedUserRolesTest extends TestCase
     }
 
     #[DataProvider('enumDataProvider')]
-    public function testSeedUserRolesWithInvalidEnum(): void
+    public function testSeedUserRolesWithInvalidEnum(string $enumClass): void
     {
         $this->artisan('seed:user-roles', [
-            '--enum' => 'Invalid\InvalidEnum',
+            '--enum' => $enumClass,
         ])->assertFailed();
     }
 
