@@ -7,7 +7,7 @@ namespace Patrikjak\Auth\Tests\Integration\Console\Commands;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 
-class CreateUsersCommandTests extends TestCase
+class CreateUsersCommandTest extends TestCase
 {
     use RefreshDatabase;
 
