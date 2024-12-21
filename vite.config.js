@@ -8,15 +8,14 @@ export default defineConfig({
                 'resources/css/app.scss',
                 'resources/js/main.ts',
             ],
-            refresh: {
-                paths: ['resources/css/**', 'resources/js/**'],
-            },
+            refresh: false,
         }),
     ],
     build: {
         rollupOptions: {
             output: {
                 entryFileNames: '[name].js',
+                chunkFileNames: '[name].js',
                 assetFileNames: '[name].[ext]',
             },
         },

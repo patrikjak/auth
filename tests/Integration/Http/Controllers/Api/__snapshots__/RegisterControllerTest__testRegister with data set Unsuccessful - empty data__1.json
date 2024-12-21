@@ -1,0 +1,10 @@
+{
+    "errors": {
+        "name": [
+            "The Name field is required"
+        ],
+        "email": [
+            "The Email field is required"
+        ]
+    }
+}

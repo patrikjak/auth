@@ -12,10 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendor/pjutils/assets/main.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/pjauth/assets/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/pjauth/assets/main.js') }}">
     @if($enabledRecaptcha)
         <script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaSiteKey }}"></script>
     @endif
+    <script src="{{ asset('vendor/pjauth/assets/main.js') }}" type="module"></script>
     @isset($icon)
         <link rel="icon" type="{{ $iconType }}" href="{{ asset($icon) }}">
     @endisset

@@ -1,5 +1,6 @@
 includes:
-	- phpstan-baseline.neon
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
 
 parameters:
 
@@ -8,3 +9,8 @@ parameters:
         - tests/
 
     level: 6
+
+    ignoreErrors:
+        - '#Parameter \#1 \$view of function view expects view-string\|null, string given.#'
+        - identifier: missingType.generics
+        - identifier: generator.valueType
