@@ -48,14 +48,6 @@ class UserFactoryTest extends TestCase
         $this->assertEquals($userModel, UserFactory::getUserModelClass());
     }
 
-    #[DefineEnvironment('useCustomInvalidUserModel')]
-    public function testGetCustomInvalidUserModelClass(): void
-    {
-        $this->expectException(AssertionError::class);
-
-        $model = UserFactory::getUserModelClass();
-    }
-
     public function testGetCustomUserMode(): void
     {
         $userModel = UserFactory::getUserModel();

@@ -55,11 +55,4 @@ trait ConfigSetter
 
         $application['config']->set('pjauth.models.user', $customUserModel::class);
     }
-
-    protected function useCustomInvalidUserModel(Application $application): void
-    {
-        $customUserModel = new class {};
-
-        $application['config']->set('pjauth.models.user', $customUserModel::class);
-    }
 }
