@@ -40,7 +40,7 @@
         Log in to your account.                    <a class="forgotten-password" href="http://localhost/password/forgot">Zabudli ste heslo?</a>
             </p>
 
-    <form action="#" method="POST">
+    <form action="http://localhost/api/login" method="POST" data-redirect="/dashboard" data-recaptcha-action="login">
     <input type="hidden" name="_token" value="{TOKEN}" autocomplete="off">
     
     <div class="pj-classic">

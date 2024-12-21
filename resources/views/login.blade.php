@@ -17,7 +17,12 @@
         @endif
     </p>
 
-    <x-pjutils::form :action="'#'" :action-label="__('pjauth::pages.login.action')">
+    <x-pjutils::form
+        :action="route('api.login')"
+        :action-label="__('pjauth::pages.login.action')"
+        data-recaptcha-action="login"
+        :redirect="$redirectAfterLogin"
+    >
         <x-pjutils::form.email name="email"
                                :label="__('pjauth::forms.email')"
                                :placeholder="__('pjauth::forms.placeholders.email')"
