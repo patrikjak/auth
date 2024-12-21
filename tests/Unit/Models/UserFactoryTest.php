@@ -37,23 +37,38 @@ class UserFactoryTest extends TestCase
 
     public function testGetUserModel(): void
     {
-        $this->assertEquals(User::class, UserFactory::getUserModel());
+        $this->assertEquals(User::class, UserFactory::getUserModelClass());
+    }
+
+    #[DefineEnvironment('useCustomUserModel')]
+    public function testGetCustomUserModelClass(): void
+    {
+        $userModel = config('pjauth.models.user');
+
+        $this->assertEquals($userModel, UserFactory::getUserModelClass());
+    }
+
+    #[DefineEnvironment('useCustomInvalidUserModel')]
+    public function testGetCustomInvalidUserModelClass(): void
+    {
+        $this->expectException(AssertionError::class);
+
+        UserFactory::getUserModelClass();
+    }
+
+    public function testGetCustomUserMode(): void
+    {
+        $userModel = UserFactory::getUserModel();
+
+        $this->assertInstanceOf(User::class, $userModel);
     }
 
     #[DefineEnvironment('useCustomUserModel')]
     public function testGetCustomUserModel(): void
     {
-        $userModel = config('pjauth.models.user');
+        $userModel = UserFactory::getUserModel();
 
-        $this->assertEquals($userModel, UserFactory::getUserModel());
-    }
-
-    #[DefineEnvironment('useCustomInvalidUserModel')]
-    public function testGetCustomInvalidUserModel(): void
-    {
-        $this->expectException(AssertionError::class);
-
-        UserFactory::getUserModel();
+        $this->assertInstanceOf(User::class, $userModel);
     }
 
     protected function setUp(): void

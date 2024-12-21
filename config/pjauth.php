@@ -71,4 +71,9 @@ return [
      */
     'redirect_after_login' => env('REDIRECT_AFTER_LOGIN', '/dashboard'),
 
+    /**
+     * Default password for the user
+     */
+    'user_default_password' => env('USER_DEFAULT_PASSWORD', 'pass'),
+
 ];

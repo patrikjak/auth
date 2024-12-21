@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Patrikjak\Auth\Database\Factories\RoleFactory;
 
+/**
+ * @property int $id
+ * @property string $name
+ */
 class Role extends Model
 {
     use HasFactory;

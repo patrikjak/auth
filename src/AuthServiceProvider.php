@@ -8,6 +8,7 @@ use Illuminate\Config\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Patrikjak\Auth\Console\Commands\CreateUsersCommand;
 use Patrikjak\Auth\Console\Commands\SeedUserRoles;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository as RoleRepositoryInterface;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
@@ -95,6 +96,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->commands([
             SeedUserRoles::class,
+            CreateUsersCommand::class,
         ]);
     }
 

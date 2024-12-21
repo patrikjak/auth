@@ -10,7 +10,7 @@ class UserFactory
 {
     public static function createFromRequest(Request $request): User
     {
-        $userModel = self::getUserModel();
+        $userModel = self::getUserModelClass();
 
         $userModel = new $userModel();
         $userModel->name = $request->input('name');
@@ -20,7 +20,15 @@ class UserFactory
         return $userModel;
     }
 
-    public static function getUserModel(): string
+    public static function getUserModel(): User
+    {
+        $userModel = new (self::getUserModelClass())();
+        assert($userModel instanceof User);
+
+        return $userModel;
+    }
+
+    public static function getUserModelClass(): string
     {
         $userModel = config('pjauth.models.user') ?? User::class;
         assert($userModel === User::class || is_subclass_of($userModel, User::class));
