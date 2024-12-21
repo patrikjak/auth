@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Patrikjak\Auth\Models\RoleType;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Throwable;
@@ -23,6 +24,10 @@ class SeedUserRoles extends Command
 
     private string $rolesEnum = RoleType::class;
 
+    /**
+     * @throws BindingResolutionException
+     * @throws Throwable
+     */
     public function handle(): void
     {
         $this->rolesEnum = $this->option('enum') ?? RoleType::class;
@@ -50,14 +55,15 @@ class SeedUserRoles extends Command
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     private function ensureEnumHasEnumValuesTrait(): void
     {
         $traits = class_uses_recursive($this->rolesEnum);
 
         if (!in_array('Patrikjak\Utils\Common\Traits\EnumValues', $traits, true)) {
-            $this->error('The enum class does not use the EnumValues trait.');
-
-            exit(1);
+            $this->fail('The enum class does not use the EnumValues trait.');
         }
     }
 }
