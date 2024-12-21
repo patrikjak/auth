@@ -6,6 +6,7 @@ namespace Patrikjak\Auth\Services;
 
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Registered;
+use Patrikjak\Auth\Exceptions\InvalidCredentialsException;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 
@@ -22,5 +23,15 @@ final readonly class UserService
         event(new Registered($user));
 
         $this->authManager->login($user);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     */
+    public function login(string $email, string $password, bool $remember): void
+    {
+        if (!$this->authManager->attempt(['email' => $email, 'password' => $password], $remember)) {
+            throw new InvalidCredentialsException();
+        }
     }
 }
