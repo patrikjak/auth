@@ -1,5 +1,7 @@
 # Auth
 
+[![codecov](https://codecov.io/gh/patrikjak/auth/graph/badge.svg?token=A13B5F9FMZ)](https://codecov.io/gh/patrikjak/auth)
+
 Simple auth package for laravel apps.
 
 ## Installation
