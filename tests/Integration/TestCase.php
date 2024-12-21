@@ -22,14 +22,6 @@ abstract class TestCase extends OrchestraTestCase
     use ConfigSetter;
     use TestingData;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->app->setLocale('test');
-        $this->app->setFallbackLocale('test');
-    }
-
     public function assertMatchesHtmlSnapshot(string $actual): void
     {
         $actual = preg_replace(
@@ -52,6 +44,14 @@ abstract class TestCase extends OrchestraTestCase
     public function skipRecaptcha(): void
     {
         $this->withoutMiddleware(VerifyRecaptcha::class);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->setLocale('test');
+        $this->app->setFallbackLocale('test');
     }
 
     /**

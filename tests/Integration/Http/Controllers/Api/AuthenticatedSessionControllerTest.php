@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 
 use Patrikjak\Auth\Tests\Integration\TestCase;

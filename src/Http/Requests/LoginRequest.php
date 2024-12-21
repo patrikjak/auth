@@ -56,7 +56,6 @@ class LoginRequest extends FormRequest
     public function ensureIsNotRateLimited(): void
     {
         $rateLimiter = app()->make(RateLimiter::class);
-        assert($rateLimiter instanceof RateLimiter);
 
         if (!$rateLimiter->tooManyAttempts($this->throttleKey(), 5)) {
             return;
