@@ -7,6 +7,7 @@ namespace Patrikjak\Auth\Console\Commands;
 use Illuminate\Console\Command;
 use Patrikjak\Auth\Models\RoleType;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Throwable;
 
 class SeedUserRoles extends Command
 {
@@ -39,12 +40,13 @@ class SeedUserRoles extends Command
         $this->info('User roles seeded successfully.');
     }
 
+    /**
+     * @throws Throwable
+     */
     private function ensureEnumExists(): void
     {
         if (!class_exists($this->rolesEnum)) {
-            $this->error('The enum class does not exist.');
-
-            exit(1);
+            $this->fail('The enum class does not exist.');
         }
     }
 
