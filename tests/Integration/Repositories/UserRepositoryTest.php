@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Repositories;
+namespace Patrikjak\Auth\Tests\Integration\Repositories;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Patrikjak\Auth\Models\User;
