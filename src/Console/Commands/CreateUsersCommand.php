@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\Console\Commands;
 
 use Illuminate\Config\Repository;
@@ -51,7 +53,7 @@ class CreateUsersCommand extends Command
         $this->info(
             sprintf(
                 'Available roles: %s',
-                $this->roles->map(fn (Role $role) => sprintf('%s => %s', $role->name, $role->id))
+                $this->roles->map(static fn (Role $role) => sprintf('%s => %s', $role->name, $role->id))
                     ->implode(' | ')
             ),
         );
