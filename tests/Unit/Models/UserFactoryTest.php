@@ -53,7 +53,7 @@ class UserFactoryTest extends TestCase
     {
         $this->expectException(AssertionError::class);
 
-        $this->assertEquals(new class {}, UserFactory::getUserModelClass());
+        $this->assertEquals((new class {})::class, UserFactory::getUserModelClass());
     }
 
     public function testGetCustomUserMode(): void
