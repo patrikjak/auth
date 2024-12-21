@@ -1,10 +1,10 @@
 {
     "errors": {
         "name": [
-            "The Name field is required"
+            "pjutils::validation.required"
         ],
         "email": [
-            "The Email field is required"
+            "pjutils::validation.required"
         ]
     }
 }

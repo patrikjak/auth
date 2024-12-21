@@ -1,0 +1,8 @@
+{
+    "message": "pjauth::validation.throttle",
+    "errors": {
+        "email": [
+            "pjauth::validation.throttle"
+        ]
+    }
+}

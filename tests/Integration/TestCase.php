@@ -7,8 +7,10 @@ namespace Patrikjak\Auth\Tests\Integration;
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
+use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Tests\Traits\ConfigSetter;
 use Patrikjak\Auth\Tests\Traits\TestingData;
+use Patrikjak\Utils\Common\Http\Middlewares\VerifyRecaptcha;
 use Patrikjak\Utils\UtilsServiceProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -19,6 +21,14 @@ abstract class TestCase extends OrchestraTestCase
     }
     use ConfigSetter;
     use TestingData;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->setLocale('test');
+        $this->app->setFallbackLocale('test');
+    }
 
     public function assertMatchesHtmlSnapshot(string $actual): void
     {
@@ -39,6 +49,11 @@ abstract class TestCase extends OrchestraTestCase
         $this->baseAssertMatchesHtmlSnapshot($actual);
     }
 
+    public function skipRecaptcha(): void
+    {
+        $this->withoutMiddleware(VerifyRecaptcha::class);
+    }
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param Application $app
@@ -55,5 +70,15 @@ abstract class TestCase extends OrchestraTestCase
     protected function defineDatabaseMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+    }
+
+    protected function createUser(): User
+    {
+        return User::factory()->create(
+            [
+                'email' => self::TESTER_EMAIL,
+                'password' => bcrypt(self::TESTER_PASSWORD),
+            ],
+        );
     }
 }

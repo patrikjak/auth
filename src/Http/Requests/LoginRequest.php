@@ -5,8 +5,9 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Http\Requests;
 
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException as LaravelValidationException;
 use Patrikjak\Utils\Common\Helpers\GrammaticalGender;
@@ -50,17 +51,20 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * @throws LaravelValidationException
+     * @throws LaravelValidationException|BindingResolutionException
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        $rateLimiter = app()->make(RateLimiter::class);
+        assert($rateLimiter instanceof RateLimiter);
+
+        if (!$rateLimiter->tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
         event(new Lockout($this));
 
-        $seconds = RateLimiter::availableIn($this->throttleKey());
+        $seconds = $rateLimiter->availableIn($this->throttleKey());
 
         throw LaravelValidationException::withMessages([
             'email' => __('pjauth::validation.throttle', [
@@ -71,7 +75,7 @@ class LoginRequest extends FormRequest
 
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->input('email')) . '|' . $this->ip());
+        return Str::transliterate(Str::lower($this->getEmail()) . '|' . $this->ip());
     }
 
     public function getEmail(): string

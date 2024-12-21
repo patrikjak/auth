@@ -1,5 +1,5 @@
 {
     "errors": {
-        "email": "The form did not pass the reCAPTCHA test"
+        "email": "pjutils::validation.recaptcha"
     }
 }
