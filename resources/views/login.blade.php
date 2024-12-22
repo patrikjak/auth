@@ -35,6 +35,13 @@
                                   :placeholder="__('pjauth::forms.placeholders.password')"
                                   autocomplete="new-password"
         />
+
+        <x-pjutils::form.wrapper>
+            <x-pjutils::form.checkbox name="remember"
+                                      :label="__('pjauth::forms.remember_me')"
+                                      :checked="true"
+            />
+        </x-pjutils::form.wrapper>
     </x-pjutils::form>
 
     @if(config('pjauth.social_login.google.enabled'))

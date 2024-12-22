@@ -7,6 +7,7 @@ return [
     'email' => 'E-mail',
     'password' => 'Heslo',
     'password_confirmation' => 'Potvrdenie hesla',
+    'remember_me' => 'Zapamätať si ma',
 
     'placeholders' => [
         'name' => 'napr. Peter',

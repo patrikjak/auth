@@ -7,6 +7,7 @@ return [
     'email' => 'Email',
     'password' => 'Password',
     'password_confirmation' => 'Password confirmation',
+    'remember_me' => 'Remember me',
 
     'placeholders' => [
         'name' => 'eg. John',
