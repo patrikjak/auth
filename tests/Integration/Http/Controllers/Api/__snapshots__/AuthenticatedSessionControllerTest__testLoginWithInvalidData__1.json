@@ -1,0 +1,8 @@
+{
+    "message": "pjauth::validation.credentials",
+    "errors": {
+        "password": [
+            "pjauth::validation.credentials"
+        ]
+    }
+}

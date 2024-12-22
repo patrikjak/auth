@@ -8,12 +8,23 @@
         <testsuite name="Integration">
             <directory suffix="Test.php">./tests/Integration</directory>
         </testsuite>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
     </testsuites>
+
     <source>
         <include>
             <directory suffix=".php">./src</directory>
         </include>
     </source>
+
+    <coverage includeUncoveredFiles="false">
+        <report>
+
+        </report>
+    </coverage>
+
     <php>
         <env name="APP_KEY" value="base64:OW9/RAX/ZrbdiOP5cl4KVs3qb453eXr9Z+MLQfbf8Pg=" />
         <env name="APP_ENV" value="testing" />

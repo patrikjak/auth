@@ -1,10 +1,10 @@
 {
     "errors": {
         "email": [
-            "The Email must be a valid email address."
+            "pjauth::validation.email"
         ],
         "password": [
-            "The password must contain at least one lowercase and one uppercase letter"
+            "pjutils::validation.password.mixed"
         ]
     }
 }

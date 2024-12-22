@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Console\Commands;
+namespace Patrikjak\Auth\Tests\Integration\Console\Commands;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 
-class CreateUsersCommandTests extends TestCase
+class CreateUsersCommandTest extends TestCase
 {
     use RefreshDatabase;
 

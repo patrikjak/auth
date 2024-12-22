@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Http\Controllers\Api;
+namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\Attributes\DefineEnvironment;

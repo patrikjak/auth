@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Repositories;
+namespace Patrikjak\Auth\Tests\Integration\Repositories;
 
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Patrikjak\Auth\Tests\Integration\TestCase;

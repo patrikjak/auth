@@ -17,7 +17,12 @@
         @endif
     </p>
 
-    <x-pjutils::form :action="'#'" :action-label="__('pjauth::pages.login.action')">
+    <x-pjutils::form
+        :action="route('api.login')"
+        :action-label="__('pjauth::pages.login.action')"
+        data-recaptcha-action="login"
+        :redirect="$redirectAfterLogin"
+    >
         <x-pjutils::form.email name="email"
                                :label="__('pjauth::forms.email')"
                                :placeholder="__('pjauth::forms.placeholders.email')"
@@ -30,6 +35,13 @@
                                   :placeholder="__('pjauth::forms.placeholders.password')"
                                   autocomplete="new-password"
         />
+
+        <x-pjutils::form.wrapper>
+            <x-pjutils::form.checkbox name="remember"
+                                      :label="__('pjauth::forms.remember_me')"
+                                      :checked="true"
+            />
+        </x-pjutils::form.wrapper>
     </x-pjutils::form>
 
     @if(config('pjauth.social_login.google.enabled'))

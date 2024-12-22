@@ -1,7 +1,7 @@
 {
     "errors": {
         "email": [
-            "The Email has already been taken"
+            "pjutils::validation.unique"
         ]
     }
 }
