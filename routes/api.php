@@ -26,3 +26,11 @@ Route::middleware(['web', 'guest'])
                 ->middleware($recaptchaEnabled ? VerifyRecaptcha::class : []);
         }
 });
+
+Route::middleware(['web', 'auth'])
+    ->prefix('api')
+    ->name('api.')
+    ->group(static function(): void {
+        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
+});
