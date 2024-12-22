@@ -72,6 +72,11 @@ return [
     'redirect_after_login' => env('REDIRECT_AFTER_LOGIN', '/dashboard'),
 
     /**
+     * Redirect to this path after logout
+     */
+    'redirect_after_logout' => env('REDIRECT_AFTER_LOGOUT', '/'),
+
+    /**
      * Default password for the user
      */
     'user_default_password' => env('USER_DEFAULT_PASSWORD', 'pass'),

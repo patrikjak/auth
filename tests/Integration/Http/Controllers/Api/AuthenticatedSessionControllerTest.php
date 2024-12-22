@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 
+use Illuminate\Config\Repository;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 
 class AuthenticatedSessionControllerTest extends TestCase
@@ -56,5 +57,17 @@ class AuthenticatedSessionControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $this->assertMatchesJsonSnapshot($response->getContent());
+    }
+
+    public function testLogout(): void
+    {
+        $configRepository = $this->app->make(Repository::class);
+        
+        $this->actingAs($this->createUser());
+
+        $response = $this->postJson(route('api.logout'));
+
+        $response->assertRedirect($configRepository->get('pjauth.redirect_after_logout'));
+        $this->assertGuest();
     }
 }
