@@ -15,4 +15,15 @@ final readonly class UserRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+    public function getByEmail(string $email): ?User
+    {
+        return User::where('email', $email)->first();
+    }
+
+    public function updateGoogleId(User $user, string $googleId): void
+    {
+        $user->google_id = $googleId;
+        $user->save();
+    }
 }

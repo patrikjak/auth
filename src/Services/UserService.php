@@ -34,4 +34,9 @@ final readonly class UserService
             throw new InvalidCredentialsException();
         }
     }
+
+    public function isEmailRegistered(string $email): bool
+    {
+        return $this->userRepository->getByEmail($email) !== null;
+    }
 }

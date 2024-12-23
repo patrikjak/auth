@@ -102,3 +102,22 @@ php artisan php artisan seed:user-roles --enum=Patrikjak\\Auth\\Models\\RoleType
 
 Enum is default `Patrikjak\Auth\Models\RoleType` enum class. You can create your own enum class and pass it as an argument.
 It must use `Patrikjak\Utils\Common\Traits\EnumValues` trait.
+
+## Socialite
+
+You need to add your socialite credentials to your `.env` file.
+
+```env
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+And add the following to your `config/services.php` file:
+
+```php
+'google' => [
+    'client_id' => env('GOOGLE_CLIENT_ID'),
+    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    'redirect' => sprintf('%s/auth/google/callback', env('APP_URL')),
+],
+```
