@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Tests\Unit\Models;
 
-use AssertionError;
 use Illuminate\Hashing\HashManager;
 use Illuminate\Http\Request;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
