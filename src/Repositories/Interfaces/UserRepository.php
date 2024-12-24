@@ -9,4 +9,8 @@ use Patrikjak\Auth\Models\User;
 interface UserRepository
 {
     public function createAndReturnUser(User $user): User;
+
+    public function getByEmail(string $email): ?User;
+
+    public function updateGoogleId(User $user, string $googleId): void;
 }

@@ -21,4 +21,9 @@ class UserFactory extends Factory
             'role_id' => Role::factory(),
         ];
     }
+
+    public function withGoogleId(string $googleId): Factory
+    {
+        return $this->state(static fn (array $attributes) => ['google_id' => $googleId]);
+    }
 }
