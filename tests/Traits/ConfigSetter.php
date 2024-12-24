@@ -55,4 +55,11 @@ trait ConfigSetter
 
         $application['config']->set('pjauth.models.user', $customUserModel::class);
     }
+
+    protected function withGoogleSocialiteConfig(Application $application): void
+    {
+        $application['config']->set('services.google.client_id', 'test_client_id');
+        $application['config']->set('services.google.client_secret', 'test_client_secret');
+        $application['config']->set('services.google.redirect', 'http://localhost');
+    }
 }

@@ -9,4 +9,5 @@ trait TestingData
     protected const string TESTER_NAME = 'Tester';
     protected const string TESTER_EMAIL = 'tester@example.com';
     protected const string TESTER_PASSWORD = 'password123';
+    protected const string GOOGLE_ID = '1235835839342';
 }

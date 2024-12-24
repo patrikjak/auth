@@ -7,6 +7,7 @@ namespace Patrikjak\Auth\Tests\Integration;
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
+use Patrikjak\Auth\Database\Factories\UserFactory;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Tests\Traits\ConfigSetter;
 use Patrikjak\Auth\Tests\Traits\TestingData;
@@ -72,13 +73,18 @@ abstract class TestCase extends OrchestraTestCase
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
     }
 
-    protected function createUser(): User
+    protected function createUser(?string $googleId = null): User
     {
-        return User::factory()->create(
-            [
-                'email' => self::TESTER_EMAIL,
-                'password' => bcrypt(self::TESTER_PASSWORD),
-            ],
-        );
+        $userFactory = User::factory();
+        assert($userFactory instanceof UserFactory);
+
+        if ($googleId !== null) {
+            $userFactory->withGoogleId($googleId);
+        }
+
+        return $userFactory->create([
+            'email' => self::TESTER_EMAIL,
+            'password' => bcrypt(self::TESTER_PASSWORD),
+        ]);
     }
 }
