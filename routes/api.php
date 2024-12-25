@@ -37,7 +37,7 @@ Route::middleware(['web', 'guest'])
                         ->name('email')
                         ->middleware($recaptchaEnabled ? VerifyRecaptcha::class : []);
 
-                    Route::post('/reset', [NewPasswordController::class, 'reset'])
+                    Route::patch('/reset', [NewPasswordController::class, 'reset'])
                         ->name('store')
                         ->middleware($recaptchaEnabled ? VerifyRecaptcha::class : []);
             });

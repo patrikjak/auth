@@ -16,6 +16,7 @@
         :action="route('api.password.store')"
         :action-label="__('pjauth::pages.password.reset.action')"
         data-recaptcha-action="reset"
+        method="PATCH"
     >
         <x-pjutils::form.hidden name="token" :value="$token" />
 

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Tests\Integration;
 
+use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
@@ -73,6 +74,17 @@ abstract class TestCase extends OrchestraTestCase
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Application $app
+     */
+    protected function defineEnvironment($app): void
+    {
+        tap($app['config'], static function (Repository $config): void {
+            $config->set('auth.providers.users.model', User::class);
+        });
+    }
+
     protected function createUser(?string $googleId = null): User
     {
         $userFactory = User::factory();
@@ -83,6 +95,7 @@ abstract class TestCase extends OrchestraTestCase
         }
 
         return $userFactory->create([
+            'name' => self::TESTER_NAME,
             'email' => self::TESTER_EMAIL,
             'password' => bcrypt(self::TESTER_PASSWORD),
         ]);
