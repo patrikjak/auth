@@ -12,12 +12,20 @@
 
     <p>@lang('pjauth::pages.password.reset.intro')</p>
 
-    <x-pjutils::form :action="'#'" :action-label="__('pjauth::pages.password.reset.action')">
+    <x-pjutils::form
+        :action="route('api.password.store')"
+        :action-label="__('pjauth::pages.password.reset.action')"
+        data-recaptcha-action="reset"
+        method="PATCH"
+    >
+        <x-pjutils::form.hidden name="token" :value="$token" />
+
         <x-pjutils::form.email name="email"
                                :label="__('pjauth::forms.email')"
                                :placeholder="__('pjauth::forms.placeholders.email')"
                                autocomplete="email"
                                :autofocus="true"
+                               :value="$email"
         />
 
         <x-pjutils::form.password name="password"

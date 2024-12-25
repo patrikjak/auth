@@ -31,6 +31,9 @@ class AuthServiceProvider extends ServiceProvider
         $this->publishMigrations();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/pjauth.php', 'pjauth');
@@ -54,6 +57,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/pjauth.php' => config_path('pjauth.php'),
+            __DIR__ . '/../config/auth.php' => config_path('auth.php'),
         ], 'config');
     }
 

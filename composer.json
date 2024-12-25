@@ -2,7 +2,7 @@
     "name": "patrikjak/auth",
     "description": "Simple auth package for laravel apps",
     "keywords": ["laravel", "auth"],
-    "version": "0.1.0",
+    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "patrikjak/utils": "^1.3.0",
+        "patrikjak/utils": "^1.4.0",
         "laravel/framework": "^11.31.0",
         "laravel/socialite": "^5.16"
     },

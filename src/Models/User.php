@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Patrikjak\Auth\Database\Factories\UserFactory;
+use Patrikjak\Auth\Notifications\ResetPassword;
+use SensitiveParameter;
 
 /**
  * @property string $id
@@ -24,6 +27,7 @@ class User extends Authenticatable
 {
     use HasUuids;
     use HasFactory;
+    use Notifiable;
 
     /**
      * @var string
@@ -67,6 +71,17 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * @param string $token
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
+    {
+        $url = sprintf('%s?email=%s', route('password.reset', ['token' => $token]), urlencode($this->email));
+
+        $this->notify(new ResetPassword($url));
     }
 
     protected static function newFactory(): Factory
