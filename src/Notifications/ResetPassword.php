@@ -31,15 +31,4 @@ class ResetPassword extends Notification
             ],
         )->subject(__('pjauth::notifications.reset_password.subject'));
     }
-
-    /**
-     * @return array<string, string>
-     */
-    public function toArray(): array
-    {
-        return [
-            'resetUrl' => $this->resetPasswordUrl,
-            'expireIn' => config('auth.passwords.users.expire'),
-        ];
-    }
 }
