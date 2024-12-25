@@ -12,7 +12,11 @@
 
     <p>@lang('pjauth::pages.password.forgot.intro')</p>
 
-    <x-pjutils::form :action="'#'" :action-label="__('pjauth::pages.password.forgot.action')">
+    <x-pjutils::form
+        :action="route('api.password.email')"
+        :action-label="__('pjauth::pages.password.forgot.action')"
+        data-recaptcha-action="forgot"
+    >
         <x-pjutils::form.email name="email"
                                :label="__('pjauth::forms.email')"
                                :placeholder="__('pjauth::forms.placeholders.email')"

@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Patrikjak\Auth\Database\Factories\UserFactory;
+use Patrikjak\Auth\Notifications\ResetPassword;
+use SensitiveParameter;
 
 /**
  * @property string $id
@@ -24,6 +27,7 @@ class User extends Authenticatable
 {
     use HasUuids;
     use HasFactory;
+    use Notifiable;
 
     /**
      * @var string
@@ -72,5 +76,12 @@ class User extends Authenticatable
     protected static function newFactory(): Factory
     {
         return UserFactory::new();
+    }
+
+    public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
+    {
+        $url = route('password.reset', ['token' => $token]);
+
+        $this->notify(new ResetPassword($url));
     }
 }
