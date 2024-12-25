@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,7 +11,7 @@ use Patrikjak\Utils\Common\Rules\Password;
 class ResetPasswordRequest extends FormRequest
 {
     /**
-     * @return array<string, string|Password>
+     * @return array<string, array<string|Password>>
      */
     public function rules(): array
     {

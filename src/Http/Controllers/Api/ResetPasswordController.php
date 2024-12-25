@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\Http\Controllers\Api;
 
 use Illuminate\Contracts\Auth\PasswordBroker;

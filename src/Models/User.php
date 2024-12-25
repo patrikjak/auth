@@ -73,15 +73,19 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    protected static function newFactory(): Factory
-    {
-        return UserFactory::new();
-    }
-
+    /**
+     * @param string $token
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
     public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
     {
         $url = sprintf('%s?email=%s', route('password.reset', ['token' => $token]), urlencode($this->email));
 
         $this->notify(new ResetPassword($url));
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return UserFactory::new();
     }
 }

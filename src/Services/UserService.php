@@ -40,6 +40,9 @@ final readonly class UserService
         }
     }
 
+    /**
+     * @param array<string> $credentials
+     */
     public function resetPasswordWithTokenValidation(array $credentials, string $newPassword): string
     {
         return $this->passwordBroker->reset($credentials, function (User $user) use ($newPassword): void {

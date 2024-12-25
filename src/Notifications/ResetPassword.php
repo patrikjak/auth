@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,14 +13,17 @@ class ResetPassword extends Notification
     {
     }
 
-    public function via($notifiable): array
+    /**
+     * @return array<string>
+     */
+    public function via(): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): MailMessage
+    public function toMail(): MailMessage
     {
-        return (new MailMessage)->view(
+        return (new MailMessage())->view(
             ['pjauth::notifications.html.password-reset', 'pjauth::notifications.text.password-reset'],
             [
                 'resetUrl' => $this->resetPasswordUrl,
@@ -27,7 +32,10 @@ class ResetPassword extends Notification
         )->subject(__('pjauth::notifications.reset_password.subject'));
     }
 
-    public function toArray($notifiable): array
+    /**
+     * @return array<string, string>
+     */
+    public function toArray(): array
     {
         return [
             'resetUrl' => $this->resetPasswordUrl,
