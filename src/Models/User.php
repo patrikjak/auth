@@ -80,7 +80,7 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
     {
-        $url = route('password.reset', ['token' => $token]);
+        $url = sprintf('%s?email=%s', route('password.reset', ['token' => $token]), urlencode($this->email));
 
         $this->notify(new ResetPassword($url));
     }

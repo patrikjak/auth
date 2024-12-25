@@ -13,4 +13,6 @@ interface UserRepository
     public function getByEmail(string $email): ?User;
 
     public function updateGoogleId(User $user, string $googleId): void;
+
+    public function resetPassword(User $user, string $newPassword): void;
 }

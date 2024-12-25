@@ -15,7 +15,7 @@
     <x-pjutils::form
         :action="route('api.password.email')"
         :action-label="__('pjauth::pages.password.forgot.action')"
-        data-recaptcha-action="forgot"
+        data-recaptcha-action="resetLink"
     >
         <x-pjutils::form.email name="email"
                                :label="__('pjauth::forms.email')"

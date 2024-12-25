@@ -8,6 +8,7 @@ return [
     'password' => 'Heslo',
     'password_confirmation' => 'Potvrdenie hesla',
     'remember_me' => 'Zapamätať si ma',
+    'token' => 'Token',
 
     'placeholders' => [
         'name' => 'napr. Peter',
