@@ -90,6 +90,13 @@ class User extends Authenticatable
         $this->notify(new ResetPassword($url));
     }
 
+    public function hasRole(RoleType $role): bool
+    {
+        $usersRoleId = $this->role->id;
+
+        return $usersRoleId === $role->value || $usersRoleId === RoleType::SUPERADMIN->value;
+    }
+
     protected static function newFactory(): Factory
     {
         return UserFactory::new();

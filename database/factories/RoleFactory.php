@@ -4,6 +4,7 @@ namespace Patrikjak\Auth\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Patrikjak\Auth\Models\Role;
+use Patrikjak\Auth\Models\RoleType;
 
 class RoleFactory extends Factory
 {
@@ -11,9 +12,12 @@ class RoleFactory extends Factory
 
     public function definition(): array
     {
+        $role = $this->faker->randomElement(RoleType::getAll());
+        assert($role instanceof RoleType);
+
         return [
-            'id' => $this->faker->unique()->randomNumber(),
-            'name' => $this->faker->randomKey(['SUPERADMIN', 'ADMIN', 'USER']),
+            'id' => $role->value,
+            'name' => $role->name,
         ];
     }
 }
