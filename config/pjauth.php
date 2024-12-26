@@ -50,13 +50,7 @@ return [
         'register' => true,
         'login' => true,
         'password_reset' => true,
-    ],
-
-    /**
-     * Models to use
-     */
-    'models' => [
-        'user' => env('AUTH_MODEL', \Patrikjak\Auth\Models\User::class),
+        'change_password' => true,
     ],
 
     /**

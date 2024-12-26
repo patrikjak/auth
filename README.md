@@ -121,3 +121,30 @@ And add the following to your `config/services.php` file:
     'redirect' => sprintf('%s/auth/google/callback', env('APP_URL')),
 ],
 ```
+
+## Change password
+
+If you want to change the password, you need to allow it in the `config/pjauth.php` file.
+
+```php
+'features' => [
+    'change_password' => true,
+],
+```
+
+After that, you can use the following route:
+
+```php
+route('api.change-password');
+```
+
+By default, it validates old password. If you want to turn off old password validation, you need to send it in the request.
+
+```php
+{
+    "old_password": "old_password",
+    "password": "new_password",
+    "password_confirmation": "new_password",
+    "validate_old_password": false
+}
+```

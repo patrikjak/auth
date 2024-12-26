@@ -10,9 +10,11 @@ interface UserRepository
 {
     public function createAndReturnUser(User $user): User;
 
+    public function getById(string $id): User;
+
     public function getByEmail(string $email): ?User;
 
     public function updateGoogleId(User $user, string $googleId): void;
 
-    public function resetPassword(User $user, string $newPassword): void;
+    public function updatePassword(User $user, string $newPassword): void;
 }

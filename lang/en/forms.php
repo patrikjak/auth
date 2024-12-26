@@ -9,6 +9,7 @@ return [
     'password_confirmation' => 'Password confirmation',
     'remember_me' => 'Remember me',
     'token' => 'Token',
+    'current_password' => 'Current password',
 
     'placeholders' => [
         'name' => 'eg. John',

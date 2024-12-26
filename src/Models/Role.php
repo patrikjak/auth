@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Patrikjak\Auth\Database\Factories\RoleFactory;
 
 /**
  * @property int $id
  * @property string $name
+ * @property Collection<User> $users
  */
 class Role extends Model
 {
@@ -33,7 +35,7 @@ class Role extends Model
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class)->chaperone();
+        return $this->hasMany(User::class);
     }
 
     protected static function newFactory(): Factory

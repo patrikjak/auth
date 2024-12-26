@@ -4,12 +4,8 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Tests\Unit;
 
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Patrikjak\Auth\Tests\Traits\ConfigSetter;
-use Patrikjak\Auth\Tests\Traits\TestingData;
+use Patrikjak\Auth\Tests\TestCase as BaseTestCase;
 
-class TestCase extends OrchestraTestCase
+abstract class TestCase extends BaseTestCase
 {
-    use TestingData;
-    use ConfigSetter;
 }

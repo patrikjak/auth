@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,9 @@ use SensitiveParameter;
  * @property string $password
  * @property string $remember_token
  * @property int $role_id
+ * @property CarbonInterface $created_at
+ * @property CarbonInterface $updated_at
+ * @property Role $role
  */
 class User extends Authenticatable
 {
@@ -58,6 +62,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'password' => 'hashed',
+        'created_at' => 'immutable_datetime',
+        'updated_at' => 'immutable_datetime',
     ];
 
     /**

@@ -7,5 +7,7 @@ return [
     'user' => 'User with this email address was not found',
     'token' => 'Invalid token',
     'throttled' => 'Too many attempts. Please try again in :seconds seconds',
+    'changed' => 'Password has been changed',
+    'current' => 'The provided password does not match your current password',
 
 ];

@@ -7,5 +7,7 @@ return [
     'user' => 'Nemôžeme nájsť používateľa s touto e-mailovou adresou',
     'token' => 'Token pre obnovu hesla je neplatný',
     'throttled' => 'Príliš veľa pokusov. Skúste to znova o :seconds sekúnd',
+    'changed' => 'Heslo bolo zmenené',
+    'current' => 'Zadané heslo sa nezhoduje s vaším aktuálnym heslom',
 
 ];

@@ -9,6 +9,7 @@ return [
     'password_confirmation' => 'Potvrdenie hesla',
     'remember_me' => 'Zapamätať si ma',
     'token' => 'Token',
+    'current_password' => 'Súčasné heslo',
 
     'placeholders' => [
         'name' => 'napr. Peter',

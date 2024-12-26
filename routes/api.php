@@ -48,6 +48,14 @@ Route::middleware(['web', 'auth'])
     ->prefix('api')
     ->name('api.')
     ->group(static function(): void {
+
+        $changePasswordEnabled = config('pjauth.features.change_password');
+
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
+
+        if ($changePasswordEnabled) {
+            Route::patch('/change-password', [NewPasswordController::class, 'change'])
+                ->name('change-password');
+        }
 });
