@@ -7,8 +7,10 @@ namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Hashing\HashManager;
+use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class NewPasswordControllerTest extends TestCase
 {
@@ -100,6 +102,21 @@ class NewPasswordControllerTest extends TestCase
             ->first('password');
 
         $this->assertTrue($this->hashManager->check($newPassword, $user->password));
+    }
+
+    #[DefineEnvironment('disableChangePasswordFeature')]
+    public function testPasswordWithDisabledFeature(): void
+    {
+        $user = $this->createUser();
+        $this->actingAs($user);
+        
+        $this->expectException(RouteNotFoundException::class);
+
+        $this->patch(route('api.change-password'), [
+            'password' => 'New-password123',
+            'password_confirmation' => 'New-password123',
+            'current_password' => self::TESTER_PASSWORD,
+        ]);
     }
 
     /**

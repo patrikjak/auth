@@ -49,6 +49,11 @@ trait ConfigSetter
         $application['config']->set('pjauth.features.password_reset', false);
     }
 
+    protected function disableChangePasswordFeature(Application $application): void
+    {
+        $application['config']->set('pjauth.features.change_password', false);
+    }
+
     protected function useCustomUserModel(Application $application): void
     {
         $customUserModel = new class extends User {};
