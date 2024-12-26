@@ -21,6 +21,11 @@ final readonly class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
+    public function getById(string $id): User
+    {
+        return User::findOrFail($id);
+    }
+
     public function getByEmail(string $email): ?User
     {
         return User::where('email', $email)->first();
