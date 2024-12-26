@@ -58,7 +58,7 @@ trait ConfigSetter
     {
         $customUserModel = new class extends User {};
 
-        $application['config']->set('pjauth.models.user', $customUserModel::class);
+        $application['config']->set('auth.providers.users.model', $customUserModel::class);
     }
 
     protected function withGoogleSocialiteConfig(Application $application): void

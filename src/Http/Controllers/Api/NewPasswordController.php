@@ -8,8 +8,6 @@ use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Http\JsonResponse;
 use Patrikjak\Auth\Http\Requests\ChangePasswordRequest;
 use Patrikjak\Auth\Http\Requests\ResetPasswordRequest;
-use Patrikjak\Auth\Models\UserFactory;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 use Patrikjak\Auth\Services\UserService;
 
 class NewPasswordController

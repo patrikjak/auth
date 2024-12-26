@@ -6,6 +6,7 @@ namespace Patrikjak\Auth\Repositories;
 
 use Illuminate\Hashing\HashManager;
 use Patrikjak\Auth\Models\User;
+use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
 
 final readonly class UserRepository implements UserRepositoryInterface
@@ -23,12 +24,16 @@ final readonly class UserRepository implements UserRepositoryInterface
 
     public function getById(string $id): User
     {
-        return User::with('role')->findOrFail($id);
+        $userModel = UserFactory::getUserModelClass();
+
+        return $userModel::with('role')->findOrFail($id);
     }
 
     public function getByEmail(string $email): ?User
     {
-        return User::with('role')->where('email', $email)->first();
+        $userModel = UserFactory::getUserModelClass();
+
+        return $userModel::with('role')->where('email', $email)->first();
     }
 
     public function updateGoogleId(User $user, string $googleId): void

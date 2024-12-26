@@ -6,12 +6,14 @@ namespace Patrikjak\Auth\Tests\Traits;
 
 use Patrikjak\Auth\Database\Factories\UserFactory;
 use Patrikjak\Auth\Models\User;
+use Patrikjak\Auth\Models\UserFactory as UserModelFactory;
 
 trait UserCreator
 {
     protected function createUser(?string $googleId = null): User
     {
-        $userFactory = User::factory();
+        $userModel = UserModelFactory::getUserModelClass();
+        $userFactory = $userModel::factory();
         assert($userFactory instanceof UserFactory);
 
         if ($googleId !== null) {

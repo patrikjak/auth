@@ -30,7 +30,7 @@ class UserFactory
 
     public static function getUserModelClass(): string
     {
-        $userModel = config('pjauth.models.user') ?? User::class;
+        $userModel = config('auth.providers.users.model') ?? User::class;
         assert($userModel === User::class || is_subclass_of($userModel, User::class));
 
         return $userModel;

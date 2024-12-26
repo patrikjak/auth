@@ -54,13 +54,6 @@ return [
     ],
 
     /**
-     * Models to use
-     */
-    'models' => [
-        'user' => env('AUTH_MODEL', \Patrikjak\Auth\Models\User::class),
-    ],
-
-    /**
      * Repositories implementation to use
      */
     'repositories' => [

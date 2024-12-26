@@ -42,7 +42,7 @@ class UserFactoryTest extends TestCase
     #[DefineEnvironment('useCustomUserModel')]
     public function testGetCustomUserModelClass(): void
     {
-        $userModel = config('pjauth.models.user');
+        $userModel = config('auth.providers.users.model');
 
         $this->assertEquals($userModel, UserFactory::getUserModelClass());
     }
