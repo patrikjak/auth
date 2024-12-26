@@ -46,7 +46,7 @@ final readonly class UserService
     public function resetPasswordWithTokenValidation(array $credentials, string $newPassword): string
     {
         return $this->passwordBroker->reset($credentials, function (User $user) use ($newPassword): void {
-            $this->userRepository->resetPassword($user, $newPassword);
+            $this->userRepository->updatePassword($user, $newPassword);
             event(new PasswordReset($user));
         });
     }

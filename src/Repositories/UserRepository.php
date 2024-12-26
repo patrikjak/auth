@@ -23,12 +23,12 @@ final readonly class UserRepository implements UserRepositoryInterface
 
     public function getById(string $id): User
     {
-        return User::findOrFail($id);
+        return User::with('role')->findOrFail($id);
     }
 
     public function getByEmail(string $email): ?User
     {
-        return User::where('email', $email)->first();
+        return User::with('role')->where('email', $email)->first();
     }
 
     public function updateGoogleId(User $user, string $googleId): void
@@ -37,7 +37,7 @@ final readonly class UserRepository implements UserRepositoryInterface
         $user->save();
     }
 
-    public function resetPassword(User $user, string $newPassword): void
+    public function updatePassword(User $user, string $newPassword): void
     {
         $user->forceFill([
             'password' => $this->hashManager->make($newPassword),
