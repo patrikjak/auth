@@ -83,6 +83,20 @@ In routes, we use default laravel middleware group `web` and `guest` middleware.
 Route::middleware(['web', 'guest']);
 ```
 
+### Middlewares
+
+There is prepared middleware for checking user roles. You can use it in your routes.
+
+```php
+use Patrikjak\Auth\Http\Middlewares\VerifyRole;
+use Patrikjak\Auth\Models\RoleType;
+
+Route::middleware(['web', 'auth', sprintf('%s:%s', VerifyRole::class, RoleType::ADMIN->value)]);
+```
+
+It will check role of the user and if it is not the same as the role in the middleware, it will return 403 status code.
+**Super admin has all roles.**
+
 ## Migrations
 
 You should publish the migrations:
