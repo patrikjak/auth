@@ -50,6 +50,7 @@ return [
         'register' => true,
         'login' => true,
         'password_reset' => true,
+        'change_password' => true,
     ],
 
     /**

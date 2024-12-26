@@ -50,4 +50,11 @@ final readonly class UserService
             event(new PasswordReset($user));
         });
     }
+
+    public function changePasswordForUser(string $userId, string $newPassword): void
+    {
+        $user = $this->userRepository->getById($userId);
+
+        $this->userRepository->updatePassword($user, $newPassword);
+    }
 }
