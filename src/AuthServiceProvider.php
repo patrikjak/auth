@@ -45,11 +45,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../public' => public_path('vendor/pjauth'),
-        ], 'assets');
+        ], 'pjauth-assets');
 
         $this->publishes(
             [__DIR__ . '/../resources/images' => public_path('vendor/pjauth/assets/images')],
-            ['assets', 'images'],
+            ['pjauth-assets', 'pjauth-images'],
         );
     }
 
@@ -58,21 +58,21 @@ class AuthServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/pjauth.php' => config_path('pjauth.php'),
             __DIR__ . '/../config/auth.php' => config_path('auth.php'),
-        ], 'config');
+        ], 'pjauth-config');
     }
 
     private function publishViews(): void
     {
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/pjauth'),
-        ], 'views');
+        ], 'pjauth-views');
     }
 
     private function publishMigrations(): void
     {
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations'),
-        ], 'migrations');
+        ], 'pjauth-migrations');
     }
 
     private function registerComponents(): void
