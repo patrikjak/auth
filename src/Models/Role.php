@@ -22,11 +22,13 @@ class Role extends Model
 
     /**
      * @var bool
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     public $timestamps = false;
 
     /**
      * @var list<string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $fillable = [
         'id',

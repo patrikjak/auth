@@ -6,6 +6,7 @@ namespace Patrikjak\Auth\Console\Commands;
 
 use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
 use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Models\User;
@@ -17,11 +18,13 @@ class CreateUsersCommand extends Command
 {
     /**
      * @var string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $signature = 'create:users';
 
     /**
      * @var string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $description = 'Create users';
 
@@ -69,6 +72,9 @@ class CreateUsersCommand extends Command
         return $userModel;
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     private function setUp(): void
     {
         $userRepository = app()->make(UserRepository::class);
