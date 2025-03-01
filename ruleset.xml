@@ -3,7 +3,7 @@
 
     <config name="show_progress" value="1"/>
     <config name="tab_width" value="4"/>
-    <config name="php_version" value="8.2.7"/>
+    <config name="php_version" value="8.4"/>
     <config name="installed_paths" value="vendor/slevomat/coding-standard"/>
 
     <arg name="colors"/>
@@ -75,6 +75,7 @@
 
     <!-- TYPE HINTS -->
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.DNFTypeHintFormat"/>
     <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"/>
@@ -82,7 +83,6 @@
     <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat"/>
     <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint"/>
 
     <!-- TYPE HINTS -->

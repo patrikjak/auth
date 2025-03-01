@@ -2,7 +2,7 @@
     "name": "patrikjak/auth",
     "description": "Simple auth package for laravel apps",
     "keywords": ["laravel", "auth"],
-    "version": "1.0.1",
+    "version": "1.1.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
@@ -19,15 +19,15 @@
         }
     ],
     "require": {
-        "php": "^8.3",
-        "patrikjak/utils": "^1.4.4",
-        "laravel/framework": "^11.31.0",
+        "php": "^8.4",
+        "patrikjak/utils": "^2.2",
+        "laravel/framework": "^12.0",
         "laravel/socialite": "^5.16"
     },
     "require-dev": {
-        "orchestra/testbench": "^9.6",
-        "phpstan/phpstan": "^2.0.0",
-        "phpunit/phpunit": "^10.5",
+        "orchestra/testbench": "^10.0.0",
+        "phpstan/phpstan": "^2.1.0",
+        "phpunit/phpunit": "^11.0",
         "slevomat/coding-standard": "~8.0",
         "spatie/phpunit-snapshot-assertions": "^5.1",
         "larastan/larastan": "^3.0"

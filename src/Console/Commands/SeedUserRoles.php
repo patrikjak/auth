@@ -14,11 +14,13 @@ class SeedUserRoles extends Command
 {
     /**
      * @var string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $signature = 'seed:user-roles {--enum=}';
 
     /**
      * @var string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $description = 'Seed user roles from the Role model';
 

@@ -35,11 +35,13 @@ class User extends Authenticatable
 
     /**
      * @var string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $table = 'users';
 
     /**
      * @var list<string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $fillable = [
         'google_id',
@@ -51,6 +53,7 @@ class User extends Authenticatable
 
     /**
      * @var list<string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $hidden = [
         'password',
@@ -59,6 +62,7 @@ class User extends Authenticatable
 
     /**
      * @var array<string, string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $casts = [
         'password' => 'hashed',
@@ -68,6 +72,7 @@ class User extends Authenticatable
 
     /**
      * @var array<string, mixed>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $attributes = [
         'role_id' => RoleType::USER->value,

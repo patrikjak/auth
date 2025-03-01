@@ -2,7 +2,7 @@ name: "auth"
 
 services:
   cli:
-    image: "patrikjak/php83-cli"
+    image: "patrikjak/php84-cli"
     container_name: "auth-cli"
     environment:
       XDEBUG_MODE: develop,debug,coverage
