@@ -7,9 +7,9 @@ namespace Patrikjak\Auth\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ResetPassword extends Notification
+class RegisterInviteNotification extends Notification
 {
-    public function __construct(private readonly string $resetPasswordUrl)
+    public function __construct(private readonly string $registerUrl)
     {
     }
 
@@ -24,11 +24,13 @@ class ResetPassword extends Notification
     public function toMail(): MailMessage
     {
         return new MailMessage()->view(
-            ['pjauth::notifications.html.password-reset', 'pjauth::notifications.text.password-reset'],
             [
-                'resetUrl' => $this->resetPasswordUrl,
-                'expireIn' => config('auth.passwords.users.expire'),
+                'pjauth::notifications.html.register-invite',
+                'pjauth::notifications.text.register-invite',
             ],
-        )->subject(__('pjauth::notifications.reset_password.subject'));
+            [
+                'registerUrl' => $this->registerUrl,
+            ],
+        )->subject(__('pjauth::notifications.register_invite.subject'));
     }
 }

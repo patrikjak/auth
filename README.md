@@ -17,9 +17,11 @@ After installing the package, add the package provider to the providers array in
 
 ```php
 use Patrikjak\Auth\AuthServiceProvider;
+use Patrikjak\Utils\UtilsServiceProvider;
  
 return [
     ...
+    UtilsServiceProvider::class,
     AuthServiceProvider::class,
 ];
 ```
@@ -29,19 +31,19 @@ You need to have installed and configured `patrikjak/utils` package.
 After that you need to publish the package assets (if you configured `patrikjak/utils` package, you don't need to publish assets again):
 
 ```bash
-php artisan vendor:publish --tag="assets" --force
+php artisan vendor:publish --tag="pjauth-assets" --force
 ```
 
 You should publish the config file:
 
 ```bash
-php artisan vendor:publish --tag="config" --force
+php artisan vendor:publish --tag="pjauth-config" --force
 ```
 
 or if you want to publish views:
 
 ```bash
-php artisan vendor:publish --tag="views" --force
+php artisan vendor:publish --tag="pjauth-views" --force
 ```
 
 If you don't publish config file, you will miss all features of this package. I recommend add this script to your `composer.json` file:
@@ -49,7 +51,7 @@ If you don't publish config file, you will miss all features of this package. I 
 ```json
 "scripts": {
     "post-update-cmd": [
-        "@php artisan vendor:publish --tag=config --force",
+        "@php artisan vendor:publish --tag=pjauth-config --force",
     ]
 }
 ```
@@ -102,7 +104,7 @@ It will check role of the user and if it is not the same as the role in the midd
 You should publish the migrations:
 
 ```bash
-php artisan vendor:publish --tag="migrations"
+php artisan vendor:publish --tag="pjauth-migrations"
 ```
 
 ## Roles

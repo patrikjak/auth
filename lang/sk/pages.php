@@ -27,6 +27,7 @@ return [
         'no_account' => 'Nemáte účet?',
         'register' => 'Registrovať sa',
         'or_use_social' => 'alebo prihláste sa pomocou',
+        'forgot_password' => 'Zabudli ste heslo?',
     ],
 
     'password' => [

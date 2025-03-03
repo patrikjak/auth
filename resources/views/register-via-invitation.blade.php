@@ -18,6 +18,8 @@
         data-recaptcha-action="register"
         :redirect="$redirectAfterRegister"
     >
+        <x-pjutils::form.hidden name="token" :value="$token" />
+
         <x-pjutils::form.input
             name="name"
             :label="__('pjauth::forms.name')"
@@ -31,6 +33,8 @@
             :label="__('pjauth::forms.email')"
             :placeholder="__('pjauth::forms.placeholders.email')"
             autocomplete="email"
+            readonly
+            :value="$email"
         />
 
         <x-pjutils::form.password

@@ -13,7 +13,7 @@
     <p>
         @lang('pjauth::pages.login.intro')
         @if(config('pjauth.features.password_reset'))
-            <a class="forgotten-password" href="{{ route('password.request') }}">Zabudli ste heslo?</a>
+            <a class="forgotten-password" href="{{ route('password.request') }}">@lang('pjauth::pages.login.forgot_password')</a>
         @endif
     </p>
 

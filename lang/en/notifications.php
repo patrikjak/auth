@@ -14,4 +14,13 @@ return [
         ],
     ],
 
+    'register_invite' => [
+        'subject' => 'Register invitation',
+        'title' => 'Register invitation',
+        'text' => [
+            'intro' => 'You are receiving this email because you have been invited to register.',
+            'action' => 'Register',
+        ],
+    ],
+
 ];

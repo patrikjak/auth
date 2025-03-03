@@ -34,6 +34,9 @@ class CreateUsersCommand extends Command
 
     private UserRepository $userRepository;
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function handle(): void
     {
         $this->setUp();

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Patrikjak\Auth\Console\Commands\CreateUsersCommand;
 use Patrikjak\Auth\Console\Commands\SeedUserRoles;
+use Patrikjak\Auth\Console\Commands\SendRegisterInviteCommand;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository as RoleRepositoryInterface;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
 use Patrikjak\Auth\Repositories\RoleRepository;
@@ -101,6 +102,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->commands([
             SeedUserRoles::class,
             CreateUsersCommand::class,
+            SendRegisterInviteCommand::class,
         ]);
     }
 

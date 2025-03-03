@@ -51,6 +51,7 @@ return [
         'login' => true,
         'password_reset' => true,
         'change_password' => true,
+        'register_via_invitation' => false,
     ],
 
     /**
