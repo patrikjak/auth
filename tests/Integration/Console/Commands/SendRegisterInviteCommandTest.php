@@ -22,13 +22,21 @@ class SendRegisterInviteCommandTest extends TestCase
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testCommand(): void
     {
-        Notification::fake();
-
         $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL])
             ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL), 'yes')
             ->expectsOutput('Register invite sent to ' . self::TESTER_EMAIL);
 
         $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL]);
+    }
+
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testCommandNotificationIsSent(): void
+    {
+        Notification::fake();
+
+        $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL])
+            ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL), 'yes')
+            ->expectsOutput('Register invite sent to ' . self::TESTER_EMAIL);
 
         Notification::assertCount(1);
         Notification::assertSentTo(
@@ -40,5 +48,18 @@ class SendRegisterInviteCommandTest extends TestCase
                 $notifiable,
             ) => $notifiable->routes['mail'] === self::TESTER_EMAIL,
         );
+    }
+
+    public function testCommandWithNotConfirmedEmail(): void
+    {
+        Notification::fake();
+        
+        $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL])
+            ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL))
+            ->expectsOutput('Register invite not sent');
+        
+        $this->assertDatabaseMissing('register_invites', ['email' => self::TESTER_EMAIL]);
+        
+        Notification::assertCount(0);
     }
 }
