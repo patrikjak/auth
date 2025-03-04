@@ -45,12 +45,4 @@
         />
     </x-pjutils::form>
 
-    @if(config('pjauth.social_login.google.enabled'))
-        <p class="center" id="or">@lang('pjauth::pages.register.or_use_social')</p>
-
-        <div class="socials">
-            <x-pjauth::google-login-button />
-        </div>
-    @endif
-
 </x-pjauth::layouts.app>

@@ -23,28 +23,31 @@
         data-recaptcha-action="login"
         :redirect="$redirectAfterLogin"
     >
-        <x-pjutils::form.email name="email"
-                               :label="__('pjauth::forms.email')"
-                               :placeholder="__('pjauth::forms.placeholders.email')"
-                               autocomplete="email"
-                               :autofocus="true"
+        <x-pjutils::form.email
+            name="email"
+            :label="__('pjauth::forms.email')"
+            :placeholder="__('pjauth::forms.placeholders.email')"
+            autocomplete="email"
+            :autofocus="true"
         />
 
-        <x-pjutils::form.password name="password"
-                                  :label="__('pjauth::forms.password')"
-                                  :placeholder="__('pjauth::forms.placeholders.password')"
-                                  autocomplete="new-password"
+        <x-pjutils::form.password
+            name="password"
+            :label="__('pjauth::forms.password')"
+            :placeholder="__('pjauth::forms.placeholders.password')"
+            autocomplete="new-password"
         />
 
         <x-pjutils::form.wrapper>
-            <x-pjutils::form.checkbox name="remember"
-                                      :label="__('pjauth::forms.remember_me')"
-                                      :checked="true"
+            <x-pjutils::form.checkbox
+                name="remember"
+                :label="__('pjauth::forms.remember_me')"
+                :checked="true"
             />
         </x-pjutils::form.wrapper>
     </x-pjutils::form>
 
-    @if(config('pjauth.social_login.google.enabled'))
+    @if(config('pjauth.social_login.google.enabled') && !config('pjauth.features.register_via_invitation'))
         <p class="center" id="or">@lang('pjauth::pages.login.or_use_social')</p>
 
         <div class="socials">
