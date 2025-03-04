@@ -2,23 +2,24 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
+namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api\RegisterController;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 use Patrikjak\Utils\Common\Http\Middlewares\VerifyRecaptcha;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
-class RegisterControllerTest extends TestCase
+class StoreTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
      * @param array<string, string> $data
-     * @dataProvider dataProvider
      */
+    #[DataProvider('dataProvider')]
     public function testRegister(array $data, int $status): void
     {
         $this->withoutMiddleware(VerifyRecaptcha::class);

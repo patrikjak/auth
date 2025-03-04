@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Auth\Tests\Integration\Http\Controllers;
+namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\RegisterController;
 
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
-class RegisterControllerTest extends TestCase
+class IndexTest extends TestCase
 {
     public function testIndexCanBeRendered(): void
     {

@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Tests;
 
 use Illuminate\Config\Repository;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
@@ -24,6 +26,8 @@ abstract class TestCase extends OrchestraTestCase
     use ConfigSetter;
     use TestingData;
     use UserCreator;
+
+    protected DatabaseManager $databaseManager;
 
     public function assertMatchesHtmlSnapshot(string $actual): void
     {
@@ -49,12 +53,17 @@ abstract class TestCase extends OrchestraTestCase
         $this->withoutMiddleware(VerifyRecaptcha::class);
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->app->setLocale('test');
         $this->app->setFallbackLocale('test');
+
+        $this->databaseManager = $this->app->make(DatabaseManager::class);
     }
 
     /**

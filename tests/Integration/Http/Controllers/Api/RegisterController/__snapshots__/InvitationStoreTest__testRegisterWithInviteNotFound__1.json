@@ -1,0 +1,7 @@
+{
+    "errors": {
+        "email": [
+            "pjauth::validation.invalid_invite_email"
+        ]
+    }
+}

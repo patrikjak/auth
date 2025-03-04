@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Hashing\HashManager;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Tests\Integration\TestCase;
@@ -15,8 +14,6 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 class NewPasswordControllerTest extends TestCase
 {
     private HashManager $hashManager;
-
-    private DatabaseManager $databaseManager;
 
     /**
      * @param array<string, string> $data
@@ -166,6 +163,5 @@ class NewPasswordControllerTest extends TestCase
         parent::setUp();
 
         $this->hashManager = $this->app->make(HashManager::class);
-        $this->databaseManager = $this->app->make(DatabaseManager::class);
     }
 }

@@ -39,6 +39,16 @@ trait ConfigSetter
         $app['config']->set('pjauth.features.register', false);
     }
 
+    protected function disableRegisterViaInvitationFeature(Application $app): void
+    {
+        $app['config']->set('pjauth.features.register_via_invitation', false);
+    }
+
+    protected function enableRegisterViaInvitationFeature(Application $app): void
+    {
+        $app['config']->set('pjauth.features.register_via_invitation', true);
+    }
+
     protected function disableLoginFeature(Application $app): void
     {
         $app['config']->set('pjauth.features.login', false);
