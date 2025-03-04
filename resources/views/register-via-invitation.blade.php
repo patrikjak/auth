@@ -13,12 +13,12 @@
     <p>@lang('pjauth::pages.register.intro')</p>
 
     <x-pjutils::form
-        :action="route('api.register')"
+        :action="route('api.register.invitation')"
         :action-label="__('pjauth::pages.register.action')"
         data-recaptcha-action="register"
         :redirect="$redirectAfterRegister"
     >
-        <x-pjutils::form.hidden name="token" :value="$token" />
+        <x-pjutils::form.input type="hidden" name="token" :value="$token" />
 
         <x-pjutils::form.input
             name="name"

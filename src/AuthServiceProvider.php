@@ -6,20 +6,27 @@ namespace Patrikjak\Auth;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Patrikjak\Auth\Console\Commands\CreateUsersCommand;
 use Patrikjak\Auth\Console\Commands\SeedUserRoles;
 use Patrikjak\Auth\Console\Commands\SendRegisterInviteCommand;
+use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
+use Patrikjak\Auth\Listeners\DeleteRegisterInviteListener;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository as RoleRepositoryInterface;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
 use Patrikjak\Auth\Repositories\RoleRepository;
 
 class AuthServiceProvider extends ServiceProvider
 {
+    /**
+     * @throws BindingResolutionException
+     */
     public function boot(): void
     {
         $this->registerComponents();
+        $this->registerEvents();
 
         $this->loadRoutes();
         $this->loadTranslations();
@@ -115,5 +122,15 @@ class AuthServiceProvider extends ServiceProvider
         
         $this->app->bind(UserRepositoryInterface::class, $config->get('pjauth.repositories.user'));
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    private function registerEvents(): void
+    {
+        $dispatcher = $this->app->make(Dispatcher::class);
+
+        $dispatcher->listen(RegisteredViaInviteEvent::class, DeleteRegisterInviteListener::class);
     }
 }

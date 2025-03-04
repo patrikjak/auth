@@ -113,7 +113,7 @@ php artisan vendor:publish --tag="pjauth-migrations"
 You can insert default roles by running the following command:
 
 ```bash
-php artisan php artisan seed:user-roles --enum=Patrikjak\\Auth\\Models\\RoleType
+php artisan seed:user-roles --enum=Patrikjak\\Auth\\Models\\RoleType
 ```
 
 Enum is default `Patrikjak\Auth\Models\RoleType` enum class. You can create your own enum class and pass it as an argument.

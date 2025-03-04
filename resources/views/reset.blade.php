@@ -18,7 +18,7 @@
         data-recaptcha-action="reset"
         method="PATCH"
     >
-        <x-pjutils::form.hidden name="token" :value="$token" />
+        <x-pjutils::form.input type="hidden" name="token" :value="$token" />
 
         <x-pjutils::form.email name="email"
                                :label="__('pjauth::forms.email')"

@@ -4,13 +4,8 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Console\Commands;
 
-use Carbon\CarbonImmutable;
-use Illuminate\Config\Repository as Config;
 use Illuminate\Console\Command;
-use Illuminate\Database\DatabaseManager;
-use Illuminate\Notifications\AnonymousNotifiable;
-use Illuminate\Support\Str;
-use Patrikjak\Auth\Notifications\RegisterInviteNotification;
+use Patrikjak\Auth\Services\UserService;
 
 class SendRegisterInviteCommand extends Command
 {
@@ -26,11 +21,8 @@ class SendRegisterInviteCommand extends Command
      */
     protected $description = 'Send register invite to email';
 
-    public function __construct(
-        private readonly AnonymousNotifiable $anonymousNotifiable,
-        private readonly Config $config,
-        private readonly DatabaseManager $databaseManager,
-    ) {
+    public function __construct(private readonly UserService $userService)
+    {
         parent::__construct();
     }
 
@@ -46,20 +38,7 @@ class SendRegisterInviteCommand extends Command
             return;
         }
 
-        $token = hash_hmac('sha256', Str::random(40), $this->config->get('app.key'));
-
-        $this->databaseManager->table('register_invites')
-            ->insert([
-                'email' => $email,
-                'token' => $token,
-                'created_at' => CarbonImmutable::now(),
-            ]);
-
-        $this->anonymousNotifiable
-            ->route('mail', $email)
-            ->notify(new RegisterInviteNotification(
-                sprintf('%s?email=%s', route('register.invitation', ['token' => $token]), $email),
-            ));
+        $this->userService->sendRegisterInvite($email);
 
         $this->info('Register invite sent to ' . $email);
     }

@@ -20,7 +20,9 @@
         <link rel="icon" type="{{ $iconType }}" href="{{ asset($icon) }}">
     @endisset
 </head>
-<body>
+<body
+    @if($enabledRecaptcha) data-recaptcha-site-key="{{ $recaptchaSiteKey }}" @endif
+>
 
     <div class="navigation">
         <div class="logo">
