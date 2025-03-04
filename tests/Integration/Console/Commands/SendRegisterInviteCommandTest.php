@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\Tests\Integration\Console\Commands;
 
 use Exception;
@@ -32,8 +34,7 @@ class SendRegisterInviteCommandTest extends TestCase
         Notification::assertSentTo(
             new AnonymousNotifiable(),
             RegisterInviteNotification::class,
-            static fn (RegisterInviteNotification $notification, $channels, $notifiable)
-                => $notifiable->routes['mail'] === self::TESTER_EMAIL,
+            static fn (RegisterInviteNotification $notification, $channels, $notifiable) => $notifiable->routes['mail'] === self::TESTER_EMAIL,
         );
     }
 }
