@@ -8,6 +8,8 @@ use Illuminate\Config\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Testing\Fakes\EventFake;
+use Illuminate\Support\Testing\Fakes\NotificationFake;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
 use Patrikjak\Auth\Models\User;
@@ -28,6 +30,8 @@ abstract class TestCase extends OrchestraTestCase
     use UserCreator;
 
     protected DatabaseManager $databaseManager;
+
+    protected EventFake $eventFake;
 
     public function assertMatchesHtmlSnapshot(string $actual): void
     {
@@ -64,6 +68,7 @@ abstract class TestCase extends OrchestraTestCase
         $this->app->setFallbackLocale('test');
 
         $this->databaseManager = $this->app->make(DatabaseManager::class);
+        $this->eventFake = $this->app->make(EventFake::class);
     }
 
     /**

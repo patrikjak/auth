@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api\RegisterController;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
+use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 use Patrikjak\Utils\Common\Http\Middlewares\VerifyRecaptcha;
@@ -115,6 +117,9 @@ class InvitationStoreTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+        $this->eventFake->assertDispatched(RegisteredViaInviteEvent::class);
+
+        $this->assertDatabaseMissing('register_invites', ['email' => self::TESTER_EMAIL]);
     }
 
     /**
