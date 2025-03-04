@@ -16,10 +16,17 @@ Route::middleware(['web', 'guest'])
         $registerEnabled = config('pjauth.features.register');
         $loginEnabled = config('pjauth.features.login');
         $passwordResetEnabled = config('pjauth.features.password_reset');
+        $registerViaInvitation = config('pjauth.features.register_via_invitation');
 
         if ($registerEnabled) {
             Route::post('/register', [RegisterController::class, 'store'])
                 ->name('register')
+                ->middleware($recaptchaEnabled ? VerifyRecaptcha::class : []);
+        }
+
+        if ($registerViaInvitation) {
+            Route::post('/invite/register', [RegisterController::class, 'invitationStore'])
+                ->name('register.invitation')
                 ->middleware($recaptchaEnabled ? VerifyRecaptcha::class : []);
         }
 

@@ -23,7 +23,7 @@ class ResetPassword extends Notification
 
     public function toMail(): MailMessage
     {
-        return (new MailMessage())->view(
+        return new MailMessage()->view(
             ['pjauth::notifications.html.password-reset', 'pjauth::notifications.text.password-reset'],
             [
                 'resetUrl' => $this->resetPasswordUrl,

@@ -13,9 +13,8 @@
     <link rel="stylesheet" href="http://localhost/vendor/pjauth/assets/app.css">
             <script src="https://www.google.com/recaptcha/api.js?render=RECAPTCHA_SITE_KEY"></script>
         <script src="http://localhost/vendor/pjauth/assets/main.js" type="module"></script>
-            <link rel="icon" type="image/svg+xml" href="http://localhost/images/logo/favicon.svg">
     </head>
-<body>
+<body data-recaptcha-site-key="RECAPTCHA_SITE_KEY">
 
     <div class="navigation">
         <div class="logo">
@@ -38,10 +37,15 @@
                 <h1>pjauth::pages.titles.register</h1>
                 <p>pjauth::pages.register.intro</p>
 
-    <form method="POST" action="http://localhost/api/register" data-recaptcha-action="register" data-redirect="/dashboard">
+    <form method="POST" action="http://localhost/api/invite/register" data-recaptcha-action="register" data-redirect="/dashboard">
     <input type="hidden" name="_token" value="{TOKEN}" autocomplete="off">
     
     <div class="pj-classic">
+    
+            <input name="token" value="TOKEN"> <!-- REPLACED INPUT -->
+    
+    </div>
+        <div class="pj-classic">
             <label for="name">pjauth::forms.name</label>
     
             <input type="text" id="name" name="name" placeholder="pjauth::forms.placeholders.name" autocomplete="name" autofocus="autofocus">
@@ -50,7 +54,7 @@
         <div class="pj-classic">
             <label for="email">pjauth::forms.email</label>
     
-            <input type="email" id="email" name="email" placeholder="pjauth::forms.placeholders.email" autocomplete="email">
+            <input type="email" id="email" name="email" placeholder="pjauth::forms.placeholders.email" autocomplete="email" readonly value="tester@test.com">
     
     </div>
         <div class="pj-classic iconic">

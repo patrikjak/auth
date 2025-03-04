@@ -6,6 +6,7 @@ namespace Patrikjak\Auth\Http\Controllers;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class RegisterController
 {
@@ -13,6 +14,15 @@ class RegisterController
     {
         return view('pjauth::register', [
             'redirectAfterRegister' => $config->get('pjauth.redirect_after_login'),
+        ]);
+    }
+
+    public function invitationIndex(Repository $config, Request $request): View
+    {
+        return view('pjauth::register-via-invitation', [
+            'redirectAfterRegister' => $config->get('pjauth.redirect_after_login'),
+            'email' => $request->input('email'),
+            'token' => $request->route('token'),
         ]);
     }
 }

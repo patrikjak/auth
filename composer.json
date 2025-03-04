@@ -2,7 +2,7 @@
     "name": "patrikjak/auth",
     "description": "Simple auth package for laravel apps",
     "keywords": ["laravel", "auth"],
-    "version": "1.1.0",
+    "version": "1.2.0",
     "type": "library",
     "license": "MIT",
     "autoload": {

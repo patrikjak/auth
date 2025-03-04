@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{CSRF-TOKEN}">
-    <title>pjauth::pages.titles.register - App</title>
+    <title>pjauth::pages.titles.register - My custom app name</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;500;700&amp;display=swap" rel="stylesheet">
@@ -13,8 +13,9 @@
     <link rel="stylesheet" href="http://localhost/vendor/pjauth/assets/app.css">
             <script src="https://www.google.com/recaptcha/api.js?render=RECAPTCHA_SITE_KEY"></script>
         <script src="http://localhost/vendor/pjauth/assets/main.js" type="module"></script>
+            <link rel="icon" type="image/svg+xml" href="http://localhost/images/logo/favicon.svg">
     </head>
-<body>
+<body data-recaptcha-site-key="RECAPTCHA_SITE_KEY">
 
     <div class="navigation">
         <div class="logo">

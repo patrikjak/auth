@@ -7,5 +7,7 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds',
     'credentials' => 'The provided credentials do not match our records',
     'confirmed' => 'The :attribute does not match its confirmation',
+    'invalid_invite_token' => 'Invalid invite token',
+    'invalid_invite_email' => 'Invalid invite email',
 
 ];

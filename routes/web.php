@@ -11,11 +11,17 @@ Route::middleware(['web', 'guest'])->group(static function(): void {
     $registerEnabled = config('pjauth.features.register');
     $loginEnabled = config('pjauth.features.login');
     $passwordResetEnabled = config('pjauth.features.password_reset');
+    $registerViaInvitation = config('pjauth.features.register_via_invitation');
     $socialLoginEnabled = config('pjauth.social_login.google.enabled');
 
     if ($registerEnabled) {
         Route::get('/register', [RegisterController::class, 'index'])
             ->name('register');
+    }
+
+    if ($registerViaInvitation) {
+        Route::get('/register/{token}', [RegisterController::class, 'invitationIndex'])
+            ->name('register.invitation');
     }
 
     if ($loginEnabled) {

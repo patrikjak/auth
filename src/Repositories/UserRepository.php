@@ -4,14 +4,17 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Repositories;
 
+use Carbon\CarbonImmutable;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Hashing\HashManager;
+use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
 
 final readonly class UserRepository implements UserRepositoryInterface
 {
-    public function __construct(private HashManager $hashManager)
+    public function __construct(private HashManager $hashManager, private DatabaseManager $databaseManager)
     {
     }
 
@@ -50,5 +53,39 @@ final readonly class UserRepository implements UserRepositoryInterface
         ]);
 
         $user->save();
+    }
+
+    /**
+     * @throws EmailInInvitesNotFoundException
+     */
+    public function getRegisterInviteToken(string $email): string
+    {
+        $tokenResult = $this->databaseManager->table('register_invites')
+            ->select(['token'])
+            ->where('email', $email)
+            ->get();
+
+        if ($tokenResult->isEmpty()) {
+            return throw new EmailInInvitesNotFoundException();
+        }
+
+        return $tokenResult->first()->token;
+    }
+
+    public function saveRegisterInviteToken(string $email, string $token): void
+    {
+        $this->databaseManager->table('register_invites')
+            ->insert([
+                'email' => $email,
+                'token' => $token,
+                'created_at' => CarbonImmutable::now(),
+            ]);
+    }
+
+    public function deleteRegisterInvite(string $email): void
+    {
+        $this->databaseManager->table('register_invites')
+            ->where('email', $email)
+            ->delete();
     }
 }

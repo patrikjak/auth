@@ -27,6 +27,7 @@ return [
         'no_account' => 'Don\'t have an account?',
         'register' => 'Register',
         'or_use_social' => 'or log in using',
+        'forgot_password' => 'Forgot your password?',
     ],
 
     'password' => [

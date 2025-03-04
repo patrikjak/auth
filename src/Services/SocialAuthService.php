@@ -32,7 +32,7 @@ class SocialAuthService
 
     public function handleSocialUser(Request $request): void
     {
-        $driver = self::getDriverFromRequest($request);
+        $driver = $this->getDriverFromRequest($request);
         $socialiteUser = $this->socialiteManager->driver($driver)->user();
 
         assert($socialiteUser instanceof User);

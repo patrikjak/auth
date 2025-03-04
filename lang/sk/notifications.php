@@ -14,4 +14,13 @@ return [
         ],
     ],
 
+    'register_invite' => [
+        'subject' => 'Pozvánka na registráciu',
+        'title' => 'Pozvánka na registráciu',
+        'text' => [
+            'intro' => 'Dostali ste túto správu, pretože ste boli pozvaní na registráciu.',
+            'action' => 'Registrovať sa',
+        ],
+    ],
+
 ];

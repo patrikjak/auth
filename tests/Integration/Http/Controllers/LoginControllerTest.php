@@ -34,4 +34,13 @@ class LoginControllerTest extends TestCase
         $response->assertOk();
         $this->assertMatchesHtmlSnapshot($response->getContent());
     }
+
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testLoginScreenCanBeRenderedWithRegisterViaInvitationsFeature(): void
+    {
+        $response = $this->get(route('login'));
+
+        $response->assertOk();
+        $this->assertMatchesHtmlSnapshot($response->getContent());
+    }
 }

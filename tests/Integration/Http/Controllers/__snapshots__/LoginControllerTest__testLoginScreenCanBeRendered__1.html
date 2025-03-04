@@ -15,7 +15,7 @@
         <script src="http://localhost/vendor/pjauth/assets/main.js" type="module"></script>
             <link rel="icon" type="image/svg+xml" href="http://localhost/images/logo/favicon.svg">
     </head>
-<body>
+<body data-recaptcha-site-key="RECAPTCHA_SITE_KEY">
 
     <div class="navigation">
         <div class="logo">
@@ -37,7 +37,7 @@
             <div class="wrapper">
                 <h1>pjauth::pages.titles.login</h1>
                 <p>
-        pjauth::pages.login.intro                    <a class="forgotten-password" href="http://localhost/password/forgot">Zabudli ste heslo?</a>
+        pjauth::pages.login.intro                    <a class="forgotten-password" href="http://localhost/password/forgot">pjauth::pages.login.forgot_password</a>
             </p>
 
     <form method="POST" action="http://localhost/api/login" data-recaptcha-action="login" data-redirect="/dashboard">

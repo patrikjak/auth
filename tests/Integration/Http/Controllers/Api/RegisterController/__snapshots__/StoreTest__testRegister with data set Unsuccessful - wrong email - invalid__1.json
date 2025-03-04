@@ -1,0 +1,10 @@
+{
+    "errors": {
+        "email": [
+            "pjauth::validation.email"
+        ],
+        "password": [
+            "pjutils::validation.password.mixed"
+        ]
+    }
+}
