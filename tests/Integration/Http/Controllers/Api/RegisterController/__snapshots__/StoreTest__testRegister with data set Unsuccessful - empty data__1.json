@@ -1,0 +1,10 @@
+{
+    "errors": {
+        "name": [
+            "pjutils::validation.required"
+        ],
+        "email": [
+            "pjutils::validation.required"
+        ]
+    }
+}

@@ -31,8 +31,6 @@ abstract class TestCase extends OrchestraTestCase
 
     protected DatabaseManager $databaseManager;
 
-    protected EventFake $eventFake;
-
     public function assertMatchesHtmlSnapshot(string $actual): void
     {
         $actual = preg_replace(
@@ -68,7 +66,6 @@ abstract class TestCase extends OrchestraTestCase
         $this->app->setFallbackLocale('test');
 
         $this->databaseManager = $this->app->make(DatabaseManager::class);
-        $this->eventFake = $this->app->make(EventFake::class);
     }
 
     /**

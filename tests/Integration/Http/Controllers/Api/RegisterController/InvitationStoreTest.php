@@ -6,8 +6,10 @@ namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api\RegisterControll
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Testing\TestResponse;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
+use Patrikjak\Auth\Listeners\DeleteRegisterInviteListener;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 use Patrikjak\Utils\Common\Http\Middlewares\VerifyRecaptcha;
@@ -102,22 +104,29 @@ class InvitationStoreTest extends TestCase
     }
 
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
-    public function testSuccessfulRegister(): void
+    public function testSuccessfulEventDispatchedAfterRegister(): void
     {
-        $token = 'token';
+        Event::fake();
 
-        $this->withoutMiddleware(VerifyRecaptcha::class);
-        $this->insertInvite(token: $token);
-
-        $response = $this->post(route('api.register.invitation'), [
-            'name' => 'John Doe',
-            'email' => self::TESTER_EMAIL,
-            'password' => 'Password123',
-            'token' => $token,
-        ]);
-
+        $response = $this->registerViaInvite();
         $response->assertStatus(200);
-        $this->eventFake->assertDispatched(RegisteredViaInviteEvent::class);
+
+        Event::assertDispatched(
+            RegisteredViaInviteEvent::class,
+            static fn (RegisteredViaInviteEvent $event) => $event->user->email === self::TESTER_EMAIL,
+        );
+
+        Event::assertListening(
+            RegisteredViaInviteEvent::class,
+            DeleteRegisterInviteListener::class,
+        );
+    }
+
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testTokenIsDeletedAfterRegister(): void
+    {
+        $response = $this->registerViaInvite();
+        $response->assertStatus(200);
 
         $this->assertDatabaseMissing('register_invites', ['email' => self::TESTER_EMAIL]);
     }
@@ -149,6 +158,21 @@ class InvitationStoreTest extends TestCase
             ],
             'status' => 422,
         ];
+    }
+
+    private function registerViaInvite(): TestResponse
+    {
+        $token = 'token';
+
+        $this->withoutMiddleware(VerifyRecaptcha::class);
+        $this->insertInvite(token: $token);
+
+        return $this->post(route('api.register.invitation'), [
+            'name' => 'John Doe',
+            'email' => self::TESTER_EMAIL,
+            'password' => 'Password123',
+            'token' => $token,
+        ]);
     }
 
     private function insertInvite(string $email = self::TESTER_EMAIL, string $token = 'token'): void
