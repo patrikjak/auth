@@ -29,4 +29,9 @@ class VerifyRole
 
         return $next($request);
     }
+
+    public static function withRole(RoleType $role): string
+    {
+        return sprintf('%s:%s', self::class, $role->value);
+    }
 }

@@ -10,6 +10,7 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Patrikjak\Auth\Console\Commands\CreateUsersCommand;
+use Patrikjak\Auth\Console\Commands\InstallCommand;
 use Patrikjak\Auth\Console\Commands\SeedUserRoles;
 use Patrikjak\Auth\Console\Commands\SendRegisterInviteCommand;
 use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
@@ -37,6 +38,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->publishConfig();
         $this->publishViews();
         $this->publishMigrations();
+        $this->publishTranslations();
     }
 
     /**
@@ -47,6 +49,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/pjauth.php', 'pjauth');
 
         $this->registerServices();
+    }
+
+    public function publishTranslations(): void
+    {
+        $this->publishes([
+            __DIR__ . '/../lang' => lang_path('vendor/pjauth'),
+        ], 'pjauth-translations');
     }
 
     private function publishAssets(): void
@@ -110,6 +119,7 @@ class AuthServiceProvider extends ServiceProvider
             SeedUserRoles::class,
             CreateUsersCommand::class,
             SendRegisterInviteCommand::class,
+            InstallCommand::class,
         ]);
     }
 

@@ -36,7 +36,7 @@ class PasswordLinkRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return ['email' => __('forms.email')];
+        return ['email' => __('pjauth::forms.email')];
     }
 
     /**
