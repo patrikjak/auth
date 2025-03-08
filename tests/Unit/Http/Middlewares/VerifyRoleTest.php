@@ -84,6 +84,13 @@ class VerifyRoleTest extends TestCase
         $this->assertNull($response);
     }
 
+    public function testWithRole(): void
+    {
+        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:1', VerifyRole::withRole(RoleType::SUPERADMIN));
+        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:2', VerifyRole::withRole(RoleType::ADMIN));
+        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:3', VerifyRole::withRole(RoleType::USER));
+    }
+
     private function mockRequest(User $user): Request
     {
         $request = $this->mock(Request::class, static function (MockInterface $mock) use ($user): void {
