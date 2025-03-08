@@ -45,8 +45,8 @@ class LoginRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'email' => __('forms.email'),
-            'password' => __('forms.password'),
+            'email' => __('pjauth::forms.email'),
+            'password' => __('pjauth::forms.password'),
         ];
     }
 

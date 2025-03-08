@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Auth\Http\Controllers;
 
-use Illuminate\Config\Repository;
+use Illuminate\Config\Repository as Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Laravel\Socialite\SocialiteManager;
@@ -22,7 +22,7 @@ class SocialAuthController
 
     public function callback(
         Request $request,
-        Repository $config,
+        Config $config,
         SocialAuthService $socialAuthService,
     ): RedirectResponse {
         $socialAuthService->handleSocialUser($request);
