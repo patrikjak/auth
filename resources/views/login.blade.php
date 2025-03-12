@@ -2,9 +2,11 @@
 
 <x-pjauth::layouts.app :title="__('pjauth::pages.titles.login')">
 
-    <x-slot:links>
-        <p>@lang('pjauth::pages.login.no_account') <a href="{{ route('register') }}" class="primary-color">@lang('pjauth::pages.login.register')</a></p>
-    </x-slot:links>
+    @if(config('pjauth.features.register'))
+        <x-slot:links>
+            <p>@lang('pjauth::pages.login.no_account') <a href="{{ route('register') }}" class="primary-color">@lang('pjauth::pages.login.register')</a></p>
+        </x-slot:links>
+    @endif
 
     <x-slot:image>
         <img src="{{ asset('vendor/pjauth/assets/images/illustrations/hello.svg') }}" alt="welcome">
