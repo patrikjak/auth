@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Auth\Factories;
 
 use Patrikjak\Auth\Exceptions\ModelIsIncompatibleException;
