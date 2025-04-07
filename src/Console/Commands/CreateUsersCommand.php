@@ -8,9 +8,9 @@ use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
+use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 

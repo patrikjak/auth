@@ -5,25 +5,30 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Tests\Traits;
 
 use Patrikjak\Auth\Database\Factories\UserFactory;
+use Patrikjak\Auth\Factories\UserFactory as UserModelFactory;
+use Patrikjak\Auth\Models\RoleType;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Models\UserFactory as UserModelFactory;
 
 trait UserCreator
 {
-    protected function createUser(?string $googleId = null): User
+    protected function createUser(?string $googleId = null, ?RoleType $roleType = null): User
     {
         $userModel = UserModelFactory::getUserModelClass();
         $userFactory = $userModel::factory();
         assert($userFactory instanceof UserFactory);
+        
+        $userFactory = $userFactory->withName(self::TESTER_NAME);
+        $userFactory = $userFactory->withEmail(self::TESTER_EMAIL);
+        $userFactory = $userFactory->withPassword(self::TESTER_PASSWORD);
 
         if ($googleId !== null) {
-            $userFactory->withGoogleId($googleId);
+            $userFactory = $userFactory->withGoogleId($googleId);
         }
 
-        return $userFactory->create([
-            'name' => self::TESTER_NAME,
-            'email' => self::TESTER_EMAIL,
-            'password' => bcrypt(self::TESTER_PASSWORD),
-        ]);
+        if ($roleType !== null) {
+            $userFactory = $userFactory->withRole($roleType);
+        }
+
+        return $userFactory->create();
     }
 }

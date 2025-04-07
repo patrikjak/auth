@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Patrikjak\Auth\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Utils\Common\Helpers\GrammaticalGender;
 use Patrikjak\Utils\Common\Http\Requests\Traits\ValidationException;
 use Patrikjak\Utils\Common\Rules\Password;

@@ -6,11 +6,11 @@ namespace Patrikjak\Auth\Tests\Unit\Http\Middlewares;
 
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
+use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Http\Middlewares\VerifyRole;
 use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Models\RoleType;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Auth\Tests\Unit\TestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

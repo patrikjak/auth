@@ -61,6 +61,13 @@ return [
     ],
 
     /**
+     * Models to use
+     */
+    'models' => [
+        'role' => \Patrikjak\Auth\Models\Role::class,
+    ],
+
+    /**
      * Redirect to this path after login or register
      */
     'redirect_after_login' => env('REDIRECT_AFTER_LOGIN', '/dashboard'),

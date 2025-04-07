@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Patrikjak\Auth\Database\Factories\UserFactory;
+use Patrikjak\Auth\Exceptions\ModelIsIncompatibleException;
+use Patrikjak\Auth\Factories\RoleFactory;
 use Patrikjak\Auth\Notifications\ResetPassword;
 use SensitiveParameter;
 
@@ -79,9 +81,12 @@ class User extends Authenticatable
         'google_id' => null,
     ];
 
+    /**
+     * @throws ModelIsIncompatibleException
+     */
     public function role(): BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(RoleFactory::getRoleModelClass());
     }
 
     /**

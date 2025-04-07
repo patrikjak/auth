@@ -7,8 +7,8 @@ namespace Patrikjak\Auth\Tests\Unit\Models;
 use Illuminate\Hashing\HashManager;
 use Illuminate\Http\Request;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
+use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Auth\Tests\Unit\TestCase;
 
 class UserFactoryTest extends TestCase

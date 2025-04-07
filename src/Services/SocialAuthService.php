@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\SocialiteManager;
+use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User as UserModel;
-use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 
 class SocialAuthService
