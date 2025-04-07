@@ -23,6 +23,6 @@ class RoleFactory extends Factory
 
     public function withRole(RoleType $roleType): Factory
     {
-        return $this->state(static fn (array $attributes) => ['id' => $roleType->value, 'name' => $roleType->name]);
+        return $this->state(fn (array $attributes) => ['id' => $roleType->value, 'name' => $roleType->name]);
     }
 }
