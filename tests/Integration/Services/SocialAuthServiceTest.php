@@ -2,8 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Services;
+namespace Patrikjak\Auth\Tests\Integration\Services;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Services\SocialAuthService;
 use Patrikjak\Auth\Tests\Integration\TestCase;
@@ -13,6 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class SocialAuthServiceTest extends TestCase
 {
     use SocialiteMocker;
+    use RefreshDatabase;
 
     #[DataProvider('driverProvider')]
     public function testGetGoogleDriverFromRequest(string $driver): void

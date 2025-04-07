@@ -8,8 +8,8 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Hashing\HashManager;
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
+use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Models\UserFactory;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
 
 final readonly class UserRepository implements UserRepositoryInterface

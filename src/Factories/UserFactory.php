@@ -2,9 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Auth\Models;
+namespace Patrikjak\Auth\Factories;
 
 use Illuminate\Http\Request;
+use Patrikjak\Auth\Models\User;
 
 class UserFactory
 {

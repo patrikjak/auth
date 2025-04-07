@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Patrikjak\Auth\Database\Factories\RoleFactory;
+use Patrikjak\Auth\Factories\UserFactory;
 
 /**
  * @property int $id
@@ -37,7 +38,7 @@ class Role extends Model
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(UserFactory::getUserModelClass());
     }
 
     protected static function newFactory(): Factory

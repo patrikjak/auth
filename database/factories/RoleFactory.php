@@ -20,4 +20,9 @@ class RoleFactory extends Factory
             'name' => $role->name,
         ];
     }
+
+    public function withRole(RoleType $roleType): Factory
+    {
+        return $this->state(fn (array $attributes) => ['id' => $roleType->value, 'name' => $roleType->name]);
+    }
 }
