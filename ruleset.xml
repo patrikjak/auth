@@ -3,7 +3,7 @@
          name="PSR-12 + PER-3 Standard"
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
 
-    <description>PSR-12 and PER-3 coding standards with minimal Slevomat additions for PHP 8.5+</description>
+    <description>PSR-12 and PER-3 coding standards with minimal Slevomat additions for PHP 8.4+</description>
 
     <!-- Configuration -->
     <config name="show_progress" value="1"/>
