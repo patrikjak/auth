@@ -1,13 +1,11 @@
-name: "auth"
+name: auth
 
 services:
   cli:
-    image: "patrikjak/php84-cli"
+    image: patrikjak/php-frankenphp:8.5-cli
     container_name: "auth-cli"
     environment:
       XDEBUG_MODE: develop,debug,coverage
-    networks:
-      - shared
     volumes:
       - ".:/var/www"
     depends_on:
@@ -16,22 +14,16 @@ services:
 
   db:
     container_name: "auth-test-db"
-    image: 'mariadb:10'
+    image: mariadb:10
     environment:
-      MYSQL_ROOT_PASSWORD: 'rootpassword'
+      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_ROOT_HOST: '%'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: 'testing'
-    networks:
-      - shared
+      MYSQL_DATABASE: testing
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 3s
       timeout: 3s
       retries: 5
-
-networks:
-  shared:
-    driver: bridge

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Unit\Http\Middlewares;
 
@@ -27,7 +27,8 @@ class VerifyRoleTest extends TestCase
         $middleware = new VerifyRole();
         $response = $middleware->handle(
             $request,
-            static function (): void {},
+            static function (): void {
+            },
             $role->value,
         );
 
@@ -46,7 +47,8 @@ class VerifyRoleTest extends TestCase
         $this->expectException(HttpException::class);
         $middleware->handle(
             $request,
-            static function (): void {},
+            static function (): void {
+            },
             999,
         );
     }
@@ -62,7 +64,8 @@ class VerifyRoleTest extends TestCase
         $this->expectException(HttpException::class);
         $middleware->handle(
             $request,
-            static function (): void {},
+            static function (): void {
+            },
             RoleType::ADMIN->value,
         );
     }
@@ -77,7 +80,8 @@ class VerifyRoleTest extends TestCase
         $middleware = new VerifyRole();
         $response = $middleware->handle(
             $request,
-            static function (): void {},
+            static function (): void {
+            },
             RoleType::ADMIN->value,
         );
 

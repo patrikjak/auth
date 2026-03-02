@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth;
 
@@ -129,7 +129,7 @@ class AuthServiceProvider extends ServiceProvider
     private function registerServices(): void
     {
         $config = $this->app->make(Repository::class);
-        
+
         $this->app->bind(UserRepositoryInterface::class, $config->get('pjauth.repositories.user'));
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
     }

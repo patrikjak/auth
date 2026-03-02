@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Integration\Console\Commands;
 
@@ -53,13 +53,13 @@ class SendRegisterInviteCommandTest extends TestCase
     public function testCommandWithNotConfirmedEmail(): void
     {
         Notification::fake();
-        
+
         $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL])
             ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL))
             ->expectsOutput('Register invite not sent');
-        
+
         $this->assertDatabaseMissing('register_invites', ['email' => self::TESTER_EMAIL]);
-        
+
         Notification::assertCount(0);
     }
 }

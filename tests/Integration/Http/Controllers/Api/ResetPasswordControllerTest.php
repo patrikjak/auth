@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 
@@ -41,7 +41,7 @@ class ResetPasswordControllerTest extends TestCase
         $this->skipRecaptcha();
         $this->createUser();
 
-        for($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->post(route('api.password.email'), [
                 'email' => self::TESTER_EMAIL,
             ]);

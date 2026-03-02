@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Traits;
 
@@ -66,7 +66,8 @@ trait ConfigSetter
 
     protected function useCustomUserModel(Application $application): void
     {
-        $customUserModel = new class extends User {};
+        $customUserModel = new class extends User {
+        };
 
         $application['config']->set('auth.providers.users.model', $customUserModel::class);
     }

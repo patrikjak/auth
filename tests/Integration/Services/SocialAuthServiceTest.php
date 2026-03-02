@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Integration\Services;
 
@@ -38,7 +38,7 @@ class SocialAuthServiceTest extends TestCase
 
         $socialAuthService = $this->app->make(SocialAuthService::class);
         $socialAuthService->handleSocialUser($request);
-        
+
         $this->assertAuthenticatedAs($user);
 
         $googleId === null

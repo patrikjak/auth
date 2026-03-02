@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 
@@ -62,7 +62,7 @@ class AuthenticatedSessionControllerTest extends TestCase
     public function testLogout(): void
     {
         $configRepository = $this->app->make(Repository::class);
-        
+
         $this->actingAs($this->createUser());
 
         $response = $this->postJson(route('api.logout'));
