@@ -1,0 +1,21 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  release:
+    uses: patrikjak/workflows/.github/workflows/release-package.yml@main
+    with:
+      release_type: ${{ inputs.release_type }}
+    permissions:
+      contents: write

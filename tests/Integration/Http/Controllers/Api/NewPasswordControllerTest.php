@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Integration\Http\Controllers\Api;
 
@@ -106,7 +106,7 @@ class NewPasswordControllerTest extends TestCase
     {
         $user = $this->createUser();
         $this->actingAs($user);
-        
+
         $this->expectException(RouteNotFoundException::class);
 
         $this->patch(route('api.change-password'), [

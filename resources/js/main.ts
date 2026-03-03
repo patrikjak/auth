@@ -7,7 +7,7 @@ bindPasswordVisibilitySwitch();
 window['RECAPTCHA_SITE_KEY'] = getData(document.body, 'recaptcha-site-key');
 
 const form: HTMLElement = document.querySelector('.pj-auth form');
-const recaptchaAction = getData(form, 'recaptcha-action');
+const recaptchaAction = window['RECAPTCHA_SITE_KEY'] ? getData(form, 'recaptcha-action') : null;
 
 new Form()
     .setRecaptchaAction(recaptchaAction)

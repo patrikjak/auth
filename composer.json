@@ -2,14 +2,17 @@
     "name": "patrikjak/auth",
     "description": "Simple auth package for laravel apps",
     "keywords": ["laravel", "auth"],
-    "version": "1.4.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "Patrikjak\\Auth\\": "src/",
             "Patrikjak\\Auth\\Database\\Factories\\": "database/factories/",
-            "Patrikjak\\Auth\\Database\\Seeders\\": "database/seeders/",
+            "Patrikjak\\Auth\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Patrikjak\\Auth\\Tests\\": "tests/"
         }
     },
@@ -20,7 +23,7 @@
     ],
     "require": {
         "php": "^8.4",
-        "patrikjak/utils": "^2.3.0",
+        "patrikjak/utils": "^2.10.0",
         "laravel/framework": "^12.1.1",
         "laravel/socialite": "^5.16"
     },

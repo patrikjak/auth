@@ -2,92 +2,110 @@
 
 [![codecov](https://codecov.io/gh/patrikjak/auth/graph/badge.svg?token=A13B5F9FMZ)](https://codecov.io/gh/patrikjak/auth)
 
-Simple auth package for laravel apps.
+Simple auth package for Laravel apps. Requires `patrikjak/utils`.
 
 ## Installation
-
-Install the package via Composer:
 
 ```bash
 composer require patrikjak/auth
 ```
 
 ## Setup
-After installing the package, add the package provider to the providers array in bootstrap/providers.php.
+
+Register both service providers in `bootstrap/providers.php`:
 
 ```php
 use Patrikjak\Auth\AuthServiceProvider;
 use Patrikjak\Utils\UtilsServiceProvider;
- 
+
 return [
-    ...
+    // ...
     UtilsServiceProvider::class,
     AuthServiceProvider::class,
 ];
 ```
 
-You need to have installed and configured `patrikjak/utils` package.
+Run the install command to publish all assets, config, migrations, and translations, remove default Laravel auth migrations, run fresh migrations, and seed default roles:
 
-After that you need to publish the package assets (if you configured `patrikjak/utils` package, you don't need to publish assets again):
+```bash
+php artisan install:pjauth
+```
+
+Or publish individually:
 
 ```bash
 php artisan vendor:publish --tag="pjauth-assets" --force
+php artisan vendor:publish --tag="pjauth-config"
+php artisan vendor:publish --tag="pjauth-migrations" --force
+php artisan vendor:publish --tag="pjauth-translations" --force
+php artisan vendor:publish --tag="pjauth-views" --force   # optional
 ```
 
-You should publish the config file:
-
-```bash
-php artisan vendor:publish --tag="pjauth-config" --force
-```
-
-or if you want to publish views:
-
-```bash
-php artisan vendor:publish --tag="pjauth-views" --force
-```
-
-If you don't publish config file, you will miss all features of this package. I recommend add this script to your `composer.json` file:
+To keep config up to date on every `composer update`, add to your `composer.json`:
 
 ```json
 "scripts": {
     "post-update-cmd": [
-        "@php artisan vendor:publish --tag=pjauth-config --force",
+        "@php artisan vendor:publish --tag=pjauth-config --force"
     ]
 }
 ```
 
-It will publish config file every time you update your composer packages.
+> Laravel cannot merge multidimensional arrays in config files, so the config must be re-published after updates.
 
-Laravel cannot merge multidimensional arrays in config files.
+## Configuration
 
-## General
+All options live in `config/pjauth.php`.
 
-You can choose your custom User model by define `AUTH_MODEL` in your `.env` file.
+### Custom User model
 
 ```env
 AUTH_MODEL=App\Models\User
 ```
 
-By default `Patrikjak\Auth\Models\User` model is used.
+Default is `Patrikjak\Auth\Models\User`.
 
-Also you can change the default user repository implementation. You need to change in `config/pjauth.php` file.
+### Custom repository
 
 ```php
+// config/pjauth.php
 'repositories' => [
-    'user' => \Patrikjak\Auth\Repositories\UserRepository::class,
+    'user' => \App\Repositories\UserRepository::class,
 ],
 ```
 
-## Routes
-In routes, we use default laravel middleware group `web` and `guest` middleware.
+The custom implementation must implement `Patrikjak\Auth\Repositories\Interfaces\UserRepository`.
+
+### Redirects
 
 ```php
-Route::middleware(['web', 'guest']);
+'redirect_after_login'  => env('REDIRECT_AFTER_LOGIN', '/dashboard'),
+'redirect_after_logout' => env('REDIRECT_AFTER_LOGOUT', '/'),
 ```
 
-### Middlewares
+### Feature flags
 
-There is prepared middleware for checking user roles. You can use it in your routes.
+All features are enabled by default except `register_via_invitation`:
+
+```php
+'features' => [
+    'register'                => true,
+    'login'                   => true,
+    'password_reset'          => true,
+    'change_password'         => true,
+    'register_via_invitation' => false,
+],
+```
+
+Routes are only registered when their respective feature is enabled.
+
+## Routes
+
+Web routes use `['web', 'guest']` middleware. API routes use `['web', 'guest']` for unauthenticated endpoints and `['web', 'auth']` for authenticated ones.
+
+### Middleware
+
+Use `VerifyRole` to protect routes by role:
 
 ```php
 use Patrikjak\Auth\Http\Middlewares\VerifyRole;
@@ -96,51 +114,72 @@ use Patrikjak\Auth\Models\RoleType;
 Route::middleware(['web', 'auth', VerifyRole::withRole(RoleType::ADMIN)]);
 ```
 
-It will check role of the user and if it is not the same as the role in the middleware, it will return 403 status code.
-**Super admin has all roles.**
-
-## Migrations
-
-You should publish the migrations:
-
-```bash
-php artisan vendor:publish --tag="pjauth-migrations"
-```
+Super admins pass all role checks.
 
 ## Roles
-- How to insert default roles?
 
-You can insert default roles by running the following command:
+Default roles: `SUPERADMIN = 1`, `ADMIN = 2`, `USER = 3` (defined in `RoleType` enum).
+
+Seed default roles:
 
 ```bash
-php artisan seed:user-roles --enum=Patrikjak\\Auth\\Models\\RoleType
+php artisan seed:user-roles
+# or with a custom enum:
+php artisan seed:user-roles --enum=App\\Enums\\MyRoleType
 ```
 
-Enum is default `Patrikjak\Auth\Models\RoleType` enum class. You can create your own enum class and pass it as an argument.
-It must use `Patrikjak\Utils\Common\Traits\EnumValues` trait.
+The custom enum must use the `Patrikjak\Utils\Common\Traits\EnumValues` trait.
 
-## Socialite
+## Artisan Commands
 
-You need to add your socialite credentials to your `.env` file.
+### Create users interactively
+
+```bash
+php artisan create:users
+```
+
+Prompts for name, email, password, and role. Loops until you decline to add another user.
+
+## Socialite (Google)
+
+Enable in config (enabled by default) and add credentials:
 
 ```env
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 ```
 
-And add the following to your `config/services.php` file:
+Add to `config/services.php`:
 
 ```php
 'google' => [
-    'client_id' => env('GOOGLE_CLIENT_ID'),
+    'client_id'     => env('GOOGLE_CLIENT_ID'),
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-    'redirect' => sprintf('%s/auth/google/callback', env('APP_URL')),
+    'redirect'      => sprintf('%s/auth/google/callback', env('APP_URL')),
 ],
 ```
 
-## Change password
+## Register via Invitation
 
-If you want to change the password, you need to allow it in the `config/pjauth.php` file.
+Enable the feature flag:
+
+```php
+'features' => [
+    'register_via_invitation' => true,
+],
+```
+
+Send an invite from the command line:
+
+```bash
+php artisan send:register-invite user@example.com
+```
+
+The invite email contains a tokenised link to `GET /register/{token}?email=...`. On submission it calls `POST /api/invite/register`.
+
+## Change Password
+
+Enable the feature flag (enabled by default):
 
 ```php
 'features' => [
@@ -148,19 +187,45 @@ If you want to change the password, you need to allow it in the `config/pjauth.p
 ],
 ```
 
-After that, you can use the following route:
+Call the authenticated endpoint:
 
-```php
-route('api.change-password');
+```
+PATCH api/change-password
 ```
 
-By default, it validates old password. If you want to turn off old password validation, you need to send it in the request.
+Request body:
 
-```php
+```json
 {
-    "old_password": "old_password",
+    "old_password": "current_password",
+    "password": "new_password",
+    "password_confirmation": "new_password"
+}
+```
+
+Old password validation is on by default. To skip it (e.g. admin resetting another user's password):
+
+```json
+{
     "password": "new_password",
     "password_confirmation": "new_password",
     "validate_old_password": false
 }
+```
+
+## reCAPTCHA
+
+Enabled by default on register, login, and password reset API endpoints. Disable globally:
+
+```php
+'recaptcha' => [
+    'enabled' => false,
+],
+```
+
+Or provide the keys:
+
+```env
+RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
 ```
