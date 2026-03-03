@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": "^8.4",
-        "patrikjak/utils": "^2.3.0",
+        "patrikjak/utils": "^2.10.0",
         "laravel/framework": "^12.1.1",
         "laravel/socialite": "^5.16"
     },
