@@ -8,9 +8,6 @@ services:
       XDEBUG_MODE: develop,debug,coverage
     volumes:
       - ".:/var/www"
-    depends_on:
-      db:
-        condition: service_healthy
 
   node:
     image: node:25-alpine
