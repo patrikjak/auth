@@ -67,6 +67,8 @@ Web routes (`routes/web.php`) render Blade views via thin view controllers (`Htt
 ### Config (`config/pjauth.php`)
 Feature flags (`features.*`), recaptcha, social login, repository/model overrides, and redirect paths are all in `pjauth` config. Routes are conditionally registered based on these flags.
 
+**Social login:** `pjauth.social_login.google.enabled` gates routes and the Google button in views. Google OAuth credentials (`client_id`, `client_secret`, `redirect`) must be configured in `config/services.php` under the `google` key — this is where Laravel Socialite reads them. The `pjauth` config holds only the `enabled` flag.
+
 ### Events & Notifications
 - `RegisteredViaInviteEvent` → `DeleteRegisterInviteListener` (cleans up invite token)
 - `RegisterInviteNotification` — mailable notification for invite emails

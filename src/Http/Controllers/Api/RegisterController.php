@@ -28,7 +28,6 @@ class RegisterController
         InviteService $inviteService,
     ): JsonResponse {
         $email = $request->getEmail();
-        $roleId = null;
 
         try {
             $roleId = $inviteService->validateTokenAndGetRoleId($request->getToken(), $email);
