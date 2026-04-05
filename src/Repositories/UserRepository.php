@@ -11,6 +11,7 @@ use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
+use Patrikjak\Auth\ValueObjects\RegisterInvite;
 
 final readonly class UserRepository implements UserRepositoryInterface
 {
@@ -60,24 +61,36 @@ final readonly class UserRepository implements UserRepositoryInterface
      */
     public function getRegisterInviteToken(string $email): string
     {
-        $tokenResult = $this->databaseManager->table('register_invites')
-            ->select(['token'])
-            ->where('email', $email)
-            ->get();
-
-        if ($tokenResult->isEmpty()) {
-            return throw new EmailInInvitesNotFoundException();
-        }
-
-        return $tokenResult->first()->token;
+        return $this->getRegisterInvite($email)->token;
     }
 
-    public function saveRegisterInviteToken(string $email, string $token): void
+    /**
+     * @throws EmailInInvitesNotFoundException
+     */
+    public function getRegisterInvite(string $email): RegisterInvite
+    {
+        $invite = $this->databaseManager->table('register_invites')
+            ->select(['token', 'role_id'])
+            ->where('email', $email)
+            ->first();
+
+        if ($invite === null) {
+            throw new EmailInInvitesNotFoundException();
+        }
+
+        return new RegisterInvite(
+            $invite->token,
+            $invite->role_id !== null ? (int) $invite->role_id : null,
+        );
+    }
+
+    public function saveRegisterInviteToken(string $email, string $token, ?int $roleId = null): void
     {
         $this->databaseManager->table('register_invites')
             ->insert([
                 'email' => $email,
                 'token' => $token,
+                'role_id' => $roleId,
                 'created_at' => CarbonImmutable::now(),
             ]);
     }

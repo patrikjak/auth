@@ -62,4 +62,17 @@ class SendRegisterInviteCommandTest extends TestCase
 
         Notification::assertCount(0);
     }
+
+    /**
+     * @throws Exception
+     */
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testCommandWithRole(): void
+    {
+        $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL, '--role' => '2'])
+            ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL), 'yes')
+            ->expectsOutput('Register invite sent to ' . self::TESTER_EMAIL);
+
+        $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => 2]);
+    }
 }
