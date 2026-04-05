@@ -10,6 +10,7 @@ use Patrikjak\Auth\Models\Role;
 class RoleFactory
 {
     /**
+     * @return class-string<Role>
      * @throws ModelIsIncompatibleException
      */
     public static function getRoleModelClass(): string

@@ -6,6 +6,7 @@ namespace Patrikjak\Auth\Repositories\Interfaces;
 
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Models\User;
+use Patrikjak\Auth\ValueObjects\RegisterInvite;
 
 interface UserRepository
 {
@@ -24,7 +25,12 @@ interface UserRepository
      */
     public function getRegisterInviteToken(string $email): string;
 
-    public function saveRegisterInviteToken(string $email, string $token): void;
+    /**
+     * @throws EmailInInvitesNotFoundException
+     */
+    public function getRegisterInvite(string $email): RegisterInvite;
+
+    public function saveRegisterInviteToken(string $email, string $token, ?int $roleId = null): void;
 
     public function deleteRegisterInvite(string $email): void;
 }

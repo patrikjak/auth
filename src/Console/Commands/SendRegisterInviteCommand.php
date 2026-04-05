@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Console\Commands;
 
 use Illuminate\Console\Command;
-use Patrikjak\Auth\Services\UserService;
+use Patrikjak\Auth\Services\InviteService;
 
 class SendRegisterInviteCommand extends Command
 {
@@ -13,7 +13,7 @@ class SendRegisterInviteCommand extends Command
      * @var string
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected $signature = 'send:register-invite {email}';
+    protected $signature = 'send:register-invite {email} {--role= : Role ID to assign to the invited user}';
 
     /**
      * @var string
@@ -21,7 +21,7 @@ class SendRegisterInviteCommand extends Command
      */
     protected $description = 'Send register invite to email';
 
-    public function __construct(private readonly UserService $userService)
+    public function __construct(private readonly InviteService $inviteService)
     {
         parent::__construct();
     }
@@ -38,7 +38,10 @@ class SendRegisterInviteCommand extends Command
             return;
         }
 
-        $this->userService->sendRegisterInvite($email);
+        $roleOption = $this->option('role');
+        $roleId = $roleOption !== null ? (int) $roleOption : null;
+
+        $this->inviteService->sendInvite($email, $roleId);
 
         $this->info('Register invite sent to ' . $email);
     }

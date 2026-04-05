@@ -8,9 +8,6 @@ services:
       XDEBUG_MODE: develop,debug,coverage
     volumes:
       - ".:/var/www"
-    depends_on:
-      db:
-        condition: service_healthy
 
   node:
     image: node:25-alpine
@@ -18,19 +15,3 @@ services:
     volumes:
       - ".:/app"
     working_dir: /app
-
-  db:
-    container_name: "auth-test-db"
-    image: mariadb:10
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: testing
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 3s
-      timeout: 3s
-      retries: 5

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
+use InvalidArgumentException;
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Http\Requests\InviteRegisterRequest;
 use Patrikjak\Auth\Http\Requests\RegisterRequest;
+use Patrikjak\Auth\Services\InviteService;
 use Patrikjak\Auth\Services\UserService;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,30 +22,35 @@ class RegisterController
         return new JsonResponse();
     }
 
-    public function invitationStore(InviteRegisterRequest $request, UserService $userService): JsonResponse
-    {
-        $invalidErrorMessage = __('pjauth::validation.invalid_invite_token');
+    public function invitationStore(
+        InviteRegisterRequest $request,
+        UserService $userService,
+        InviteService $inviteService,
+    ): JsonResponse {
+        $email = $request->getEmail();
 
         try {
-            $isTokenValid = $userService->inviteTokenIsValid($request->getToken(), $request->getEmail());
+            $roleId = $inviteService->validateTokenAndGetRoleId($request->getToken(), $email);
         } catch (EmailInInvitesNotFoundException) {
-            $isTokenValid = false;
-            $invalidErrorMessage = __('pjauth::validation.invalid_invite_email');
+            return $this->invalidInviteResponse(__('pjauth::validation.invalid_invite_email'));
+        } catch (InvalidArgumentException) {
+            return $this->invalidInviteResponse(__('pjauth::validation.invalid_invite_token'));
         }
 
-        if (!$isTokenValid) {
-            return new JsonResponse(
-                [
-                    'errors' => [
-                        'email' => [$invalidErrorMessage],
-                    ],
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY,
-            );
-        }
-
-        $userService->createUserAndLoginViaInvitation($request->getNewUser());
+        $userService->createUserAndLoginViaInvitation($request->getNewUser(), $roleId);
 
         return new JsonResponse();
+    }
+
+    private function invalidInviteResponse(string $message): JsonResponse
+    {
+        return new JsonResponse(
+            [
+                'errors' => [
+                    'email' => [$message],
+                ],
+            ],
+            Response::HTTP_UNPROCESSABLE_ENTITY,
+        );
     }
 }

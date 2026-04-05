@@ -131,6 +131,33 @@ class InvitationStoreTest extends TestCase
         $this->assertDatabaseMissing('register_invites', ['email' => self::TESTER_EMAIL]);
     }
 
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testRegisteredUserGetsRoleFromInvite(): void
+    {
+        $this->withoutMiddleware(VerifyRecaptcha::class);
+        $token = 'token';
+        $this->insertInvite(token: $token, roleId: 3);
+
+        $response = $this->post(route('api.register.invitation'), [
+            'name' => 'John Doe',
+            'email' => self::TESTER_EMAIL,
+            'password' => 'Password123',
+            'token' => $token,
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('users', ['email' => self::TESTER_EMAIL, 'role_id' => 3]);
+    }
+
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testRegisteredUserKeepsDefaultRoleWhenInviteHasNoRole(): void
+    {
+        $response = $this->registerViaInvite();
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', ['email' => self::TESTER_EMAIL]);
+    }
+
     /**
      * @return array<string, array<string, int|string>>
      */
@@ -175,11 +202,15 @@ class InvitationStoreTest extends TestCase
         ]);
     }
 
-    private function insertInvite(string $email = self::TESTER_EMAIL, string $token = 'token'): void
-    {
+    private function insertInvite(
+        string $email = self::TESTER_EMAIL,
+        string $token = 'token',
+        ?int $roleId = null,
+    ): void {
         $this->databaseManager->table('register_invites')->insert([
             'email' => $email,
             'token' => $token,
+            'role_id' => $roleId,
         ]);
     }
 }

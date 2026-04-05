@@ -7,15 +7,10 @@ namespace Patrikjak\Auth\Services;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Config\Repository as Config;
 use Illuminate\Contracts\Auth\PasswordBroker;
-use Illuminate\Notifications\AnonymousNotifiable;
-use Illuminate\Support\Str;
 use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
-use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Exceptions\InvalidCredentialsException;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Notifications\RegisterInviteNotification;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 
 final readonly class UserService
@@ -24,8 +19,6 @@ final readonly class UserService
         private UserRepository $userRepository,
         private AuthManager $authManager,
         private PasswordBroker $passwordBroker,
-        private Config $config,
-        private AnonymousNotifiable $anonymousNotifiable,
     ) {
     }
 
@@ -38,8 +31,12 @@ final readonly class UserService
         $this->authManager->login($user);
     }
 
-    public function createUserAndLoginViaInvitation(User $newUser): void
+    public function createUserAndLoginViaInvitation(User $newUser, ?int $roleId = null): void
     {
+        if ($roleId !== null) {
+            $newUser->role_id = $roleId;
+        }
+
         $this->createUserAndLogin($newUser);
 
         event(new RegisteredViaInviteEvent($newUser));
@@ -64,34 +61,6 @@ final readonly class UserService
             $this->userRepository->updatePassword($user, $newPassword);
             event(new PasswordReset($user));
         });
-    }
-
-    public function sendRegisterInvite(string $email): void
-    {
-        $token = $this->getNewToken();
-
-        $this->userRepository->saveRegisterInviteToken($email, $token);
-
-        $this->anonymousNotifiable
-            ->route('mail', $email)
-            ->notify(new RegisterInviteNotification(
-                sprintf('%s?email=%s', route('register.invitation', ['token' => $token]), $email),
-            ));
-    }
-
-    public function getNewToken(): string
-    {
-        return hash_hmac('sha256', Str::random(40), $this->config->get('app.key'));
-    }
-
-    /**
-     * @throws EmailInInvitesNotFoundException
-     */
-    public function inviteTokenIsValid(string $token, string $email): bool
-    {
-        $databaseInviteToken = $this->userRepository->getRegisterInviteToken($email);
-
-        return hash_equals($databaseInviteToken, $token);
     }
 
     public function changePasswordForUser(string $userId, string $newPassword): void
