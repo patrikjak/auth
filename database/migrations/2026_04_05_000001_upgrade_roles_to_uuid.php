@@ -53,14 +53,25 @@ return new class extends Migration {
 
         $oldIdToUuid = [];
         $defaultByName = array_column($defaultRoles, null, 'name');
+        $defaultBySlug = array_column($defaultRoles, null, 'slug');
 
         foreach ($roles as $role) {
-            $uuid = (string) Str::uuid();
             $defaultRole = $defaultByName[$role->name] ?? null;
+            $slug = $defaultRole['slug'] ?? Str::slug($role->name);
+
+            if (!array_key_exists($slug, $defaultBySlug)) {
+                DB::table('roles')->where('id', $role->id)->delete();
+
+                continue;
+            }
+
+            $uuid = (string) Str::uuid();
+            $isSuperadmin = ($defaultBySlug[$slug]['is_superadmin'] ?? false)
+                || ($defaultRole['is_superadmin'] ?? false);
 
             DB::table('roles')->where('id', $role->id)->update([
-                'slug' => $defaultRole['slug'] ?? Str::slug($role->name),
-                'is_superadmin' => $defaultRole['is_superadmin'] ?? false,
+                'slug' => $slug,
+                'is_superadmin' => $isSuperadmin,
                 'new_uuid' => $uuid,
             ]);
 
@@ -99,8 +110,6 @@ return new class extends Migration {
      */
     private function swapRolesPrimaryKey(array $oldIdToUuid): void
     {
-        $this->dropExternalForeignKeys();
-
         Schema::table('roles', function (Blueprint $table) {
             $table->unsignedTinyInteger('old_id')->nullable()->after('id');
         });
@@ -130,17 +139,6 @@ return new class extends Migration {
         DB::statement('ALTER TABLE roles MODIFY COLUMN id VARCHAR(36) NOT NULL FIRST');
     }
 
-    private function dropExternalForeignKeys(): void
-    {
-        if (!Schema::hasTable('permission_role') || !Schema::hasColumn('permission_role', 'role_id')) {
-            return;
-        }
-
-        Schema::table('permission_role', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-        });
-    }
-
     /**
      * SQLite cannot drop a primary key column in-place, so we recreate the table.
      */
@@ -164,6 +162,13 @@ return new class extends Migration {
     {
         if (!Schema::hasTable('users') || !Schema::hasColumn('users', 'new_role_uuid')) {
             return;
+        }
+
+        $defaultRoleSlug = config('pjauth.default_role_slug', 'admin');
+        $defaultRole = DB::table('roles')->where('slug', $defaultRoleSlug)->first();
+
+        if ($defaultRole !== null) {
+            DB::table('users')->whereNull('new_role_uuid')->update(['new_role_uuid' => $defaultRole->id]);
         }
 
         Schema::table('users', function (Blueprint $table) {
