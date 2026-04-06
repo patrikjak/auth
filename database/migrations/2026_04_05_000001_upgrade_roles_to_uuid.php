@@ -99,6 +99,8 @@ return new class extends Migration {
      */
     private function swapRolesPrimaryKey(array $oldIdToUuid): void
     {
+        $this->dropExternalForeignKeys();
+
         Schema::table('roles', function (Blueprint $table) {
             $table->unsignedTinyInteger('old_id')->nullable()->after('id');
         });
@@ -122,6 +124,20 @@ return new class extends Migration {
         Schema::table('roles', function (Blueprint $table) {
             $table->string('id', 36)->primary()->change();
             $table->string('slug')->nullable(false)->unique()->change();
+            $table->dropColumn('old_id');
+        });
+
+        DB::statement('ALTER TABLE roles MODIFY COLUMN id VARCHAR(36) NOT NULL FIRST');
+    }
+
+    private function dropExternalForeignKeys(): void
+    {
+        if (!Schema::hasTable('permission_role') || !Schema::hasColumn('permission_role', 'role_id')) {
+            return;
+        }
+
+        Schema::table('permission_role', function (Blueprint $table) {
+            $table->dropForeign(['role_id']);
         });
     }
 
@@ -132,14 +148,13 @@ return new class extends Migration {
     {
         DB::statement('CREATE TABLE roles_new (
             id VARCHAR(36) NOT NULL PRIMARY KEY,
-            old_id TINYINT UNSIGNED NULL,
             slug VARCHAR(255) NOT NULL UNIQUE,
             is_superadmin TINYINT(1) NOT NULL DEFAULT 0,
             name VARCHAR(255) NOT NULL
         )');
 
-        DB::statement('INSERT INTO roles_new (id, old_id, slug, is_superadmin, name)
-            SELECT new_uuid, id, slug, is_superadmin, name FROM roles');
+        DB::statement('INSERT INTO roles_new (id, slug, is_superadmin, name)
+            SELECT new_uuid, slug, is_superadmin, name FROM roles');
 
         DB::statement('DROP TABLE roles');
         DB::statement('ALTER TABLE roles_new RENAME TO roles');

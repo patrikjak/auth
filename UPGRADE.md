@@ -121,7 +121,15 @@ New keys:
  * Default roles synced by the pjauth:sync-roles command
  */
 'default_roles' => [
-    ['slug' => 'superadmin', 'name' => 'Superadmin', 'is_superadmin' => true],
-    ['slug' => 'admin',      'name' => 'Admin',      'is_superadmin' => false],
+    [
+        'slug' => 'superadmin',
+        'name' => 'Superadmin',
+        'is_superadmin' => true,
+    ],
+    [
+        'slug' => 'admin',
+        'name' => 'Admin',
+        'is_superadmin' => false,
+    ],
 ],
 ```

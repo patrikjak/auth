@@ -8,22 +8,39 @@ use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\PasswordBroker;
+use Illuminate\Contracts\Config\Repository as Config;
 use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
 use Patrikjak\Auth\Exceptions\InvalidCredentialsException;
+use Patrikjak\Auth\Exceptions\RoleNotFoundException;
 use Patrikjak\Auth\Models\User;
+use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 
 final readonly class UserService
 {
     public function __construct(
         private UserRepository $userRepository,
+        private RoleRepository $roleRepository,
         private AuthManager $authManager,
         private PasswordBroker $passwordBroker,
+        private Config $config,
     ) {
     }
 
+    /**
+     * @throws RoleNotFoundException
+     */
     public function createUserAndLogin(User $newUser): void
     {
+        $slug = $this->config->get('pjauth.default_role_slug');
+        $role = $this->roleRepository->findBySlug($slug);
+
+        if ($role === null) {
+            throw new RoleNotFoundException($slug, 'slug');
+        }
+
+        $newUser->role_id = $role->id;
+
         $user = $this->userRepository->createAndReturnUser($newUser);
 
         event(new Registered($user));
