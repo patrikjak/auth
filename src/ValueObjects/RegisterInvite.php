@@ -8,7 +8,7 @@ final readonly class RegisterInvite
 {
     public function __construct(
         public string $token,
-        public ?int $roleId,
+        public string $roleId,
     ) {
     }
 }

@@ -30,7 +30,7 @@ interface UserRepository
      */
     public function getRegisterInvite(string $email): RegisterInvite;
 
-    public function saveRegisterInviteToken(string $email, string $token, ?int $roleId = null): void;
+    public function saveRegisterInviteToken(string $email, string $token, string $roleId): void;
 
     public function deleteRegisterInvite(string $email): void;
 }

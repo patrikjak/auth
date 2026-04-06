@@ -16,6 +16,13 @@ class SocialAuthServiceTest extends TestCase
     use SocialiteMocker;
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seedDefaultRole();
+    }
+
     #[DataProvider('driverProvider')]
     public function testGetGoogleDriverFromRequest(string $driver): void
     {

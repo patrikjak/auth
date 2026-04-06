@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Patrikjak\Auth\Console\Commands\CreateUsersCommand;
 use Patrikjak\Auth\Console\Commands\InstallCommand;
-use Patrikjak\Auth\Console\Commands\SeedUserRoles;
 use Patrikjak\Auth\Console\Commands\SendRegisterInviteCommand;
+use Patrikjak\Auth\Console\Commands\SyncRolesCommand;
 use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
 use Patrikjak\Auth\Listeners\DeleteRegisterInviteListener;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository as RoleRepositoryInterface;
@@ -116,7 +116,7 @@ class AuthServiceProvider extends ServiceProvider
     private function loadCommands(): void
     {
         $this->commands([
-            SeedUserRoles::class,
+            SyncRolesCommand::class,
             CreateUsersCommand::class,
             SendRegisterInviteCommand::class,
             InstallCommand::class,

@@ -31,6 +31,7 @@ class UserRepositoryTest extends TestCase
     {
         parent::setUp();
 
+        $this->seedDefaultRole();
         $this->userRepository = $this->app->make(UserRepository::class);
     }
 

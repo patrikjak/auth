@@ -15,8 +15,10 @@ use Patrikjak\Auth\ValueObjects\RegisterInvite;
 
 final readonly class UserRepository implements UserRepositoryInterface
 {
-    public function __construct(private HashManager $hashManager, private DatabaseManager $databaseManager)
-    {
+    public function __construct(
+        private HashManager $hashManager,
+        private DatabaseManager $databaseManager,
+    ) {
     }
 
     public function createAndReturnUser(User $user): User
@@ -80,11 +82,11 @@ final readonly class UserRepository implements UserRepositoryInterface
 
         return new RegisterInvite(
             $invite->token,
-            $invite->role_id !== null ? (int) $invite->role_id : null,
+            $invite->role_id,
         );
     }
 
-    public function saveRegisterInviteToken(string $email, string $token, ?int $roleId = null): void
+    public function saveRegisterInviteToken(string $email, string $token, string $roleId): void
     {
         $this->databaseManager->table('register_invites')
             ->insert([

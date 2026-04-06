@@ -6,32 +6,40 @@ namespace Patrikjak\Auth\Http\Middlewares;
 
 use Closure;
 use Illuminate\Http\Request;
-use Patrikjak\Auth\Models\RoleType;
+use Patrikjak\Auth\Exceptions\UnauthenticatedException;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class VerifyRole
 {
-    public function handle(Request $request, Closure $next, int $role): mixed
+    public function __construct(private readonly RoleRepository $roleRepository)
     {
-        $roleEnum = RoleType::tryFrom($role);
+    }
 
-        if ($roleEnum === null) {
-            abort(403);
+    public function handle(Request $request, Closure $next, string $slug): mixed
+    {
+        $role = $this->roleRepository->findBySlug($slug);
+
+        if ($role === null) {
+            abort(Response::HTTP_FORBIDDEN);
         }
 
         $user = $request->user();
-        assert($user instanceof User);
 
-        if (!$user->hasRole($roleEnum)) {
-            abort(403);
+        if (!$user instanceof User) {
+            throw new UnauthenticatedException();
+        }
+
+        if ($user->role->slug !== $slug && !$user->role->is_superadmin) {
+            abort(Response::HTTP_FORBIDDEN);
         }
 
         return $next($request);
     }
 
-    public static function withRole(RoleType $role): string
+    public static function withRole(string $slug): string
     {
-        return sprintf('%s:%s', self::class, $role->value);
+        return sprintf('%s:%s', self::class, $slug);
     }
 }

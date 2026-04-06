@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Console\Commands;
 
 use Illuminate\Console\Command;
+use Patrikjak\Auth\Models\Role;
+use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Patrikjak\Auth\Services\InviteService;
 
-class SendRegisterInviteCommand extends Command
+final class SendRegisterInviteCommand extends Command
 {
     /**
      * @var string
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected $signature = 'send:register-invite {email} {--role= : Role ID to assign to the invited user}';
+    protected $signature = 'pjauth:send-invite {email} {--role= : Role ID to assign to the invited user}';
 
     /**
      * @var string
@@ -21,16 +23,11 @@ class SendRegisterInviteCommand extends Command
      */
     protected $description = 'Send register invite to email';
 
-    public function __construct(private readonly InviteService $inviteService)
-    {
-        parent::__construct();
-    }
-
-    public function handle(): void
+    public function handle(InviteService $inviteService, RoleRepository $roleRepository): void
     {
         $email = $this->argument('email');
 
-        $confirmed = $this->confirm('Do you want to send register invite to ' . $email . '?', true);
+        $confirmed = $this->confirm(sprintf('Do you want to send register invite to %s?', $email), true);
 
         if (!$confirmed) {
             $this->info('Register invite not sent');
@@ -38,11 +35,24 @@ class SendRegisterInviteCommand extends Command
             return;
         }
 
-        $roleOption = $this->option('role');
-        $roleId = $roleOption !== null ? (int) $roleOption : null;
+        $roleId = $this->option('role') ?? $this->askForRoleId($roleRepository);
 
-        $this->inviteService->sendInvite($email, $roleId);
+        $inviteService->sendInvite($email, $roleId);
 
-        $this->info('Register invite sent to ' . $email);
+        $this->info(sprintf('Register invite sent to %s', $email));
+    }
+
+    private function askForRoleId(RoleRepository $roleRepository): string
+    {
+        $roles = $roleRepository->getAll();
+
+        $this->info(
+            sprintf(
+                'Available roles: %s',
+                $roles->map(static fn (Role $role) => sprintf('%s (%s)', $role->name, $role->id))->implode(' | '),
+            ),
+        );
+
+        return $this->ask('Role ID:');
     }
 }

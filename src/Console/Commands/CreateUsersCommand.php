@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Patrikjak\Auth\Console\Commands;
 
-use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Config\Repository as Config;
+use Patrikjak\Auth\Exceptions\RoleNotFoundException;
 use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 
-class CreateUsersCommand extends Command
+final class CreateUsersCommand extends Command
 {
     /**
      * @var string
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected $signature = 'create:users';
+    protected $signature = 'pjauth:create-users';
 
     /**
      * @var string
@@ -28,64 +27,47 @@ class CreateUsersCommand extends Command
      */
     protected $description = 'Create users';
 
-    private string $defaultPassword;
-
-    private Collection $roles;
-
-    private UserRepository $userRepository;
-
-    /**
-     * @throws BindingResolutionException
-     */
-    public function handle(): void
+    public function handle(Config $config, RoleRepository $roleRepository, UserRepository $userRepository): void
     {
-        $this->setUp();
-
-        $user = $this->getUserData();
-        $this->userRepository->createAndReturnUser($user);
+        $user = $this->getUserData($config, $roleRepository);
+        $userRepository->createAndReturnUser($user);
 
         while ($this->confirm('Do you want to create another user?')) {
-            $user = $this->getUserData();
-            $this->userRepository->createAndReturnUser($user);
+            $user = $this->getUserData($config, $roleRepository);
+            $userRepository->createAndReturnUser($user);
         }
     }
 
-    private function getUserData(): User
+    private function getUserData(Config $config, RoleRepository $roleRepository): User
     {
+        $defaultPassword = $config->get('pjauth.user_default_password');
+        $defaultRoleSlug = $config->get('pjauth.default_role_slug', 'admin');
+        $roles = $roleRepository->getAll();
+
         $name = $this->ask('User name:', 'Admin');
-        $email = $this->ask('User email:', 'admin@p.j');
-        $password = $this->ask('User password:', $this->defaultPassword);
+        $email = $this->ask('User email:', 'email@example.com');
+        $password = $this->ask('User password:', $defaultPassword);
 
         $this->info(
             sprintf(
                 'Available roles: %s',
-                $this->roles->map(static fn (Role $role) => sprintf('%s => %s', $role->name, $role->id))
-                    ->implode(' | ')
+                $roles->map(static fn (Role $role) => $role->slug)->implode(' | '),
             ),
         );
 
-        $role = $this->ask('Role:', '3');
+        $roleSlug = $this->ask('Role slug:', $defaultRoleSlug);
+        $role = $roleRepository->findBySlug($roleSlug);
+
+        if ($role === null) {
+            throw new RoleNotFoundException($roleSlug, 'slug');
+        }
 
         $userModel = UserFactory::getUserModel();
         $userModel->name = $name;
         $userModel->email = $email;
         $userModel->password = $password;
-        $userModel->role_id = $role;
+        $userModel->role_id = $role->id;
 
         return $userModel;
-    }
-
-    /**
-     * @throws BindingResolutionException
-     */
-    private function setUp(): void
-    {
-        $userRepository = app()->make(UserRepository::class);
-        $roleRepository = app()->make(RoleRepository::class);
-        $config = app()->make(Repository::class);
-
-        $this->defaultPassword = $config->get('pjauth.user_default_password');
-        $this->roles = $roleRepository->getAll();
-        $this->userRepository = $userRepository;
     }
 }

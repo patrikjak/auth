@@ -13,7 +13,7 @@ class InstallCommand extends Command
      * @var string
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected $signature = 'install:pjauth';
+    protected $signature = 'pjauth:install';
 
     /**
      * @var string
@@ -38,6 +38,6 @@ class InstallCommand extends Command
         $this->call('vendor:publish', ['--tag' => 'pjauth-migrations', '--force' => true]);
         $this->call('vendor:publish', ['--tag' => 'pjauth-translations', '--force' => true]);
         $this->call('migrate:fresh', ['--force' => true]);
-        $this->call('seed:user-roles', ['--enum' => 'Patrikjak\\Auth\\Models\\RoleType']);
+        $this->call('pjauth:sync-roles');
     }
 }

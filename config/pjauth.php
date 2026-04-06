@@ -66,6 +66,19 @@ return [
     ],
 
     /**
+     * Default role slug assigned to new users on registration
+     */
+    'default_role_slug' => 'admin',
+
+    /**
+     * Default roles synced by the pjauth:sync-roles command
+     */
+    'default_roles' => [
+        ['slug' => 'superadmin', 'name' => 'Superadmin', 'is_superadmin' => true],
+        ['slug' => 'admin',      'name' => 'Admin',      'is_superadmin' => false],
+    ],
+
+    /**
      * Redirect to this path after login or register
      */
     'redirect_after_login' => env('REDIRECT_AFTER_LOGIN', '/dashboard'),

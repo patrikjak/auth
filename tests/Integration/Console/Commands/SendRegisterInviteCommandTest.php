@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
+use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Notifications\RegisterInviteNotification;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 
@@ -22,8 +23,11 @@ class SendRegisterInviteCommandTest extends TestCase
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testCommand(): void
     {
-        $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL])
+        $role = Role::factory()->create();
+
+        $this->artisan('pjauth:send-invite', ['email' => self::TESTER_EMAIL])
             ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL), 'yes')
+            ->expectsQuestion('Role ID:', $role->id)
             ->expectsOutput('Register invite sent to ' . self::TESTER_EMAIL);
 
         $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL]);
@@ -34,8 +38,12 @@ class SendRegisterInviteCommandTest extends TestCase
     {
         Notification::fake();
 
-        $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL])
+        $role = Role::factory()->create();
+        assert($role instanceof Role);
+
+        $this->artisan('pjauth:send-invite', ['email' => self::TESTER_EMAIL])
             ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL), 'yes')
+            ->expectsQuestion('Role ID:', $role->id)
             ->expectsOutput('Register invite sent to ' . self::TESTER_EMAIL);
 
         Notification::assertCount(1);
@@ -54,7 +62,7 @@ class SendRegisterInviteCommandTest extends TestCase
     {
         Notification::fake();
 
-        $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL])
+        $this->artisan('pjauth:send-invite', ['email' => self::TESTER_EMAIL])
             ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL))
             ->expectsOutput('Register invite not sent');
 
@@ -69,10 +77,12 @@ class SendRegisterInviteCommandTest extends TestCase
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testCommandWithRole(): void
     {
-        $this->artisan('send:register-invite', ['email' => self::TESTER_EMAIL, '--role' => '2'])
+        $roleId = Role::factory()->create()->id;
+
+        $this->artisan('pjauth:send-invite', ['email' => self::TESTER_EMAIL, '--role' => $roleId])
             ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL), 'yes')
             ->expectsOutput('Register invite sent to ' . self::TESTER_EMAIL);
 
-        $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => 2]);
+        $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => $roleId]);
     }
 }

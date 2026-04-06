@@ -31,11 +31,9 @@ final readonly class UserService
         $this->authManager->login($user);
     }
 
-    public function createUserAndLoginViaInvitation(User $newUser, ?int $roleId = null): void
+    public function createUserAndLoginViaInvitation(User $newUser, string $roleId): void
     {
-        if ($roleId !== null) {
-            $newUser->role_id = $roleId;
-        }
+        $newUser->role_id = $roleId;
 
         $this->createUserAndLogin($newUser);
 

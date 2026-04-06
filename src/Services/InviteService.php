@@ -9,20 +9,30 @@ use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
+use Patrikjak\Auth\Exceptions\RoleNotFoundException;
 use Patrikjak\Auth\Notifications\RegisterInviteNotification;
+use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
 
 final readonly class InviteService
 {
     public function __construct(
         private UserRepository $userRepository,
+        private RoleRepository $roleRepository,
         private Config $config,
         private AnonymousNotifiable $anonymousNotifiable,
     ) {
     }
 
-    public function sendInvite(string $email, ?int $roleId = null): void
+    /**
+     * @throws RoleNotFoundException
+     */
+    public function sendInvite(string $email, string $roleId): void
     {
+        if ($this->roleRepository->findById($roleId) === null) {
+            throw new RoleNotFoundException($roleId);
+        }
+
         $token = $this->getNewToken();
 
         $this->userRepository->saveRegisterInviteToken($email, $token, $roleId);
@@ -38,7 +48,7 @@ final readonly class InviteService
      * @throws EmailInInvitesNotFoundException
      * @throws InvalidArgumentException when token does not match
      */
-    public function validateTokenAndGetRoleId(string $token, string $email): ?int
+    public function validateTokenAndGetRoleId(string $token, string $email): string
     {
         $invite = $this->userRepository->getRegisterInvite($email);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Auth\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,13 +14,16 @@ use Patrikjak\Auth\Database\Factories\RoleFactory;
 use Patrikjak\Auth\Factories\UserFactory;
 
 /**
- * @property int $id
+ * @property string $id
+ * @property string $slug
  * @property string $name
- * @property Collection<User> $users
+ * @property bool $is_superadmin
+ * @property Collection<int, User> $users
  */
 class Role extends Model
 {
     use HasFactory;
+    use HasUuids;
 
     /**
      * @var bool
@@ -32,8 +36,17 @@ class Role extends Model
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $fillable = [
-        'id',
+        'slug',
         'name',
+        'is_superadmin',
+    ];
+
+    /**
+     * @var array<string, string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
+    protected $casts = [
+        'is_superadmin' => 'boolean',
     ];
 
     public function users(): HasMany
