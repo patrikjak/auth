@@ -19,7 +19,7 @@ final class SyncRolesCommand extends Command
      * @var string
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected $description = 'Ensure the superadmin role exists';
+    protected $description = 'Ensure all default roles from config exist';
 
     public function handle(RoleRepository $roleRepository): void
     {
