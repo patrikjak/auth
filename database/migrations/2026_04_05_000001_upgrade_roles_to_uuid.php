@@ -36,13 +36,13 @@ return new class extends Migration {
             $table->string('new_uuid', 36)->nullable()->after('is_superadmin');
         });
 
-        $defaultRoles = [
+        $defaultRoles = config('pjauth.default_roles', [
             [
                 'slug' => 'superadmin',
                 'name' => 'Superadmin',
                 'is_superadmin' => true,
             ],
-        ];
+        ]);
 
         $roles = DB::table('roles')->orderBy('id')->get();
 

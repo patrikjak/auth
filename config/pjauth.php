@@ -66,6 +66,17 @@ return [
     ],
 
     /**
+     * Default roles synced by the pjauth:sync-roles command
+     */
+    'default_roles' => [
+        [
+            'slug' => 'superadmin',
+            'name' => 'Superadmin',
+            'is_superadmin' => true,
+        ],
+    ],
+
+    /**
      * Default role slug assigned to new users on registration
      * Override in your app's config to assign a different role
      */
