@@ -23,7 +23,13 @@ final class SyncRolesCommand extends Command
 
     public function handle(RoleRepository $roleRepository): void
     {
-        $roleRepository->firstOrCreate('superadmin', 'Superadmin', true);
+        $defaultRoles = config('pjauth.default_roles', [
+            ['slug' => 'superadmin', 'name' => 'Superadmin', 'is_superadmin' => true],
+        ]);
+
+        foreach ($defaultRoles as $role) {
+            $roleRepository->firstOrCreate($role['slug'], $role['name'], $role['is_superadmin'] ?? false);
+        }
 
         $this->info('User roles seeded successfully.');
     }
