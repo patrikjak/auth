@@ -67,24 +67,9 @@ return [
 
     /**
      * Default role slug assigned to new users on registration
+     * Override in your app's config to assign a different role
      */
-    'default_role_slug' => 'admin',
-
-    /**
-     * Default roles synced by the pjauth:sync-roles command
-     */
-    'default_roles' => [
-        [
-            'slug' => 'superadmin',
-            'name' => 'Superadmin',
-            'is_superadmin' => true,
-        ],
-        [
-            'slug' => 'admin',
-            'name' => 'Admin',
-            'is_superadmin' => false,
-        ],
-    ],
+    'default_role_slug' => 'superadmin',
 
     /**
      * Redirect to this path after login or register

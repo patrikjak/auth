@@ -7,17 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
 
-### Deprecated
+- `pjauth:sync-roles` no longer seeds `admin` or any other role — it now only ensures the `superadmin` role (`is_superadmin = true`) exists; all other roles are the consuming app's responsibility
+- `pjauth.default_role_slug` now defaults to `'superadmin'` instead of `'admin'`
 
 ### Removed
 
-### Fixed
+- `pjauth.default_roles` config key removed — role seeding is no longer config-driven; only `superadmin` is ever seeded by auth
 
-### Security
+### Upgrade notes
+
+- If your app relied on `admin` being seeded automatically by `pjauth:sync-roles`, you must now create it yourself — add a seeder or migration in your app: `Role::firstOrCreate(['slug' => 'admin'], ['name' => 'Admin', 'is_superadmin' => false])`
+- If you have `pjauth.default_roles` in your published config, remove it — it is no longer read
+- If you have `pjauth.default_role_slug` set to `'admin'`, update it to whichever slug your app uses for self-registered users
 
 ## [1.5.0] - 2026-04-06
 

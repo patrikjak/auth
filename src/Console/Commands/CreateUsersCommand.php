@@ -41,7 +41,7 @@ final class CreateUsersCommand extends Command
     private function getUserData(Config $config, RoleRepository $roleRepository): User
     {
         $defaultPassword = $config->get('pjauth.user_default_password');
-        $defaultRoleSlug = $config->get('pjauth.default_role_slug', 'admin');
+        $defaultRoleSlug = $config->get('pjauth.default_role_slug', 'superadmin');
         $roles = $roleRepository->getAll();
 
         $name = $this->ask('User name:', 'Admin');

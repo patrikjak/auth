@@ -22,12 +22,6 @@ class SyncRolesCommandTest extends TestCase
             'is_superadmin' => true,
         ]);
 
-        $this->assertDatabaseHas('roles', [
-            'slug' => 'admin',
-            'name' => 'Admin',
-            'is_superadmin' => false,
-        ]);
-
-        $this->assertDatabaseCount('roles', 2);
+        $this->assertDatabaseCount('roles', 1);
     }
 }
