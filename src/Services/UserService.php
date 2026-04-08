@@ -52,8 +52,11 @@ final readonly class UserService
     {
         $newUser->role_id = $roleId;
 
-        $this->createUserAndLogin($newUser);
+        $user = $this->userRepository->createAndReturnUser($newUser);
 
+        event(new Registered($user));
+
+        $this->authManager->login($user);
         event(new RegisteredViaInviteEvent($newUser));
     }
 

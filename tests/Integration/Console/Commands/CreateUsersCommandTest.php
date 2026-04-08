@@ -23,12 +23,12 @@ class CreateUsersCommandTest extends TestCase
             ->expectsQuestion('User name:', 'Admin')
             ->expectsQuestion('User email:', 'admin@p.j')
             ->expectsQuestion('User password:', 'password')
-            ->expectsQuestion('Role slug:', 'admin')
+            ->expectsQuestion('Role slug:', 'superadmin')
             ->expectsConfirmation('Do you want to create another user?', 'yes')
             ->expectsQuestion('User name:', 'User')
             ->expectsQuestion('User email:', 'user@p.j')
             ->expectsQuestion('User password:', 'password')
-            ->expectsQuestion('Role slug:', 'admin')
+            ->expectsQuestion('Role slug:', 'superadmin')
             ->expectsConfirmation('Do you want to create another user?', 'no')
             ->assertExitCode(0);
 
