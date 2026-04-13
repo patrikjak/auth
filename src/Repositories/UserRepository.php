@@ -12,6 +12,7 @@ use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
 use Patrikjak\Auth\ValueObjects\RegisterInvite;
+use SensitiveParameter;
 
 final readonly class UserRepository implements UserRepositoryInterface
 {
@@ -48,7 +49,7 @@ final readonly class UserRepository implements UserRepositoryInterface
         $user->save();
     }
 
-    public function updatePassword(User $user, string $newPassword): void
+    public function updatePassword(User $user, #[SensitiveParameter] string $newPassword): void
     {
         $user->forceFill([
             'password' => $this->hashManager->make($newPassword),

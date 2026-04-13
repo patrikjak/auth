@@ -7,6 +7,7 @@ namespace Patrikjak\Auth\Repositories\Interfaces;
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\ValueObjects\RegisterInvite;
+use SensitiveParameter;
 
 interface UserRepository
 {
@@ -18,7 +19,7 @@ interface UserRepository
 
     public function updateGoogleId(User $user, string $googleId): void;
 
-    public function updatePassword(User $user, string $newPassword): void;
+    public function updatePassword(User $user, #[SensitiveParameter] string $newPassword): void;
 
     /**
      * @throws EmailInInvitesNotFoundException

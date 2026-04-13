@@ -15,6 +15,7 @@ use Patrikjak\Auth\Exceptions\RoleNotFoundException;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
 use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use SensitiveParameter;
 
 final readonly class UserService
 {
@@ -63,7 +64,7 @@ final readonly class UserService
     /**
      * @throws InvalidCredentialsException
      */
-    public function login(string $email, string $password, bool $remember): void
+    public function login(string $email, #[SensitiveParameter] string $password, bool $remember): void
     {
         if (!$this->authManager->attempt(['email' => $email, 'password' => $password], $remember)) {
             throw new InvalidCredentialsException();
@@ -73,7 +74,10 @@ final readonly class UserService
     /**
      * @param array<string> $credentials
      */
-    public function resetPasswordWithTokenValidation(array $credentials, string $newPassword): string
+    public function resetPasswordWithTokenValidation(
+        array $credentials,
+        #[SensitiveParameter] string $newPassword,
+    ): string
     {
         return $this->passwordBroker->reset($credentials, function (User $user) use ($newPassword): void {
             $this->userRepository->updatePassword($user, $newPassword);
@@ -81,7 +85,7 @@ final readonly class UserService
         });
     }
 
-    public function changePasswordForUser(string $userId, string $newPassword): void
+    public function changePasswordForUser(string $userId, #[SensitiveParameter] string $newPassword): void
     {
         $user = $this->userRepository->getById($userId);
 

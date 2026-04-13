@@ -9,5 +9,6 @@ return [
     'confirmed' => ':attribute sa nezhoduje s potvrdením',
     'invalid_invite_token' => 'Neplatný token z pozvánky',
     'invalid_invite_email' => 'Neplatný email z pozvánky',
+    'token_required' => 'Token z pozvánky je povinný',
 
 ];

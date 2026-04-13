@@ -27,11 +27,9 @@ final readonly class InviteService
     /**
      * @throws RoleNotFoundException
      */
-    public function sendInvite(string $email, string $roleId): void
+    public function sendInvite(string $email, ?string $roleId = null): void
     {
-        if ($this->roleRepository->findById($roleId) === null) {
-            throw new RoleNotFoundException($roleId);
-        }
+        $roleId = $this->resolveRoleId($roleId);
 
         $token = $this->getNewToken();
 
@@ -57,6 +55,29 @@ final readonly class InviteService
         }
 
         return $invite->roleId;
+    }
+
+    /**
+     * @throws RoleNotFoundException
+     */
+    private function resolveRoleId(?string $roleId): string
+    {
+        if ($roleId !== null) {
+            if ($this->roleRepository->findById($roleId) === null) {
+                throw new RoleNotFoundException($roleId);
+            }
+
+            return $roleId;
+        }
+
+        $slug = $this->config->get('pjauth.default_role_slug');
+        $role = $this->roleRepository->findBySlug($slug);
+
+        if ($role === null) {
+            throw new RoleNotFoundException($slug, 'slug');
+        }
+
+        return $role->id;
     }
 
     private function getNewToken(): string

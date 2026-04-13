@@ -85,4 +85,21 @@ class SendRegisterInviteCommandTest extends TestCase
 
         $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => $roleId]);
     }
+
+    /**
+     * @throws Exception
+     */
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testCommandUsesDefaultRoleWhenNoRoleProvided(): void
+    {
+        $this->seedDefaultRole();
+        $defaultRole = Role::where('slug', config('pjauth.default_role_slug'))->firstOrFail();
+
+        $this->artisan('pjauth:send-invite', ['email' => self::TESTER_EMAIL])
+            ->expectsConfirmation(sprintf('Do you want to send register invite to %s?', self::TESTER_EMAIL), 'yes')
+            ->expectsQuestion('Role ID:', $defaultRole->id)
+            ->expectsOutput('Register invite sent to ' . self::TESTER_EMAIL);
+
+        $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => $defaultRole->id]);
+    }
 }

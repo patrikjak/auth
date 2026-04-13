@@ -42,6 +42,20 @@ class InviteServiceTest extends TestCase
     }
 
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
+    public function testSendInviteUsesDefaultRoleWhenNoRoleProvided(): void
+    {
+        $this->seedDefaultRole();
+        $defaultRole = Role::where('slug', config('pjauth.default_role_slug'))->firstOrFail();
+
+        $this->inviteService->sendInvite(self::TESTER_EMAIL);
+
+        $this->assertDatabaseHas('register_invites', [
+            'email' => self::TESTER_EMAIL,
+            'role_id' => $defaultRole->id,
+        ]);
+    }
+
+    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testSendInviteSendsNotification(): void
     {
         Notification::fake();

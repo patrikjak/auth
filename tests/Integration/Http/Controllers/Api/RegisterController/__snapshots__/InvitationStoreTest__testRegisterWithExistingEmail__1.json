@@ -2,6 +2,9 @@
     "errors": {
         "email": [
             "pjutils::validation.unique"
+        ],
+        "token": [
+            "pjauth::validation.token_required"
         ]
     }
 }

@@ -29,7 +29,7 @@ class InstallCommand extends Command
             });
 
         foreach ($migrationsToDelete as $migration) {
-            exec(sprintf('rm -rf %s', database_path(sprintf('migrations/%s', $migration))));
+            unlink(database_path(sprintf('migrations/%s', $migration)));
         }
 
         $this->call('install:pjutils');

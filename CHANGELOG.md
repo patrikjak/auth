@@ -7,14 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.5.0] - 2026-04-08
+## [2.0.0] - 2026-04-08
 
 ### Added
 
 - **Database-driven roles** — roles are now stored in the database with a UUID primary key, a `slug`, a `name`, and an `is_superadmin` flag; the hardcoded `RoleType` enum is gone
 - **`pjauth:sync-roles` command** — seeds the superadmin role into the database; idempotent (safe to run multiple times); consuming apps are responsible for creating any additional roles
-- **`pjauth:send-invite` command** — sends a registration invite to an email address; accepts `--role` with a role UUID, or prompts interactively with available roles listed
-- **Role assignment in invitations** — invited users are assigned the role specified at invite time; `InviteService::sendInvite` now requires a role UUID
+- **`pjauth:send-invite` command** — sends a registration invite to an email address; accepts `--role` with a role UUID, or prompts interactively with the default role pre-selected
+- **Role assignment in invitations** — invited users are assigned the role specified at invite time; if no role is given, `InviteService::sendInvite` falls back to the role matching `pjauth.default_role_slug`
 - **`RoleRepository`** — new repository interface and implementation with `create`, `firstOrCreate`, `getAll`, `findBySlug`, and `findById` methods
 - **`UnauthenticatedException`** (HTTP 401) — thrown by `VerifyRole` middleware when the request has no authenticated user
 - **`RoleNotFoundException`** (HTTP 404) — thrown by `InviteService` and `UserService` when a required role cannot be found
@@ -34,5 +34,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `RoleType` enum (`Patrikjak\Auth\Models\RoleType`) removed; replace all usages with role slug strings
 - `User::hasRole(RoleType)` removed; check roles via `$user->role->slug` or the `is_superadmin` flag directly
 - `seed:user-roles` command (and the `SeedUserRoles` class) removed; replaced by `pjauth:sync-roles`
+
+### Fixed
+
+- `InstallCommand` used `exec('rm -rf ...')` to delete migration files; replaced with `unlink()`
+- `InviteRegisterRequest` did not validate the `token` field; it is now `required` with a translated error message
+- Rate limiter was never cleared on successful login, causing legitimate subsequent logins to be rate-limited; `RateLimiter::clear()` is now called after a successful authentication
+- `ChangePasswordRequest::getUserId()` could return `null` silently; now throws `UnauthenticatedException` when no authenticated user is present
+- README documented incorrect field names for the change-password endpoint (`old_password` → `current_password`, `validate_old_password` → `validate_current_password`)
+- `#[SensitiveParameter]` attribute added to all password parameters in `UserService` and `UserRepository` to prevent passwords appearing in stack traces
 
 ## [1.4.1] - 2025-03-11

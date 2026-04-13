@@ -200,7 +200,7 @@ Request body:
 
 ```json
 {
-    "old_password": "current_password",
+    "current_password": "current_password",
     "password": "new_password",
     "password_confirmation": "new_password"
 }
@@ -212,7 +212,7 @@ Old password validation is on by default. To skip it (e.g. admin resetting anoth
 {
     "password": "new_password",
     "password_confirmation": "new_password",
-    "validate_old_password": false
+    "validate_current_password": false
 }
 ```
 
