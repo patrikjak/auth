@@ -21,7 +21,7 @@ class NewPasswordController
         );
 
         return new JsonResponse(
-            ['message' => __($status)],
+            ['message' => __('pjauth::' . $status)],
             $status === PasswordBroker::PASSWORD_RESET
                 ? Response::HTTP_OK
                 : Response::HTTP_BAD_REQUEST,

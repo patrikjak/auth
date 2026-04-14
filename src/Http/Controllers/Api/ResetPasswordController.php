@@ -16,7 +16,7 @@ class ResetPasswordController
         $status = $passwordBroker->sendResetLink($request->getCredentials());
 
         return new JsonResponse(
-            ['message' => __($status)],
+            ['message' => __('pjauth::' . $status)],
             $status === PasswordBroker::RESET_LINK_SENT
                 ? Response::HTTP_OK
                 : Response::HTTP_UNPROCESSABLE_ENTITY,
