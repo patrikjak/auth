@@ -44,10 +44,10 @@ class SocialAuthService
             return;
         }
 
-        $this->register($socialiteUser);
+        $this->register($socialiteUser, $driver);
     }
 
-    public function login(string $driver, User $socialiteUser, UserModel $registeredUser): void
+    private function login(string $driver, User $socialiteUser, UserModel $registeredUser): void
     {
         $property = sprintf('%s_id', $driver);
         $setterMethodName = sprintf('update%sId', ucfirst($driver));
@@ -59,13 +59,16 @@ class SocialAuthService
         $this->authManager->login($registeredUser);
     }
 
-    public function register(User $socialiteUser): void
+    private function register(User $socialiteUser, string $driver): void
     {
+        $socialiteProperty = sprintf('%s_id', $driver);
+
         $userModel = UserFactory::getUserModel();
+
         $userModel->name = $socialiteUser->getName();
         $userModel->email = $socialiteUser->getEmail();
         $userModel->password = sprintf('(%s]#-#[%s)', $socialiteUser->getId(), Str::random());
-        $userModel->google_id = $socialiteUser->getId();
+        $userModel->{$socialiteProperty} = $socialiteUser->getId();
 
         $this->userService->createUserAndLogin($userModel);
     }
