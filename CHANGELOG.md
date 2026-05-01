@@ -46,5 +46,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ChangePasswordRequest::getUserId()` could return `null` silently; now throws `UnauthenticatedException` when no authenticated user is present
 - README documented incorrect field names for the change-password endpoint (`old_password` → `current_password`, `validate_old_password` → `validate_current_password`)
 - `#[SensitiveParameter]` attribute added to all password parameters in `UserService` and `UserRepository` to prevent passwords appearing in stack traces
-
-## [1.4.1] - 2025-03-11
