@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Google social login on the login screen is now shown whenever `pjauth.social_login.google.enabled` is `true`, regardless of `register_via_invitation`; the "sign up with Google" button on the register screen is hidden when `register_via_invitation` is `true`, and Google OAuth cannot be used to create a new account
 - Repository contracts moved to `Repositories/Contracts/` (namespace `Patrikjak\Auth\Repositories\Contracts\UserRepository`, `…\RoleRepository`, `…\RegisterInviteRepository`); previously `Repositories/Interfaces/`
 - Repository implementations moved to `Repositories/Implementations/` (namespace `Patrikjak\Auth\Repositories\Implementations\EloquentUserRepository`, `…\EloquentRoleRepository`, `…\EloquentRegisterInviteRepository`); update any `pjauth.repositories.user` config overrides to reference the new class name
 - Invite-domain methods (`getRegisterInviteToken`, `getRegisterInvite`, `saveRegisterInviteToken`, `deleteRegisterInvite`) removed from `UserRepository`; extracted into a dedicated `Patrikjak\Auth\Repositories\Contracts\RegisterInviteRepository` contract and `EloquentRegisterInviteRepository` implementation

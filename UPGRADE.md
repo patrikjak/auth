@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-## Upgrading to custom-roles branch (next major)
+## Upgrading to 2.0.0
 
 This release replaces the hardcoded `RoleType` enum with a fully database-driven role system. Roles are now identified by a UUID primary key and a slug string.
 
@@ -133,3 +133,4 @@ New keys:
     ],
 ],
 ```
+

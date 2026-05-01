@@ -23,6 +23,7 @@ class SendRegisterInviteCommandTest extends TestCase
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testCommand(): void
     {
+        $this->seedDefaultRole();
         $role = Role::factory()->create();
 
         $this->artisan('pjauth:send-invite', ['email' => self::TESTER_EMAIL])
@@ -38,6 +39,7 @@ class SendRegisterInviteCommandTest extends TestCase
     {
         Notification::fake();
 
+        $this->seedDefaultRole();
         $role = Role::factory()->create();
         assert($role instanceof Role);
 

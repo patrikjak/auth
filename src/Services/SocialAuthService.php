@@ -5,23 +5,26 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Services;
 
 use Illuminate\Auth\AuthManager;
+use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\SocialiteManager;
+use Patrikjak\Auth\Exceptions\RegistrationNotAllowedException;
 use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User as UserModel;
 use Patrikjak\Auth\Repositories\Contracts\UserRepository;
 
-class SocialAuthService
+readonly class SocialAuthService
 {
     private const int SOCIAL_DRIVER_SEGMENT_INDEX = 2;
 
     public function __construct(
-        private readonly SocialiteManager $socialiteManager,
-        private readonly UserService $userService,
-        private readonly UserRepository $userRepository,
-        private readonly AuthManager $authManager,
+        private SocialiteManager $socialiteManager,
+        private UserService $userService,
+        private UserRepository $userRepository,
+        private AuthManager $authManager,
+        private Config $config,
     ) {
     }
 
@@ -42,6 +45,10 @@ class SocialAuthService
             $this->login($driver, $socialiteUser, $registeredUser);
 
             return;
+        }
+
+        if ($this->config->get('pjauth.features.register_via_invitation')) {
+            throw new RegistrationNotAllowedException();
         }
 
         $this->register($socialiteUser, $driver);

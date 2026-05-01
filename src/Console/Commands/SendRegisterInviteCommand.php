@@ -48,6 +48,7 @@ final class SendRegisterInviteCommand extends Command
         $roles = $roleRepository->getAll();
         $defaultSlug = $config->get('pjauth.default_role_slug');
         $defaultRole = $roles->first(static fn (Role $role) => $role->slug === $defaultSlug);
+        assert($defaultRole instanceof Role);
 
         $this->info(
             sprintf(
@@ -56,6 +57,6 @@ final class SendRegisterInviteCommand extends Command
             ),
         );
 
-        return $this->ask('Role ID:', $defaultRole?->id);
+        return $this->ask('Role ID:', $defaultRole->id);
     }
 }

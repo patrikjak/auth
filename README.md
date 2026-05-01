@@ -176,6 +176,8 @@ Enable the feature flag:
 ],
 ```
 
+When enabled, the invitation routes are registered. Google social login on the login screen remains available so existing users can still sign in via Google — only the "sign up with Google" button on the register screen is hidden, and Google OAuth cannot be used to create a new account.
+
 Send an invite from the command line — see [Artisan Commands](#artisan-commands).
 
 The invite email contains a tokenised link to `GET /register/{token}?email=...`. On submission it calls `POST /api/invite/register`.
