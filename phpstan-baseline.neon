@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Method Patrikjak\\Auth\\Models\\Role\:\:users\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<Patrikjak\\Auth\\Models\\User, \$this\(Patrikjak\\Auth\\Models\\Role\)\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<Illuminate\\Database\\Eloquent\\Model, \$this\(Patrikjak\\Auth\\Models\\Role\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Models/Role.php
+
+		-
 			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:hasMany\(\)$#'
 			identifier: argument.templateType
 			count: 1

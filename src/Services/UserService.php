@@ -13,8 +13,8 @@ use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
 use Patrikjak\Auth\Exceptions\InvalidCredentialsException;
 use Patrikjak\Auth\Exceptions\RoleNotFoundException;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\UserRepository;
 use SensitiveParameter;
 
 final readonly class UserService

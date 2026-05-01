@@ -11,13 +11,13 @@ use InvalidArgumentException;
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Exceptions\RoleNotFoundException;
 use Patrikjak\Auth\Notifications\RegisterInviteNotification;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use Patrikjak\Auth\Repositories\Contracts\RegisterInviteRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 
 final readonly class InviteService
 {
     public function __construct(
-        private UserRepository $userRepository,
+        private RegisterInviteRepository $registerInviteRepository,
         private RoleRepository $roleRepository,
         private Config $config,
         private AnonymousNotifiable $anonymousNotifiable,
@@ -33,7 +33,7 @@ final readonly class InviteService
 
         $token = $this->getNewToken();
 
-        $this->userRepository->saveRegisterInviteToken($email, $token, $roleId);
+        $this->registerInviteRepository->save($email, $token, $roleId);
 
         $this->anonymousNotifiable
             ->route('mail', $email)
@@ -48,7 +48,7 @@ final readonly class InviteService
      */
     public function validateTokenAndGetRoleId(string $token, string $email): string
     {
-        $invite = $this->userRepository->getRegisterInvite($email);
+        $invite = $this->registerInviteRepository->get($email);
 
         if (!hash_equals($invite->token, $token)) {
             throw new InvalidArgumentException('Invalid invite token.');

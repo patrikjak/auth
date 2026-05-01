@@ -49,6 +49,9 @@ class Role extends Model
         'is_superadmin' => 'boolean',
     ];
 
+    /**
+     * @return HasMany<User, $this>
+     */
     public function users(): HasMany
     {
         return $this->hasMany(UserFactory::getUserModelClass());

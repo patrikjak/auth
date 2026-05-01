@@ -11,7 +11,7 @@ use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\SocialiteManager;
 use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User as UserModel;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use Patrikjak\Auth\Repositories\Contracts\UserRepository;
 
 class SocialAuthService
 {

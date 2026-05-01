@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Auth\Repositories;
+namespace Patrikjak\Auth\Repositories\Implementations;
 
 use Illuminate\Support\Collection;
 use Patrikjak\Auth\Exceptions\ModelIsIncompatibleException;
 use Patrikjak\Auth\Factories\RoleFactory;
 use Patrikjak\Auth\Models\Role;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository as RoleRepositoryInterface;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository as RoleRepositoryInterface;
 
-final readonly class RoleRepository implements RoleRepositoryInterface
+final readonly class EloquentRoleRepository implements RoleRepositoryInterface
 {
     /**
      * @throws ModelIsIncompatibleException
@@ -20,9 +20,11 @@ final readonly class RoleRepository implements RoleRepositoryInterface
         $roleModelClass = RoleFactory::getRoleModelClass();
 
         $role = new $roleModelClass();
+
         $role->slug = $slug;
         $role->name = $name;
         $role->is_superadmin = $isSuperadmin;
+
         $role->save();
     }
 
@@ -33,7 +35,8 @@ final readonly class RoleRepository implements RoleRepositoryInterface
     {
         $roleModelClass = RoleFactory::getRoleModelClass();
 
-        $role = $roleModelClass::firstOrNew(['slug' => $slug]);
+        /** @var Role $role */
+        $role = $roleModelClass::query()->firstOrNew(['slug' => $slug]);
 
         if (!$role->exists) {
             $role->name = $name;
@@ -49,7 +52,7 @@ final readonly class RoleRepository implements RoleRepositoryInterface
      */
     public function getAll(): Collection
     {
-        return RoleFactory::getRoleModelClass()::all();
+        return RoleFactory::getRoleModelClass()::query()->get();
     }
 
     /**
@@ -57,7 +60,12 @@ final readonly class RoleRepository implements RoleRepositoryInterface
      */
     public function findBySlug(string $slug): ?Role
     {
-        return RoleFactory::getRoleModelClass()::where('slug', $slug)->first();
+        $roleModelClass = RoleFactory::getRoleModelClass();
+
+        /** @var ?Role $role */
+        $role = $roleModelClass::query()->where('slug', $slug)->first();
+
+        return $role;
     }
 
     /**
@@ -65,6 +73,11 @@ final readonly class RoleRepository implements RoleRepositoryInterface
      */
     public function findById(string $id): ?Role
     {
-        return RoleFactory::getRoleModelClass()::find($id);
+        $roleModelClass = RoleFactory::getRoleModelClass();
+
+        /** @var ?Role $role */
+        $role = $roleModelClass::query()->find($id);
+
+        return $role;
     }
 }

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Patrikjak\Auth\Tests\Traits\ConfigSetter;
 use Patrikjak\Auth\Tests\Traits\TestingData;
 use Patrikjak\Auth\Tests\Traits\UserCreator;

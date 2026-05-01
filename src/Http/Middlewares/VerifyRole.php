@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Patrikjak\Auth\Exceptions\UnauthenticatedException;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class VerifyRole

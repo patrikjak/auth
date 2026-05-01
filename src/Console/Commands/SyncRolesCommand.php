@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Console\Commands;
 
 use Illuminate\Console\Command;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 
 final class SyncRolesCommand extends Command
 {

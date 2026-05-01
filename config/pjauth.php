@@ -55,7 +55,7 @@ return [
      * Repositories implementation to use
      */
     'repositories' => [
-        'user' => \Patrikjak\Auth\Repositories\UserRepository::class,
+        'user' => \Patrikjak\Auth\Repositories\Implementations\EloquentUserRepository::class,
     ],
 
     /**

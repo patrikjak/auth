@@ -7,7 +7,7 @@ namespace Patrikjak\Auth\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository as Config;
 use Patrikjak\Auth\Models\Role;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Patrikjak\Auth\Services\InviteService;
 
 final class SendRegisterInviteCommand extends Command

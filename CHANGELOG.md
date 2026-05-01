@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0] - 2026-04-08
+## [2.0.0] - 2026-04-14
 
 ### Added
 
@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Repository contracts moved to `Repositories/Contracts/` (namespace `Patrikjak\Auth\Repositories\Contracts\UserRepository`, `…\RoleRepository`, `…\RegisterInviteRepository`); previously `Repositories/Interfaces/`
+- Repository implementations moved to `Repositories/Implementations/` (namespace `Patrikjak\Auth\Repositories\Implementations\EloquentUserRepository`, `…\EloquentRoleRepository`, `…\EloquentRegisterInviteRepository`); update any `pjauth.repositories.user` config overrides to reference the new class name
+- Invite-domain methods (`getRegisterInviteToken`, `getRegisterInvite`, `saveRegisterInviteToken`, `deleteRegisterInvite`) removed from `UserRepository`; extracted into a dedicated `Patrikjak\Auth\Repositories\Contracts\RegisterInviteRepository` contract and `EloquentRegisterInviteRepository` implementation
 - `Role` model primary key changed from `unsignedTinyInteger` to UUID; existing databases are migrated automatically by the included `upgrade_roles_to_uuid` migration
 - `VerifyRole` middleware now accepts a role **slug** string instead of a `RoleType` integer; update all `VerifyRole::withRole(...)` calls (e.g. `VerifyRole::withRole('admin')`)
 - `VerifyRole::withRole()` signature changed from `withRole(RoleType $role)` to `withRole(string $slug)`

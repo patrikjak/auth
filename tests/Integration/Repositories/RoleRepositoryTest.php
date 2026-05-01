@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Tests\Integration\Repositories;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 
 class RoleRepositoryTest extends TestCase

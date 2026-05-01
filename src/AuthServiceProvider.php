@@ -15,9 +15,11 @@ use Patrikjak\Auth\Console\Commands\SendRegisterInviteCommand;
 use Patrikjak\Auth\Console\Commands\SyncRolesCommand;
 use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
 use Patrikjak\Auth\Listeners\DeleteRegisterInviteListener;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository as RoleRepositoryInterface;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository as UserRepositoryInterface;
-use Patrikjak\Auth\Repositories\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\RegisterInviteRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\UserRepository;
+use Patrikjak\Auth\Repositories\Implementations\EloquentRegisterInviteRepository;
+use Patrikjak\Auth\Repositories\Implementations\EloquentRoleRepository;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -130,8 +132,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $config = $this->app->make(Repository::class);
 
-        $this->app->bind(UserRepositoryInterface::class, $config->get('pjauth.repositories.user'));
-        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->bind(UserRepository::class, $config->get('pjauth.repositories.user'));
+        $this->app->bind(RoleRepository::class, EloquentRoleRepository::class);
+        $this->app->bind(RegisterInviteRepository::class, EloquentRegisterInviteRepository::class);
     }
 
     /**

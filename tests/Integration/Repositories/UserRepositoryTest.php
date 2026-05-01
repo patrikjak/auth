@@ -7,7 +7,7 @@ namespace Patrikjak\Auth\Tests\Integration\Repositories;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use Patrikjak\Auth\Repositories\Contracts\UserRepository;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 
 class UserRepositoryTest extends TestCase

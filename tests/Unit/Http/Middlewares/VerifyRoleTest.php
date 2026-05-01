@@ -10,7 +10,7 @@ use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Http\Middlewares\VerifyRole;
 use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Models\User;
-use Patrikjak\Auth\Repositories\Interfaces\RoleRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Patrikjak\Auth\Tests\Unit\TestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
