@@ -39,6 +39,7 @@ class AuthenticatedSessionController
             ]);
         }
 
+        $rateLimiter->clear($request->throttleKey());
         $request->session()->regenerate();
 
         return new JsonResponse();

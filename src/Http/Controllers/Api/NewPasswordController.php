@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Patrikjak\Auth\Http\Requests\ChangePasswordRequest;
 use Patrikjak\Auth\Http\Requests\ResetPasswordRequest;
 use Patrikjak\Auth\Services\UserService;
+use Symfony\Component\HttpFoundation\Response;
 
 class NewPasswordController
 {
@@ -19,7 +20,12 @@ class NewPasswordController
             $request->getNewPassword(),
         );
 
-        return new JsonResponse(['message' => __($status)], $status === PasswordBroker::PASSWORD_RESET ? 200 : 400);
+        return new JsonResponse(
+            ['message' => __('pjauth::' . $status)],
+            $status === PasswordBroker::PASSWORD_RESET
+                ? Response::HTTP_OK
+                : Response::HTTP_BAD_REQUEST,
+        );
     }
 
     public function change(ChangePasswordRequest $request, UserService $userService): JsonResponse

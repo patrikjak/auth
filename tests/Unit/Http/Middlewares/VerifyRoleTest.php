@@ -9,8 +9,8 @@ use Mockery\MockInterface;
 use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Http\Middlewares\VerifyRole;
 use Patrikjak\Auth\Models\Role;
-use Patrikjak\Auth\Models\RoleType;
 use Patrikjak\Auth\Models\User;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Patrikjak\Auth\Tests\Unit\TestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -18,81 +18,65 @@ class VerifyRoleTest extends TestCase
 {
     public function testHandleSuccessful(): void
     {
-        $role = RoleType::ADMIN;
-        $user = $this->createUserWithRole($role);
+        $user = $this->createUserWithRole('admin');
         $this->actingAs($user);
 
         $request = $this->mockRequest($user);
+        $middleware = new VerifyRole($this->app->make(RoleRepository::class));
 
-        $middleware = new VerifyRole();
-        $response = $middleware->handle(
-            $request,
-            static function (): void {
-            },
-            $role->value,
-        );
+        $response = $middleware->handle($request, static function (): void {
+        }, 'admin');
 
         $this->assertNull($response);
     }
 
     public function testHandleWithNonExistingRole(): void
     {
-        $role = RoleType::ADMIN;
-        $user = $this->createUserWithRole($role);
+        $user = $this->createUserWithRole('admin');
         $this->actingAs($user);
 
         $request = $this->mockRequest($user);
+        $middleware = new VerifyRole($this->app->make(RoleRepository::class));
 
-        $middleware = new VerifyRole();
         $this->expectException(HttpException::class);
-        $middleware->handle(
-            $request,
-            static function (): void {
-            },
-            999,
-        );
+        $middleware->handle($request, static function (): void {
+        }, 'non-existing-role');
     }
 
     public function testHandleWithInvalidRole(): void
     {
-        $user = $this->createUserWithRole(RoleType::USER);
+        Role::factory()->withSlug('admin')->create();
+        $user = $this->createUserWithRole('user');
         $this->actingAs($user);
 
         $request = $this->mockRequest($user);
+        $middleware = new VerifyRole($this->app->make(RoleRepository::class));
 
-        $middleware = new VerifyRole();
         $this->expectException(HttpException::class);
-        $middleware->handle(
-            $request,
-            static function (): void {
-            },
-            RoleType::ADMIN->value,
-        );
+        $middleware->handle($request, static function (): void {
+        }, 'admin');
     }
 
     public function testHandleWithSuperAdmin(): void
     {
-        $user = $this->createUserWithRole(RoleType::SUPERADMIN);
+        Role::factory()->withSlug('admin')->create();
+        $user = $this->createUserWithRole('superadmin', isSuperadmin: true);
         $this->actingAs($user);
 
         $request = $this->mockRequest($user);
+        $middleware = new VerifyRole($this->app->make(RoleRepository::class));
 
-        $middleware = new VerifyRole();
-        $response = $middleware->handle(
-            $request,
-            static function (): void {
-            },
-            RoleType::ADMIN->value,
-        );
+        $response = $middleware->handle($request, static function (): void {
+        }, 'admin');
 
         $this->assertNull($response);
     }
 
     public function testWithRole(): void
     {
-        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:1', VerifyRole::withRole(RoleType::SUPERADMIN));
-        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:2', VerifyRole::withRole(RoleType::ADMIN));
-        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:3', VerifyRole::withRole(RoleType::USER));
+        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:superadmin', VerifyRole::withRole('superadmin'));
+        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:admin', VerifyRole::withRole('admin'));
+        $this->assertSame('Patrikjak\Auth\Http\Middlewares\VerifyRole:user', VerifyRole::withRole('user'));
     }
 
     private function mockRequest(User $user): Request
@@ -106,17 +90,16 @@ class VerifyRoleTest extends TestCase
         return $request;
     }
 
-    private function createUserWithRole(RoleType $roleType): User
+    private function createUserWithRole(string $slug, bool $isSuperadmin = false): User
     {
         $userModel = UserFactory::getUserModelClass();
 
         $role = Role::factory()->create([
-            'id' => $roleType->value,
-            'name' => $roleType->name,
+            'slug' => $slug,
+            'name' => ucfirst($slug),
+            'is_superadmin' => $isSuperadmin,
         ]);
 
-        return $userModel::factory()
-            ->for($role)
-            ->create();
+        return $userModel::factory()->for($role)->create();
     }
 }

@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Http\Controllers;
 
 use Illuminate\Config\Repository as Config;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Laravel\Socialite\SocialiteManager;
+use Patrikjak\Auth\Exceptions\RegistrationNotAllowedException;
 use Patrikjak\Auth\Services\SocialAuthService;
 
-class SocialAuthController
+readonly class SocialAuthController
 {
     public function redirect(
         Request $request,
@@ -24,8 +26,13 @@ class SocialAuthController
         Request $request,
         Config $config,
         SocialAuthService $socialAuthService,
+        UrlGenerator $urlGenerator,
     ): RedirectResponse {
-        $socialAuthService->handleSocialUser($request);
+        try {
+            $socialAuthService->handleSocialUser($request);
+        } catch (RegistrationNotAllowedException) {
+            return new RedirectResponse($urlGenerator->route('login'), 302, []);
+        }
 
         return new RedirectResponse($config->get('pjauth.redirect_after_login'));
     }

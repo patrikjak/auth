@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Patrikjak\Auth\Exceptions\UnauthenticatedException;
 use Patrikjak\Auth\Rules\CurrentPassword;
 use Patrikjak\Utils\Common\Helpers\GrammaticalGender;
 use Patrikjak\Utils\Common\Http\Requests\Traits\ValidationException;
@@ -57,9 +58,13 @@ class ChangePasswordRequest extends FormRequest
         return $this->input('password');
     }
 
+    /**
+     * @throws UnauthenticatedException
+     */
     public function getUserId(): string
     {
-        return $this->user()->getAuthIdentifier();
+        return $this->user()?->getAuthIdentifier()
+            ?? throw new UnauthenticatedException();
     }
 
     private function requireCurrentPasswordValidation(): bool

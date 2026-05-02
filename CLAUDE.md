@@ -58,8 +58,8 @@ Web routes (`routes/web.php`) render Blade views via thin view controllers (`Htt
 ### Layers
 - **`Services/UserService`** — all business logic (create user, login, password reset, invite flow, change password)
 - **`Services/SocialAuthService`** — Google Socialite flow
-- **`Repositories/Interfaces/`** — `UserRepository` and `RoleRepository` contracts
-- **`Repositories/UserRepository` / `RoleRepository`** — Eloquent implementations; `UserRepository` binding is swappable via `config/pjauth.repositories.user`
+- **`Repositories/Contracts/`** — `UserRepository`, `RoleRepository`, and `RegisterInviteRepository` contracts
+- **`Repositories/Implementations/`** — `EloquentUserRepository`, `EloquentRoleRepository`, `EloquentRegisterInviteRepository`; `UserRepository` binding is swappable via `config/pjauth.repositories.user`
 - **`Factories/RoleFactory` / `Factories/UserFactory`** — resolve the active model class from config (supports custom models that extend the built-in ones)
 - **`Models/User`** — UUID primary key, `BelongsTo Role`, `hasRole(RoleType)` checks including superadmin bypass
 - **`Models/RoleType`** — `int`-backed enum: `SUPERADMIN=1`, `ADMIN=2`, `USER=3`
@@ -95,6 +95,6 @@ Feature flags are toggled per test using `defineEnvironment` + `ConfigSetter` me
 
 ## Key Conventions
 
-- Repository interface is in `Repositories/Interfaces/`; Eloquent implementation directly in `Repositories/` (no `Eloquent/` subdirectory, unlike the monorepo's other packages)
+- Repository contracts are in `Repositories/Contracts/`; Eloquent implementations are in `Repositories/Implementations/` with an `Eloquent` prefix
 - Model class resolution always goes through `Factories/RoleFactory::getRoleModelClass()` and `Factories/UserFactory::getUserModelClass()` — never hard-code the class name in services or repositories
 - PHPStan baseline suppressions are in `phpstan-baseline.neon`; inline `phpcsSuppress` is used only for Eloquent properties that can't satisfy native type hints

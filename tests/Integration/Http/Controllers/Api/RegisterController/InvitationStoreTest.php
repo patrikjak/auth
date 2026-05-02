@@ -10,6 +10,7 @@ use Illuminate\Testing\TestResponse;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Events\RegisteredViaInviteEvent;
 use Patrikjak\Auth\Listeners\DeleteRegisterInviteListener;
+use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 use Patrikjak\Utils\Common\Http\Middlewares\VerifyRecaptcha;
@@ -19,6 +20,13 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 class InvitationStoreTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seedDefaultRole();
+    }
 
     /**
      * @param array<string, string> $data
@@ -90,7 +98,8 @@ class InvitationStoreTest extends TestCase
     public function testRegisterWithInvalidToken(): void
     {
         $this->withoutMiddleware(VerifyRecaptcha::class);
-        $this->insertInvite();
+        $roleId = Role::factory()->create()->id;
+        $this->insertInvite(token: 'token', roleId: $roleId);
 
         $response = $this->post(route('api.register.invitation'), [
             'name' => 'John Doe',
@@ -136,7 +145,10 @@ class InvitationStoreTest extends TestCase
     {
         $this->withoutMiddleware(VerifyRecaptcha::class);
         $token = 'token';
-        $this->insertInvite(token: $token, roleId: 3);
+        $role = Role::factory()->create();
+        assert($role instanceof Role);
+
+        $this->insertInvite(token: $token, roleId: $role->id);
 
         $response = $this->post(route('api.register.invitation'), [
             'name' => 'John Doe',
@@ -146,11 +158,11 @@ class InvitationStoreTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas('users', ['email' => self::TESTER_EMAIL, 'role_id' => 3]);
+        $this->assertDatabaseHas('users', ['email' => self::TESTER_EMAIL, 'role_id' => $role->id]);
     }
 
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
-    public function testRegisteredUserKeepsDefaultRoleWhenInviteHasNoRole(): void
+    public function testRegisteredUserGetsDefaultRoleFromInvite(): void
     {
         $response = $this->registerViaInvite();
         $response->assertStatus(200);
@@ -190,9 +202,10 @@ class InvitationStoreTest extends TestCase
     private function registerViaInvite(): TestResponse
     {
         $token = 'token';
+        $roleId = Role::factory()->create()->id;
 
         $this->withoutMiddleware(VerifyRecaptcha::class);
-        $this->insertInvite(token: $token);
+        $this->insertInvite(token: $token, roleId: $roleId);
 
         return $this->post(route('api.register.invitation'), [
             'name' => 'John Doe',
@@ -203,9 +216,9 @@ class InvitationStoreTest extends TestCase
     }
 
     private function insertInvite(
+        string $token,
+        string $roleId,
         string $email = self::TESTER_EMAIL,
-        string $token = 'token',
-        ?int $roleId = null,
     ): void {
         $this->databaseManager->table('register_invites')->insert([
             'email' => $email,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Auth\Tests\Integration\Console\Commands;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Patrikjak\Auth\Tests\Integration\TestCase;
 
@@ -11,18 +12,23 @@ class CreateUsersCommandTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testCreateUsersCommand(): void
     {
-        $this->artisan('create:users')
+        $this->seedDefaultRole();
+
+        $this->artisan('pjauth:create-users')
             ->expectsQuestion('User name:', 'Admin')
             ->expectsQuestion('User email:', 'admin@p.j')
             ->expectsQuestion('User password:', 'password')
-            ->expectsQuestion('Role:', '3')
+            ->expectsQuestion('Role slug:', 'superadmin')
             ->expectsConfirmation('Do you want to create another user?', 'yes')
             ->expectsQuestion('User name:', 'User')
             ->expectsQuestion('User email:', 'user@p.j')
             ->expectsQuestion('User password:', 'password')
-            ->expectsQuestion('Role:', '2')
+            ->expectsQuestion('Role slug:', 'superadmin')
             ->expectsConfirmation('Do you want to create another user?', 'no')
             ->assertExitCode(0);
 

@@ -9,23 +9,31 @@ use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
+use Patrikjak\Auth\Exceptions\RoleNotFoundException;
 use Patrikjak\Auth\Notifications\RegisterInviteNotification;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use Patrikjak\Auth\Repositories\Contracts\RegisterInviteRepository;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 
 final readonly class InviteService
 {
     public function __construct(
-        private UserRepository $userRepository,
+        private RegisterInviteRepository $registerInviteRepository,
+        private RoleRepository $roleRepository,
         private Config $config,
         private AnonymousNotifiable $anonymousNotifiable,
     ) {
     }
 
-    public function sendInvite(string $email, ?int $roleId = null): void
+    /**
+     * @throws RoleNotFoundException
+     */
+    public function sendInvite(string $email, ?string $roleId = null): void
     {
+        $roleId = $this->resolveRoleId($roleId);
+
         $token = $this->getNewToken();
 
-        $this->userRepository->saveRegisterInviteToken($email, $token, $roleId);
+        $this->registerInviteRepository->save($email, $token, $roleId);
 
         $this->anonymousNotifiable
             ->route('mail', $email)
@@ -38,15 +46,38 @@ final readonly class InviteService
      * @throws EmailInInvitesNotFoundException
      * @throws InvalidArgumentException when token does not match
      */
-    public function validateTokenAndGetRoleId(string $token, string $email): ?int
+    public function validateTokenAndGetRoleId(string $token, string $email): string
     {
-        $invite = $this->userRepository->getRegisterInvite($email);
+        $invite = $this->registerInviteRepository->get($email);
 
         if (!hash_equals($invite->token, $token)) {
             throw new InvalidArgumentException('Invalid invite token.');
         }
 
         return $invite->roleId;
+    }
+
+    /**
+     * @throws RoleNotFoundException
+     */
+    private function resolveRoleId(?string $roleId): string
+    {
+        if ($roleId !== null) {
+            if ($this->roleRepository->findById($roleId) === null) {
+                throw new RoleNotFoundException($roleId);
+            }
+
+            return $roleId;
+        }
+
+        $slug = $this->config->get('pjauth.default_role_slug');
+        $role = $this->roleRepository->findBySlug($slug);
+
+        if ($role === null) {
+            throw new RoleNotFoundException($slug, 'slug');
+        }
+
+        return $role->id;
     }
 
     private function getNewToken(): string

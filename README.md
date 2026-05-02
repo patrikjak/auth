@@ -109,36 +109,43 @@ Use `VerifyRole` to protect routes by role:
 
 ```php
 use Patrikjak\Auth\Http\Middlewares\VerifyRole;
-use Patrikjak\Auth\Models\RoleType;
 
-Route::middleware(['web', 'auth', VerifyRole::withRole(RoleType::ADMIN)]);
+Route::middleware(['web', 'auth', VerifyRole::withRole('admin')]);
 ```
 
 Super admins pass all role checks.
 
 ## Roles
 
-Default roles: `SUPERADMIN = 1`, `ADMIN = 2`, `USER = 3` (defined in `RoleType` enum).
-
-Seed default roles:
-
-```bash
-php artisan seed:user-roles
-# or with a custom enum:
-php artisan seed:user-roles --enum=App\\Enums\\MyRoleType
-```
-
-The custom enum must use the `Patrikjak\Utils\Common\Traits\EnumValues` trait.
+Default roles are defined in `config/pjauth.php` under `default_roles`. Use `pjauth:sync-roles` to seed them — see [Artisan Commands](#artisan-commands).
 
 ## Artisan Commands
+
+### Sync roles
+
+```bash
+php artisan pjauth:sync-roles
+```
+
+Seeds roles from `pjauth.default_roles` config into the database (uses `firstOrCreate` — safe to re-run).
 
 ### Create users interactively
 
 ```bash
-php artisan create:users
+php artisan pjauth:create-users
 ```
 
 Prompts for name, email, password, and role. Loops until you decline to add another user.
+
+### Send register invite
+
+```bash
+php artisan pjauth:send-invite user@example.com
+# or pass a role ID directly:
+php artisan pjauth:send-invite user@example.com --role=<role-id>
+```
+
+If `--role` is not provided, available roles are listed and you are prompted to choose.
 
 ## Socialite (Google)
 
@@ -169,11 +176,9 @@ Enable the feature flag:
 ],
 ```
 
-Send an invite from the command line:
+When enabled, the invitation routes are registered. Google social login on the login screen remains available so existing users can still sign in via Google — only the "sign up with Google" button on the register screen is hidden, and Google OAuth cannot be used to create a new account.
 
-```bash
-php artisan send:register-invite user@example.com
-```
+Send an invite from the command line — see [Artisan Commands](#artisan-commands).
 
 The invite email contains a tokenised link to `GET /register/{token}?email=...`. On submission it calls `POST /api/invite/register`.
 
@@ -197,7 +202,7 @@ Request body:
 
 ```json
 {
-    "old_password": "current_password",
+    "current_password": "current_password",
     "password": "new_password",
     "password_confirmation": "new_password"
 }
@@ -209,7 +214,7 @@ Old password validation is on by default. To skip it (e.g. admin resetting anoth
 {
     "password": "new_password",
     "password_confirmation": "new_password",
-    "validate_old_password": false
+    "validate_current_password": false
 }
 ```
 

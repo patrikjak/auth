@@ -12,6 +12,13 @@ class SocialAuthControllerTest extends TestCase
 {
     use SocialiteMocker;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seedDefaultRole();
+    }
+
     #[DefineEnvironment('withGoogleSocialiteConfig')]
     public function testGoogleRedirect(): void
     {

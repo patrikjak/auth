@@ -55,7 +55,7 @@ return [
      * Repositories implementation to use
      */
     'repositories' => [
-        'user' => \Patrikjak\Auth\Repositories\UserRepository::class,
+        'user' => \Patrikjak\Auth\Repositories\Implementations\EloquentUserRepository::class,
     ],
 
     /**
@@ -64,6 +64,23 @@ return [
     'models' => [
         'role' => \Patrikjak\Auth\Models\Role::class,
     ],
+
+    /**
+     * Default roles synced by the pjauth:sync-roles command
+     */
+    'default_roles' => [
+        [
+            'slug' => 'superadmin',
+            'name' => 'Superadmin',
+            'is_superadmin' => true,
+        ],
+    ],
+
+    /**
+     * Default role slug assigned to new users on registration
+     * Override in your app's config to assign a different role
+     */
+    'default_role_slug' => 'superadmin',
 
     /**
      * Redirect to this path after login or register

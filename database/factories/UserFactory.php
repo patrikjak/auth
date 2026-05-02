@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Patrikjak\Auth\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Patrikjak\Auth\Models\Role;
-use Patrikjak\Auth\Models\RoleType;
 use Patrikjak\Auth\Models\User;
 
 class UserFactory extends Factory
 {
+    /**
+     * @var class-string<User>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $model = User::class;
 
     public function __construct(
@@ -39,55 +44,62 @@ class UserFactory extends Factory
         $this->model = \Patrikjak\Auth\Factories\UserFactory::getUserModelClass();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
-        $this->seedRoles();
+        $defaultRoleId = $this->getOrCreateDefaultRole()->id;
 
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => bcrypt($this->faker->password()),
             'remember_token' => Str::random(10),
-            'role_id' => RoleType::USER->value,
+            'role_id' => $defaultRoleId,
         ];
     }
 
-    public function withName(string $name): Factory
+    public function withName(string $name): static
     {
         return $this->state(fn (array $attributes) => ['name' => $name]);
     }
 
-    public function withEmail(string $email): Factory
+    public function withEmail(string $email): static
     {
         return $this->state(fn (array $attributes) => ['email' => $email]);
     }
 
-    public function withPassword(string $password): Factory
+    public function withPassword(string $password): static
     {
         return $this->state(fn (array $attributes) => ['password' => bcrypt($password)]);
     }
 
-    public function withGoogleId(string $googleId): Factory
+    public function withGoogleId(string $googleId): static
     {
         return $this->state(fn (array $attributes) => ['google_id' => $googleId]);
     }
 
-    public function withRole(RoleType $roleType): Factory
+    public function withRole(string $slug): static
     {
-        return $this->state(fn (array $attributes) => ['role_id' => $roleType->value]);
+        return $this->state(function (array $attributes) use ($slug): array {
+            $role = Role::where('slug', $slug)->first()
+                ?? Role::factory()->withSlug($slug)->create();
+
+            return ['role_id' => $role->id];
+        });
     }
 
-    private function seedRoles(): void
+    private function getOrCreateDefaultRole(): Role
     {
-        if (Role::count() > 0) {
-            return;
+        $defaultSlug = config('pjauth.default_role_slug', 'admin');
+
+        $role = Role::where('slug', $defaultSlug)->first();
+
+        if ($role !== null) {
+            return $role;
         }
 
-        foreach (RoleType::getAll() as $roleType) {
-            Role::factory()->create([
-                'id' => $roleType->value,
-                'name' => $roleType->name,
-            ]);
-        }
+        return Role::factory()->withSlug($defaultSlug)->create();
     }
 }

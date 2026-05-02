@@ -16,6 +16,13 @@ class StoreTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seedDefaultRole();
+    }
+
     /**
      * @param array<string, string> $data
      */

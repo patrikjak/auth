@@ -8,7 +8,6 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,7 +24,7 @@ use SensitiveParameter;
  * @property string $email
  * @property string $password
  * @property string $remember_token
- * @property int $role_id
+ * @property string $role_id
  * @property CarbonInterface $created_at
  * @property CarbonInterface $updated_at
  * @property Role $role
@@ -78,7 +77,6 @@ class User extends Authenticatable
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $attributes = [
-        'role_id' => RoleType::USER->value,
         'google_id' => null,
     ];
 
@@ -99,13 +97,6 @@ class User extends Authenticatable
         $url = sprintf('%s?email=%s', route('password.reset', ['token' => $token]), urlencode($this->email));
 
         $this->notify(new ResetPassword($url));
-    }
-
-    public function hasRole(RoleType $role): bool
-    {
-        $usersRoleId = $this->role->id;
-
-        return $usersRoleId === $role->value || $usersRoleId === RoleType::SUPERADMIN->value;
     }
 
     protected static function newFactory(): Factory

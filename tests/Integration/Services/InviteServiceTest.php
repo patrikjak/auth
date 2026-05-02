@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Notification;
 use InvalidArgumentException;
 use Orchestra\Testbench\Attributes\DefineEnvironment;
 use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
+use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Notifications\RegisterInviteNotification;
 use Patrikjak\Auth\Services\InviteService;
 use Patrikjak\Auth\Tests\Integration\TestCase;
@@ -23,7 +24,9 @@ class InviteServiceTest extends TestCase
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testSendInviteStoresToken(): void
     {
-        $this->inviteService->sendInvite(self::TESTER_EMAIL);
+        $roleId = Role::factory()->create()->id;
+
+        $this->inviteService->sendInvite(self::TESTER_EMAIL, $roleId);
 
         $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL]);
     }
@@ -31,17 +34,25 @@ class InviteServiceTest extends TestCase
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testSendInviteStoresRoleId(): void
     {
-        $this->inviteService->sendInvite(self::TESTER_EMAIL, 2);
+        $roleId = Role::factory()->create()->id;
 
-        $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => 2]);
+        $this->inviteService->sendInvite(self::TESTER_EMAIL, $roleId);
+
+        $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => $roleId]);
     }
 
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
-    public function testSendInviteWithoutRoleStoresNullRoleId(): void
+    public function testSendInviteUsesDefaultRoleWhenNoRoleProvided(): void
     {
+        $this->seedDefaultRole();
+        $defaultRole = Role::where('slug', config('pjauth.default_role_slug'))->firstOrFail();
+
         $this->inviteService->sendInvite(self::TESTER_EMAIL);
 
-        $this->assertDatabaseHas('register_invites', ['email' => self::TESTER_EMAIL, 'role_id' => null]);
+        $this->assertDatabaseHas('register_invites', [
+            'email' => self::TESTER_EMAIL,
+            'role_id' => $defaultRole->id,
+        ]);
     }
 
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
@@ -49,7 +60,9 @@ class InviteServiceTest extends TestCase
     {
         Notification::fake();
 
-        $this->inviteService->sendInvite(self::TESTER_EMAIL);
+        $roleId = Role::factory()->create()->id;
+
+        $this->inviteService->sendInvite(self::TESTER_EMAIL, $roleId);
 
         Notification::assertCount(1);
         Notification::assertSentTo(
@@ -64,31 +77,22 @@ class InviteServiceTest extends TestCase
     }
 
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
-    public function testValidateTokenAndGetRoleIdReturnsNullWhenNoRole(): void
-    {
-        $token = 'test_token';
-        $this->insertInvite(token: $token, roleId: null);
-
-        $roleId = $this->inviteService->validateTokenAndGetRoleId($token, self::TESTER_EMAIL);
-
-        $this->assertNull($roleId);
-    }
-
-    #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testValidateTokenAndGetRoleIdReturnsRoleId(): void
     {
         $token = 'test_token';
-        $this->insertInvite(token: $token, roleId: 2);
+        $roleId = Role::factory()->create()->id;
+        $this->insertInvite(token: $token, roleId: $roleId);
 
-        $roleId = $this->inviteService->validateTokenAndGetRoleId($token, self::TESTER_EMAIL);
+        $returnedRoleId = $this->inviteService->validateTokenAndGetRoleId($token, self::TESTER_EMAIL);
 
-        $this->assertSame(2, $roleId);
+        $this->assertSame($roleId, $returnedRoleId);
     }
 
     #[DefineEnvironment('enableRegisterViaInvitationFeature')]
     public function testValidateTokenAndGetRoleIdThrowsForInvalidToken(): void
     {
-        $this->insertInvite(token: 'correct_token');
+        $roleId = Role::factory()->create()->id;
+        $this->insertInvite(token: 'correct_token', roleId: $roleId);
 
         $this->expectException(InvalidArgumentException::class);
 
@@ -111,9 +115,9 @@ class InviteServiceTest extends TestCase
     }
 
     private function insertInvite(
+        string $token,
+        string $roleId,
         string $email = self::TESTER_EMAIL,
-        string $token = 'token',
-        ?int $roleId = null,
     ): void {
         $this->databaseManager->table('register_invites')->insert([
             'email' => $email,

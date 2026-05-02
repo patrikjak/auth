@@ -8,11 +8,10 @@ use Illuminate\Config\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Testing\Fakes\EventFake;
-use Illuminate\Support\Testing\Fakes\NotificationFake;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Patrikjak\Auth\AuthServiceProvider;
 use Patrikjak\Auth\Models\User;
+use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Patrikjak\Auth\Tests\Traits\ConfigSetter;
 use Patrikjak\Auth\Tests\Traits\TestingData;
 use Patrikjak\Auth\Tests\Traits\UserCreator;
@@ -53,6 +52,15 @@ abstract class TestCase extends OrchestraTestCase
     public function skipRecaptcha(): void
     {
         $this->withoutMiddleware(VerifyRecaptcha::class);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    protected function seedDefaultRole(): void
+    {
+        $defaultSlug = config('pjauth.default_role_slug', 'admin');
+        $this->app->make(RoleRepository::class)->firstOrCreate($defaultSlug, ucfirst($defaultSlug));
     }
 
     /**

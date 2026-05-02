@@ -5,23 +5,26 @@ declare(strict_types=1);
 namespace Patrikjak\Auth\Services;
 
 use Illuminate\Auth\AuthManager;
+use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\SocialiteManager;
+use Patrikjak\Auth\Exceptions\RegistrationNotAllowedException;
 use Patrikjak\Auth\Factories\UserFactory;
 use Patrikjak\Auth\Models\User as UserModel;
-use Patrikjak\Auth\Repositories\Interfaces\UserRepository;
+use Patrikjak\Auth\Repositories\Contracts\UserRepository;
 
-class SocialAuthService
+readonly class SocialAuthService
 {
     private const int SOCIAL_DRIVER_SEGMENT_INDEX = 2;
 
     public function __construct(
-        private readonly SocialiteManager $socialiteManager,
-        private readonly UserService $userService,
-        private readonly UserRepository $userRepository,
-        private readonly AuthManager $authManager,
+        private SocialiteManager $socialiteManager,
+        private UserService $userService,
+        private UserRepository $userRepository,
+        private AuthManager $authManager,
+        private Config $config,
     ) {
     }
 
@@ -44,10 +47,14 @@ class SocialAuthService
             return;
         }
 
-        $this->register($socialiteUser);
+        if ($this->config->get('pjauth.features.register_via_invitation')) {
+            throw new RegistrationNotAllowedException();
+        }
+
+        $this->register($socialiteUser, $driver);
     }
 
-    public function login(string $driver, User $socialiteUser, UserModel $registeredUser): void
+    private function login(string $driver, User $socialiteUser, UserModel $registeredUser): void
     {
         $property = sprintf('%s_id', $driver);
         $setterMethodName = sprintf('update%sId', ucfirst($driver));
@@ -59,13 +66,16 @@ class SocialAuthService
         $this->authManager->login($registeredUser);
     }
 
-    public function register(User $socialiteUser): void
+    private function register(User $socialiteUser, string $driver): void
     {
+        $socialiteProperty = sprintf('%s_id', $driver);
+
         $userModel = UserFactory::getUserModel();
+
         $userModel->name = $socialiteUser->getName();
         $userModel->email = $socialiteUser->getEmail();
         $userModel->password = sprintf('(%s]#-#[%s)', $socialiteUser->getId(), Str::random());
-        $userModel->google_id = $socialiteUser->getId();
+        $userModel->{$socialiteProperty} = $socialiteUser->getId();
 
         $this->userService->createUserAndLogin($userModel);
     }

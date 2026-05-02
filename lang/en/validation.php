@@ -9,5 +9,6 @@ return [
     'confirmed' => 'The :attribute does not match its confirmation',
     'invalid_invite_token' => 'Invalid invite token',
     'invalid_invite_email' => 'Invalid invite email',
+    'token_required' => 'The invite token is required',
 
 ];

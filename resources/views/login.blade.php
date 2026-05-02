@@ -49,7 +49,7 @@
         </x-pjutils::form.wrapper>
     </x-pjutils::form>
 
-    @if(config('pjauth.social_login.google.enabled') && !config('pjauth.features.register_via_invitation'))
+    @if(config('pjauth.social_login.google.enabled'))
         <p class="center" id="or">@lang('pjauth::pages.login.or_use_social')</p>
 
         <div class="socials">

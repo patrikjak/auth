@@ -6,12 +6,11 @@ namespace Patrikjak\Auth\Tests\Traits;
 
 use Patrikjak\Auth\Database\Factories\UserFactory;
 use Patrikjak\Auth\Factories\UserFactory as UserModelFactory;
-use Patrikjak\Auth\Models\RoleType;
 use Patrikjak\Auth\Models\User;
 
 trait UserCreator
 {
-    protected function createUser(?string $googleId = null, ?RoleType $roleType = null): User
+    protected function createUser(?string $googleId = null, ?string $roleSlug = null): User
     {
         $userModel = UserModelFactory::getUserModelClass();
         $userFactory = $userModel::factory();
@@ -25,8 +24,8 @@ trait UserCreator
             $userFactory = $userFactory->withGoogleId($googleId);
         }
 
-        if ($roleType !== null) {
-            $userFactory = $userFactory->withRole($roleType);
+        if ($roleSlug !== null) {
+            $userFactory = $userFactory->withRole($roleSlug);
         }
 
         return $userFactory->create();

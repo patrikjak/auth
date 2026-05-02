@@ -5,6 +5,9 @@
         ],
         "email": [
             "pjutils::validation.required"
+        ],
+        "token": [
+            "pjauth::validation.token_required"
         ]
     }
 }
