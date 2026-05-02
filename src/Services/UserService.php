@@ -17,7 +17,7 @@ use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 use Patrikjak\Auth\Repositories\Contracts\UserRepository;
 use SensitiveParameter;
 
-final readonly class UserService
+readonly class UserService
 {
     public function __construct(
         private UserRepository $userRepository,

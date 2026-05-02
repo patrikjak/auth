@@ -10,7 +10,7 @@ use Patrikjak\Auth\Factories\RoleFactory;
 use Patrikjak\Auth\Models\Role;
 use Patrikjak\Auth\Repositories\Contracts\RoleRepository as RoleRepositoryInterface;
 
-final readonly class EloquentRoleRepository implements RoleRepositoryInterface
+readonly class EloquentRoleRepository implements RoleRepositoryInterface
 {
     /**
      * @throws ModelIsIncompatibleException

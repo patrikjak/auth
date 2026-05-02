@@ -10,7 +10,7 @@ use Patrikjak\Auth\Exceptions\EmailInInvitesNotFoundException;
 use Patrikjak\Auth\Repositories\Contracts\RegisterInviteRepository as RegisterInviteRepositoryInterface;
 use Patrikjak\Auth\ValueObjects\RegisterInvite;
 
-final readonly class EloquentRegisterInviteRepository implements RegisterInviteRepositoryInterface
+readonly class EloquentRegisterInviteRepository implements RegisterInviteRepositoryInterface
 {
     public function __construct(private DatabaseManager $databaseManager)
     {
