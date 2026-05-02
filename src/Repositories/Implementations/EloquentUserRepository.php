@@ -10,7 +10,7 @@ use Patrikjak\Auth\Models\User;
 use Patrikjak\Auth\Repositories\Contracts\UserRepository as UserRepositoryInterface;
 use SensitiveParameter;
 
-final readonly class EloquentUserRepository implements UserRepositoryInterface
+readonly class EloquentUserRepository implements UserRepositoryInterface
 {
     public function __construct(private HashManager $hashManager)
     {

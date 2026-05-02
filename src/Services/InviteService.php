@@ -14,7 +14,7 @@ use Patrikjak\Auth\Notifications\RegisterInviteNotification;
 use Patrikjak\Auth\Repositories\Contracts\RegisterInviteRepository;
 use Patrikjak\Auth\Repositories\Contracts\RoleRepository;
 
-final readonly class InviteService
+readonly class InviteService
 {
     public function __construct(
         private RegisterInviteRepository $registerInviteRepository,
